@@ -12,10 +12,12 @@ import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import { ConnectedRouter } from 'react-router-redux';
 import FontFaceObserver from 'fontfaceobserver';
 import createHistory from 'history/createBrowserHistory';
 import 'sanitize.css/sanitize.css';
+import defaultTheme from 'theme/defaultTheme'
 
 // Import root app
 import App from 'containers/App';
@@ -55,7 +57,9 @@ const render = messages => {
     <Provider store={store}>
       <LanguageProvider messages={messages}>
         <ConnectedRouter history={history}>
-          <App />
+          <MuiThemeProvider theme={defaultTheme}>
+            <App />
+          </MuiThemeProvider>
         </ConnectedRouter>
       </LanguageProvider>
     </Provider>,
