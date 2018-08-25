@@ -28,6 +28,8 @@ const ReactBoilerplate = {
         'ip',
         'minimist',
         'sanitize.css',
+        'firebase',
+        '@firebase/app-types',
       ],
 
       /**
