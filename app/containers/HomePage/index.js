@@ -7,12 +7,13 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
+import { compose } from 'recompose';
 import { createStructuredSelector } from 'reselect';
 import { withFirestore } from 'react-redux-firebase';
 import WhiteTextField from 'components/WhiteTextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
+import Map from 'components/Map';
 
 import injectReducer from 'utils/injectReducer';
 import reducer from './reducer';
@@ -45,6 +46,7 @@ export class HomePage extends React.PureComponent {
     return (
       <Fragment>
         <HomePageAppBar />
+        <Map />
         <div>{clients && clients.map(u => <p>{u.name}</p>)}</div>
       </Fragment>
     );
