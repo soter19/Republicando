@@ -12,11 +12,17 @@ import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { MuiThemeProvider } from '@material-ui/core/styles';
+import {
+  MuiThemeProvider,
+  createGenerateClassName,
+  jssPreset,
+} from '@material-ui/core/styles';
 import { ConnectedRouter } from 'react-router-redux';
 import FontFaceObserver from 'fontfaceobserver';
 import createHistory from 'history/createBrowserHistory';
 import 'sanitize.css/sanitize.css';
+import JssProvider from 'react-jss';
+import { create } from 'jss';
 import defaultTheme from 'theme/defaultTheme';
 
 // Import root app
@@ -30,6 +36,12 @@ import configureStore from './configureStore';
 
 // Import CSS reset and Global Styles
 import './global-styles';
+
+const generateClassName = createGenerateClassName();
+const jss = create({
+  ...jssPreset(),
+  insertionPoint: 'insertion-jss',
+});
 
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
 // the index.html file and this observer)
@@ -49,11 +61,13 @@ const MOUNT_NODE = document.getElementById('app');
 const render = () => {
   ReactDOM.render(
     <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <MuiThemeProvider theme={defaultTheme}>
-          <App />
-        </MuiThemeProvider>
-      </ConnectedRouter>
+      <JssProvider jss={jss} generateClassName={generateClassName}>
+        <ConnectedRouter history={history}>
+          <MuiThemeProvider theme={defaultTheme}>
+            <App />
+          </MuiThemeProvider>
+        </ConnectedRouter>
+      </JssProvider>
     </Provider>,
     MOUNT_NODE,
   );
