@@ -39,7 +39,7 @@ class Republic {
     }
 }
 
-// utils 
+// utils
 
 const parseDocument = (snap) => ({
     id: snap.id,
@@ -91,5 +91,9 @@ exports.createRepublic = functions.https.onRequest((req, res) => {
 });
 
 // UPDATE
+
+exports.applyToOffer = functions.https.onRequest((req, res) => {
+
+});
 
 // DELETE
