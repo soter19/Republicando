@@ -4,55 +4,57 @@
  *
  */
 
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import TextField from '@material-ui/core/TextField';
-import  Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
-import { push } from 'react-router-redux'
-
+import { push } from 'react-router-redux';
 
 import injectReducer from 'utils/injectReducer';
 import makeSelectSignInPage from './selectors';
 import reducer from './reducer';
+import RepublicaCard from '../../components/RepublicaCard';
 
 const TextFieldSignIn = styled(TextField)`
-	margin: 20px 0 !important;
-`
+  margin: 20px 0 !important;
+`;
 
 const ButtonSignIn = styled(Button)`
-	margin: 100px 0 20px 0 !important;
-`
+  margin: 100px 0 20px 0 !important;
+`;
 
 const MyLink = styled.div`
   cursor: pointer;
-`
+`;
 
 /* eslint-disable react/prefer-stateless-function */
 export class SignInPage extends React.PureComponent {
   render() {
-    const { goToRoute } = this.props
+    const { goToRoute } = this.props;
     return (
-        <Fragment>
-            <TextFieldSignIn
-                required
-                id="email"
-                label="Email"
-                margin="dense"
-            />
-            <TextFieldSignIn
-                required
-                id="password"
-                label="Password"
-                margin="dense"
-            />
-
-            <MyLink onClick={() => goToRoute('/signUp')}>Cadastre-se</MyLink>
-            <ButtonSignIn onClick={() => goToRoute('/')}>Login</ButtonSignIn>
-        </Fragment>
+      <Fragment>
+        <TextFieldSignIn required id="email" label="Email" margin="dense" />
+        <TextFieldSignIn
+          required
+          id="password"
+          label="Password"
+          margin="dense"
+        />
+        <MyLink onClick={() => goToRoute('/signUp')}>Cadastre-se</MyLink>
+        <ButtonSignIn
+          size="small"
+          variant="contained"
+          color="primary"
+          onClick={() => goToRoute('/')}
+        >
+          Login
+        </ButtonSignIn>
+        <RepublicaCard />
+      </Fragment>
     );
   }
 }

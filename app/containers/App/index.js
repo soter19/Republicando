@@ -32,11 +32,11 @@ export default function App() {
     <AppWrapper>
       <Header />
       <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route exact path="/signIn" component={SignInPage} />
-          <Route exact path="/signUp" component={SignUpPage} />
-          <Route path="/features" component={FeaturePage} />
-          <Route path="" component={NotFoundPage} />
+        <Route exact path="/" component={HomePage} />
+        <Route exact path="/signIn" component={SignInPage} />
+        <Route exact path="/signUp" component={SignUpPage} />
+        <Route path="/features" component={FeaturePage} />
+        <Route path="" component={NotFoundPage} />
       </Switch>
       <Footer />
     </AppWrapper>
