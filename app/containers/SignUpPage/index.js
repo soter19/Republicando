@@ -35,7 +35,7 @@ export class SignUpPage extends React.PureComponent {
           id="confirmPassword"
           label="Confirm password"
         />
-        <ButtonSignUp onClick={() => goToRoute('/')}>Cadastrar</ButtonSignUp>
+        <ButtonSignUp variant="contained" color="primary" onClick={() => goToRoute('/')}>Cadastrar</ButtonSignUp>
       </Fragment>
     );
   }

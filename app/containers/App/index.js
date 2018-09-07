@@ -13,6 +13,8 @@ import { Switch, Route } from 'react-router-dom';
 import HomePage from 'containers/HomePage/Loadable';
 import SignInPage from 'containers/SignInPage/Loadable';
 import SignUpPage from 'containers/SignUpPage/Loadable';
+import RepublicListing from 'containers/RepublicListing/Loadable';
+import RepublicDetail from 'containers/RepublicDetail/Loadable';
 import FeaturePage from 'containers/FeaturePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import Header from 'components/Header';
@@ -36,7 +38,9 @@ export default function App() {
         <Route exact path="/signIn" component={SignInPage} />
         <Route exact path="/signUp" component={SignUpPage} />
         <Route path="/features" component={FeaturePage} />
-        <Route path="" component={NotFoundPage} />
+        <Route path="/RepublicListing" component={RepublicListing} />
+        <Route path="/RepublicDetail" component={RepublicDetail} />
+          <Route path="" component={NotFoundPage} />
       </Switch>
       <Footer />
     </AppWrapper>

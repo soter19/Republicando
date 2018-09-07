@@ -53,7 +53,6 @@ export class SignInPage extends React.PureComponent {
         >
           Login
         </ButtonSignIn>
-        <RepublicaCard />
       </Fragment>
     );
   }
