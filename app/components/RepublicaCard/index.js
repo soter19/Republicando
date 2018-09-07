@@ -12,6 +12,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { applyToOffer } from '../../api';
 
 const StyledCardMedia = styled(CardMedia)`
   background-color: aqua;
@@ -19,38 +20,42 @@ const StyledCardMedia = styled(CardMedia)`
 `;
 
 const StyleCard = styled(Card)`
-  max-width: 345px;
-  max-height: 345px;
+  min-height: 360px;
+  width: 100%;
 `;
 
 const StyleButton = styled(Button)`
   margin-top: 20px;
 `;
 
-function RepublicaCard() {
-  return (
-    <StyleCard>
-      <StyledCardMedia
-        image="/static/images/cards/contemplative-reptile.jpg"
-        title="Contemplative Reptile"
-      />
-      <CardContent>
-        <Typography variant="headline" component="h5">
-          República Copacabana
-        </Typography>
-        <Typography component="p">
-          4 vagas disponíveis, vaga na garagem, próximo ao metro Sacomã, últimas
-          vagas!!!
-        </Typography>
-        <Typography component="p">
-          Rua Alameda, nº500 - Vila Mariana - SP
-        </Typography>
-        <StyleButton size="big" variant="contained" color="secondary">
-          CANDIDATAR-SE
-        </StyleButton>
-      </CardContent>
-    </StyleCard>
-  );
+export class RepublicaCard extends React.PureComponent {
+  handleApply = () => {
+    applyToOffer(this.props.republic.id);
+  };
+
+  render() {
+    const { data } = this.props.republic;
+    return (
+      <StyleCard>
+        <StyledCardMedia image={data.photoUrl} title="Contemplative Reptile" />
+        <CardContent>
+          <Typography variant="headline" component="h5">
+            {data.title}
+          </Typography>
+          <Typography component="p">{data.description}</Typography>
+          <Typography component="p">{data.address}</Typography>
+          <StyleButton
+            size="big"
+            variant="contained"
+            color="secondary"
+            onClick={this.handleApply}
+          >
+            CANDIDATAR-SE
+          </StyleButton>
+        </CardContent>
+      </StyleCard>
+    );
+  }
 }
 
 RepublicaCard.propTypes = {};
