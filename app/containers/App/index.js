@@ -40,7 +40,7 @@ export default function App() {
         <Route path="/features" component={FeaturePage} />
         <Route path="/RepublicListing" component={RepublicListing} />
         <Route path="/RepublicDetail" component={RepublicDetail} />
-          <Route path="" component={NotFoundPage} />
+        <Route path="" component={NotFoundPage} />
       </Switch>
       <Footer />
     </AppWrapper>

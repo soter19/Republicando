@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import styled from 'styled-components'
+import styled from 'styled-components';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -30,19 +30,20 @@ const StyleButton = styled(Button)`
 function RepublicaCard() {
   return (
     <StyleCard>
-        <StyledCardMedia
-            image="/static/images/cards/contemplative-reptile.jpg"
-            title="Contemplative Reptile"
-        />
+      <StyledCardMedia
+        image="/static/images/cards/contemplative-reptile.jpg"
+        title="Contemplative Reptile"
+      />
       <CardContent>
         <Typography variant="headline" component="h5">
           República Copacabana
         </Typography>
         <Typography component="p">
-            4 vagas disponíveis, vaga na garagem, próximo ao metro Sacomã, últimas vagas!!!
+          4 vagas disponíveis, vaga na garagem, próximo ao metro Sacomã, últimas
+          vagas!!!
         </Typography>
         <Typography component="p">
-            Rua Alameda, nº500 - Vila Mariana - SP
+          Rua Alameda, nº500 - Vila Mariana - SP
         </Typography>
         <StyleButton size="big" variant="contained" color="secondary">
           CANDIDATAR-SE
