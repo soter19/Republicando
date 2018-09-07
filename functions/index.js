@@ -46,6 +46,21 @@ const parseDocument = (snap) => ({
     data: snap.data(),
 })
 
+const enableCors = (res, req) => {
+  // Set CORS headers
+  // e.g. allow GETs from any origin with the Content-Type header
+  // and cache preflight response for an 3600s
+  res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Methods", "GET");
+  res.set("Access-Control-Allow-Headers", "Content-Type");
+  res.set("Access-Control-Max-Age", "3600");
+  // Send response to OPTIONS requests and terminate the function execution
+  if (req.method == 'OPTIONS') {
+    res.status(204).send('');
+  }
+  // Continue with function code
+}
+
 const errorResponse = (message) => ({ error: message })
 
 // functions
@@ -53,6 +68,7 @@ const errorResponse = (message) => ({ error: message })
 // GET
 
 exports.getOffers = functions.https.onRequest((req, res) => {
+    enableCors(res,req);
     const response = [];
     firestore.collection('offers').get().then(snapshot => {
         snapshot.forEach((d) => {
@@ -65,6 +81,7 @@ exports.getOffers = functions.https.onRequest((req, res) => {
 });
 
 exports.getRepublics = functions.https.onRequest((req, res) => {
+    enableCors(res,req);
     const response = [];
     firestore.collection('republics').get().then(snapshot => {
         snapshot.forEach((d) => {
@@ -78,6 +95,7 @@ exports.getRepublics = functions.https.onRequest((req, res) => {
 // CREATE
 
 exports.createRepublic = functions.https.onRequest((req, res) => {
+    enableCors(res,req);
     const newRep = new Republic(req.body);
     if(!newRep.isValid()){
         res.status(400).send(errorResponse('Invalid Model'));
@@ -95,14 +113,15 @@ exports.createRepublic = functions.https.onRequest((req, res) => {
 // UPDATE
 
 exports.applyToOffer = functions.https.onRequest((req, res) => {
-    const { offerId } = req.query;
+    enableCors(res,req);
+    const { republicId } = req.query;
 
-    if(!offerId){
+    if(!republicId){
       res.status(400).send(errorResponse('Missing Parameters'));
       return;
     }
 
-    // firestore.collection('offers').doc(offerId).get()
+    firestore.collection('offers').where('').doc(offerId).get()
 });
 
 // DELETE

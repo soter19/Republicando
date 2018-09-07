@@ -21,7 +21,7 @@ import { ConnectedRouter } from 'react-router-redux';
 import FontFaceObserver from 'fontfaceobserver';
 import createHistory from 'history/createBrowserHistory';
 import 'sanitize.css/sanitize.css';
-import JssProvider from 'react-jss';
+import JssProvider from 'react-jss//lib/JssProvider';
 import { create } from 'jss';
 import defaultTheme from 'theme/defaultTheme';
 

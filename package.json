@@ -168,6 +168,7 @@
     "prop-types": "15.6.1",
     "react": "16.4.1",
     "react-dom": "16.4.1",
+    "react-geocode": "^0.1.2",
     "react-google-maps": "^9.4.5",
     "react-helmet": "5.2.0",
     "react-intl": "2.4.0",
