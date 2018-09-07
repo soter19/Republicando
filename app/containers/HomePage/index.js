@@ -15,6 +15,8 @@ import WhiteTextField from 'components/WhiteTextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
 import Map from 'components/Map';
+import Geocode from "react-geocode";
+
 
 import injectReducer from 'utils/injectReducer';
 import reducer from './reducer';
@@ -23,17 +25,24 @@ import { makeSelectFirestoreClients } from '../App/selectors';
 import { DefaultNavBar } from '../../components/Header/NavBar';
 import { getRepublics } from '../../api';
 
-const HomePageAppBar = () => (
+const NavBar = styled.div`
+  display: grid;
+`
+
+const HomePageAppBar = ({ onChange }) => (
   <DefaultNavBar>
-    <WhiteTextField
-      InputProps={{
-        startAdornment: (
-          <InputAdornment position="start">
-            <SearchIcon />
-          </InputAdornment>
-        ),
-      }}
-    />
+    <NavBar>
+      <WhiteTextField
+        onChange={onChange}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
+          ),
+        }}
+      />
+    </NavBar>
   </DefaultNavBar>
 );
 
@@ -42,18 +51,37 @@ export class HomePage extends React.PureComponent {
     super(props);
     this.state = {
       republics: [],
+      markers: [],
     }
   }
   componentWillMount() {
-    getRepublics().then((r) => this.setState({republics: r}));
+    Geocode.setApiKey("AIzaSyA70pIpiayu0GmfYAvG1CP9UeeZZX2wMN4");
+    getRepublics().then(async (republics) => {
+      const res = await republics.map( async (rep) => {
+        return {...rep, location: this.latLongFromPayload(await Geocode.fromAddress(rep.data.address))}
+      });
+      Promise.all(res).then((test) => {
+        this.setState({republics: test})
+      })
+    });
+  }
+
+  latLongFromPayload(payload){
+    return payload.results[0].geometry.location;
+  }
+
+  handleSearch({ target }) {
+    if(!target.value || target.value.length < 5) return;
+    // Geocode.fromAddress(target.value).then(this.latLongFromPayload)
   }
 
   render() {
-    console.log(this.state.republics);
     return (
       <Fragment>
-        <HomePageAppBar />
-        <Map />
+        <HomePageAppBar onChange={this.handleSearch} />
+        <Map
+          markers={this.state.republics}
+        />
       </Fragment>
     );
   }

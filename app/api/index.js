@@ -11,20 +11,26 @@ export const getRepublics = async () => {
   const republics = await axios.get(`${BASE_URL}${GET_REPUBLICS}`).catch(e => {
     console.error(e)
   });
-  return republics.data;
+  return republics && republics.data;
 };
 
 // Offers
 
 const GET_OFFERS = 'getOffers';
+const APPLY_TO_OFFER = 'applyToOffer';
 
 export const getOffers = async () => {
-  const offers = await axios.get(`${BASE_URL}${GET_OFFERS}`, {
+  return await axios.get(`${BASE_URL}${GET_OFFERS}`, {
     headers: {
       'Access-Control-Allow-Origin': '*',
     }
   }).catch(e => {
     console.error(e)
-  });
-  return offers
+  })
 };
+
+export const applyToOffer = (republicId) => {
+  return axios.get(`${BASE_URL}${APPLY_TO_OFFER}?republicId=${republicId}`);
+};
+
+

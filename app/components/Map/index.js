@@ -20,9 +20,12 @@ const MyMapComponent = compose(
   withGoogleMap,
 )(props => (
   <GoogleMap defaultZoom={12} defaultCenter={{ lat: -23.573, lng: -46.635 }}>
-    <Marker icon={HomeIcon} position={{ lat: -23.573, lng: -46.635 }} />
-    <Marker icon={HomeIcon} position={{ lat: -23.513, lng: -46.335 }} />
-    <Marker icon={HomeIcon} position={{ lat: -23.573, lng: -46.635 }} />
+    {props.markers && props.markers.map(m => (
+      <Marker
+        position={{ ...m.location }} onClick={() => console.log(m.data)}
+        title={m.data.name}
+      />
+    ))}
   </GoogleMap>
 ));
 
