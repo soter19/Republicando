@@ -147,6 +147,7 @@
     "@firebase/app-types": "^0.3.2",
     "@material-ui/core": "^1.5.0",
     "@material-ui/icons": "^2.0.2",
+    "axios": "^0.18.0",
     "babel-polyfill": "6.26.0",
     "chalk": "2.4.1",
     "compression": "1.7.2",
@@ -161,6 +162,7 @@
     "intl": "1.2.5",
     "invariant": "2.2.4",
     "ip": "1.1.5",
+    "jss": "latest",
     "lodash": "4.17.10",
     "minimist": "1.2.0",
     "prop-types": "15.6.1",
@@ -169,6 +171,7 @@
     "react-google-maps": "^9.4.5",
     "react-helmet": "5.2.0",
     "react-intl": "2.4.0",
+    "react-jss": "latest",
     "react-loadable": "5.4.0",
     "react-redux": "5.0.7",
     "react-redux-firebase": "^2.1.8",
@@ -183,9 +186,7 @@
     "sanitize.css": "4.1.0",
     "styled-components": "3.3.2",
     "warning": "4.0.1",
-    "whatwg-fetch": "2.0.4",
-    "react-jss": "latest",
-    "jss": "latest"
+    "whatwg-fetch": "2.0.4"
   },
   "devDependencies": {
     "add-asset-html-webpack-plugin": "2.1.3",

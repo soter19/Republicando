@@ -6,6 +6,7 @@
 
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import { createStructuredSelector } from 'reselect';
@@ -20,6 +21,7 @@ import reducer from './reducer';
 
 import { makeSelectFirestoreClients } from '../App/selectors';
 import { DefaultNavBar } from '../../components/Header/NavBar';
+import { getRepublics } from '../../api';
 
 const HomePageAppBar = () => (
   <DefaultNavBar>
@@ -36,18 +38,22 @@ const HomePageAppBar = () => (
 );
 
 export class HomePage extends React.PureComponent {
+  constructor(props){
+    super(props);
+    this.state = {
+      republics: [],
+    }
+  }
   componentWillMount() {
-    const { firestore } = this.props;
-    firestore.get({ collection: 'clients' });
+    getRepublics().then((r) => this.setState({republics: r}));
   }
 
   render() {
-    const { clients } = this.props;
+    console.log(this.state.republics);
     return (
       <Fragment>
         <HomePageAppBar />
         <Map />
-        <div>{clients && clients.map(u => <p>{u.name}</p>)}</div>
       </Fragment>
     );
   }

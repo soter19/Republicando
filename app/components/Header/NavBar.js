@@ -8,6 +8,6 @@ const NavBar = styled.div`
 
 export const DefaultNavBar = ({ children }) =>
   ReactDOM.createPortal(
-    <NavBar>{children}</NavBar>,
+    <div>{children}</div>,
     document.getElementById('portal-header'),
   );

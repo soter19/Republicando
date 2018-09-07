@@ -43,7 +43,7 @@ class Republic {
 
 const parseDocument = (snap) => ({
     id: snap.id,
-    ...snap.data(),
+    data: snap.data(),
 })
 
 const errorResponse = (message) => ({ error: message })
@@ -60,7 +60,8 @@ exports.getOffers = functions.https.onRequest((req, res) => {
             response.push(parseDocument(d))
         });
         console.log(response)
-    })
+      return true;
+    }).catch(console.error)
 });
 
 exports.getRepublics = functions.https.onRequest((req, res) => {
@@ -70,7 +71,8 @@ exports.getRepublics = functions.https.onRequest((req, res) => {
             response.push(parseDocument(d))
         });
         res.status(200).send(response);
-    })
+      return true;
+    }).catch(console.error)
 });
 
 // CREATE
@@ -78,14 +80,14 @@ exports.getRepublics = functions.https.onRequest((req, res) => {
 exports.createRepublic = functions.https.onRequest((req, res) => {
     const newRep = new Republic(req.body);
     if(!newRep.isValid()){
-        res.status(400).send(errorResponse('Invalid Model'))
+        res.status(400).send(errorResponse('Invalid Model'));
         return;
     }
     firestore.collection('republics').doc().set(newRep.toObj()).then((r) => {
         res.status(200).send({ success: 'ok' });
         return;
     }).catch((error) => {
-        res.status(500).send({ error })
+        res.status(500).send({ error });
         return;
     });
 });
@@ -93,7 +95,14 @@ exports.createRepublic = functions.https.onRequest((req, res) => {
 // UPDATE
 
 exports.applyToOffer = functions.https.onRequest((req, res) => {
+    const { offerId } = req.query;
 
+    if(!offerId){
+      res.status(400).send(errorResponse('Missing Parameters'));
+      return;
+    }
+
+    // firestore.collection('offers').doc(offerId).get()
 });
 
 // DELETE
