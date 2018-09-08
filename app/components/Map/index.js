@@ -5,7 +5,6 @@ import {
   withGoogleMap,
   withScriptjs,
 } from 'react-google-maps';
-import HomeIcon from '@material-ui/icons/Home';
 import React from 'react';
 
 const MyMapComponent = compose(
@@ -20,12 +19,14 @@ const MyMapComponent = compose(
   withGoogleMap,
 )(props => (
   <GoogleMap defaultZoom={12} defaultCenter={{ lat: -23.573, lng: -46.635 }}>
-    {props.markers && props.markers.map(m => (
-      <Marker
-        position={{ ...m.location }} onClick={() => console.log(m.data)}
-        title={m.data.name}
-      />
-    ))}
+    {props.markers &&
+      props.markers.map(m => (
+        <Marker
+          position={{ ...m.location }}
+          onClick={() => props.goToDetail(m.id)}
+          title={m.data.name}
+        />
+      ))}
   </GoogleMap>
 ));
 

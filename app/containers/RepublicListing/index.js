@@ -8,6 +8,7 @@ import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 import { compose } from 'redux';
 import RepublicaCard from '../../components/RepublicaCard';
 import MUIList from '@material-ui/core/List';
@@ -41,10 +42,11 @@ export class RepublicListing extends React.PureComponent {
 
   render() {
     const { republics } = this.state;
+    const { goToDetail } = this.props;
     return (
       <List>
         {republics.map(rep => (
-          <ListItem button>
+          <ListItem button onClick={() => goToDetail(rep.id)}>
             <RepublicaCard republic={rep} />
           </ListItem>
         ))}
@@ -60,6 +62,7 @@ RepublicListing.propTypes = {
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
+    goToDetail: republicId => dispatch(push(`/republic-detail/${republicId}`)),
   };
 }
 

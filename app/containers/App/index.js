@@ -38,8 +38,8 @@ export default function App() {
         <Route exact path="/signIn" component={SignInPage} />
         <Route exact path="/signUp" component={SignUpPage} />
         <Route path="/features" component={FeaturePage} />
-        <Route path="/RepublicListing" component={RepublicListing} />
-        <Route path="/RepublicDetail" component={RepublicDetail} />
+        <Route path="/republic-list" component={RepublicListing} />
+        <Route path="/republic-detail/:id" component={RepublicDetail} />
         <Route path="" component={NotFoundPage} />
       </Switch>
       <Footer />
