@@ -16,6 +16,7 @@ import SignUpPage from 'containers/SignUpPage/Loadable';
 import RepublicListing from 'containers/RepublicListing/Loadable';
 import RepublicDetail from 'containers/RepublicDetail/Loadable';
 import FeaturePage from 'containers/FeaturePage/Loadable';
+import IntroPage from 'containers/IntroPage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
@@ -25,7 +26,6 @@ const AppWrapper = styled.div`
   margin: 0 auto;
   display: flex;
   min-height: 100%;
-  padding: 0 16px;
   flex-direction: column;
 `;
 
@@ -34,7 +34,8 @@ export default function App() {
     <AppWrapper>
       <Header />
       <Switch>
-        <Route exact path="/" component={HomePage} />
+        <Route exact path="/" component={IntroPage} />
+        <Route exact path="/republic-map" component={HomePage} />
         <Route exact path="/signIn" component={SignInPage} />
         <Route exact path="/signUp" component={SignUpPage} />
         <Route path="/features" component={FeaturePage} />

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar/Toolbar';
 import Typography from '@material-ui/core/Typography/Typography';
@@ -37,8 +38,12 @@ class Header extends React.Component {
               onClose={() => this.setState({ menuOpen: false })}
             >
               <List>
-                <ListItem>Mapa de Repúblicas</ListItem>
-                <ListItem>Lista de Repúblicas</ListItem>
+                <ListItem>
+                  <Link to="/republic-map">Mapa de Repúblicas</Link>
+                </ListItem>
+                <ListItem>
+                  <Link to="/republic-list">Lista de Repúblicas </Link>
+                </ListItem>
               </List>
             </SwipeableDrawer>
             <div id="portal-header" />

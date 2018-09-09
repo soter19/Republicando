@@ -23,6 +23,10 @@ const ListItem = styled(MUIListItem)`
 const List = styled(MUIList)`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 /* eslint-disable react/prefer-stateless-function */

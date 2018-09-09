@@ -40,7 +40,7 @@ import './global-styles';
 const generateClassName = createGenerateClassName();
 const jss = create({
   ...jssPreset(),
-  insertionPoint: 'insertion-jss',
+  insertionPoint: document.getElementById('jss-insertion-point'),
 });
 
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in

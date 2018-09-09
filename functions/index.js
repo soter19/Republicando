@@ -170,11 +170,14 @@ exports.applyToOffer = functions.https.onRequest((req, res) => {
     return;
   }
 
-  firestore
-    .collection('offers')
-    .doc(offerId)
-    .delete()
-    .then(res.status(200).send({ ok: 'Success!' }));
+  res.status(200).send({ ok: 'Success!' });
+  return;
+
+  // firestore
+  //   .collection('offers')
+  //   .doc(offerId)
+  //   .delete()
+  //   .then(res.status(200).send({ ok: 'Success!' }));
 });
 
 // DELETE

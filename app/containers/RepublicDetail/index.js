@@ -16,6 +16,7 @@ import Typography from '@material-ui/core/Typography/Typography';
 import CardMedia from '@material-ui/core/CardMedia/CardMedia';
 import Card from '@material-ui/core/Card/Card';
 import Button from '@material-ui/core/Button/Button';
+import RefreshIcon from '@material-ui/icons/Refresh'
 import Map from '../../components/Map';
 import { getRepublic, applyToOffer, getOffers } from '../../api';
 
@@ -60,7 +61,7 @@ export class RepublicDetail extends React.PureComponent {
     if (!republic) return false;
 
     return (
-      <Fragment>
+      <div style={{ padding: '10px'}}>
         <StyleCard>
           <StyledCardMedia image={republic.data.photoUrl} />
           <CardContent>
@@ -71,7 +72,6 @@ export class RepublicDetail extends React.PureComponent {
             <Typography component="p">{republic.data.address}</Typography>
           </CardContent>
         </StyleCard>
-        <Map markers={[republic]} />
         <hr />
         <Typography variant="title">Vagas</Typography>
         {offers &&
@@ -93,11 +93,11 @@ export class RepublicDetail extends React.PureComponent {
           ))}
         <Snackbar
           open={offerFeedback}
-          autoHideDuration={6000}
+          autoHideDuration={2000}
           onClose={() => this.setState({ offerFeedback: false })}
           message={<span>Vaga Candidatada com Sucesso</span>}
         />
-      </Fragment>
+      </div>
     );
   }
 }

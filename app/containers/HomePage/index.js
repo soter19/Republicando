@@ -24,6 +24,7 @@ import reducer from './reducer';
 import { makeSelectFirestoreClients } from '../App/selectors';
 import { DefaultNavBar } from '../../components/Header/NavBar';
 import { getRepublics } from '../../api';
+import { Typography } from '@material-ui/core';
 
 const NavBar = styled.div`
   display: grid;
@@ -31,18 +32,7 @@ const NavBar = styled.div`
 
 const HomePageAppBar = ({ onChange }) => (
   <DefaultNavBar>
-    <NavBar>
-      <WhiteTextField
-        onChange={onChange}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon />
-            </InputAdornment>
-          ),
-        }}
-      />
-    </NavBar>
+    <NavBar />
   </DefaultNavBar>
 );
 
@@ -79,13 +69,18 @@ export class HomePage extends React.PureComponent {
 
   render() {
     return (
-      <Fragment>
+      <div style={{ padding: '10px'}}>
         <HomePageAppBar onChange={this.handleSearch} />
+        <Typography style={{ margin: '20px 0' }} variant="title">
+          Clique nos marcadores abaixo para ver mais detalhes sobre uma
+          república:
+        </Typography>
         <Map
           goToDetail={this.props.goToDetail}
           markers={this.state.republics}
         />
-      </Fragment>
+      </div>
+      
     );
   }
 }
