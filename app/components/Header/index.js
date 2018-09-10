@@ -24,6 +24,14 @@ const List = styled(MUIList)`
   }
 `;
 
+const AppTitleLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+`
+
+
+
 /* eslint-disable react/prefer-stateless-function */
 class Header extends React.Component {
   constructor(props) {
@@ -46,7 +54,7 @@ class Header extends React.Component {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant='headline' color='inherit'>Republicando</Typography>
+            <Typography variant='headline' color='inherit'><AppTitleLink to="/">Republicando</AppTitleLink></Typography>
             <SwipeableDrawer
               open={menuOpen}
               onOpen={() => this.setState({ menuOpen: true })}

@@ -40,7 +40,7 @@ const ButtonWrapper = styled.div`
     width: 250px;
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: 600px) {
     grid-template-columns: 1fr;
   }
 `;
@@ -94,6 +94,8 @@ export default class FeaturePage extends React.Component {
             <Link to="/republic-list">
               <Button variant="raised">Lista</Button>
             </Link>
+            <Typography variant='body2'>Encontre as repúblicas em uma lista:</Typography>
+            <Typography variant='caption'>Clique na foto da república para detalhes</Typography>
           </div>
         </ButtonWrapper>
       </div>
