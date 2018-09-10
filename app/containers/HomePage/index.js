@@ -71,7 +71,7 @@ export class HomePage extends React.PureComponent {
     return (
       <div style={{ padding: '10px'}}>
         <HomePageAppBar onChange={this.handleSearch} />
-        <Typography style={{ margin: '20px 0' }} variant="title">
+        <Typography style={{ margin: '15px 0' }} variant="subheading">
           Clique nos marcadores abaixo para ver mais detalhes sobre uma
           república:
         </Typography>
@@ -80,7 +80,7 @@ export class HomePage extends React.PureComponent {
           markers={this.state.republics}
         />
       </div>
-      
+
     );
   }
 }

@@ -13,7 +13,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 
 const StyledCardMedia = styled(CardMedia)`
-  background-color: aqua;
+  background-color: #4596ec;
   height: 140px;
 `;
 

@@ -68,8 +68,11 @@ export class RepublicDetail extends React.PureComponent {
             <Typography variant="headline" component="h5">
               {republic.data.title}
             </Typography>
+            <Typography component="p" variant='subheading'>Descrição:</Typography>
             <Typography component="p">{republic.data.description}</Typography>
-            <Typography component="p">{republic.data.address}</Typography>
+            <hr style={{ margin: '10px 0' }}/>
+            <Typography component="p"><b>Endereço:</b> {republic.data.address}</Typography>
+            <Typography component="p"><b>Aluguel:</b> R${republic.data.rentValue},00</Typography>
           </CardContent>
         </StyleCard>
         <hr />

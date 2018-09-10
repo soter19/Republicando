@@ -1,11 +1,20 @@
-import { compose, withProps } from 'recompose';
+import React from 'react';
+import styled from 'styled-components';
+import { compose, withProps, withStateHandlers} from 'recompose';
 import {
-  GoogleMap,
+  GoogleMap, InfoWindow,
   Marker,
   withGoogleMap,
   withScriptjs,
 } from 'react-google-maps';
-import React from 'react';
+import { Typography } from '@material-ui/core';
+
+const SeeMoreLink = styled.div`
+  cursor: pointer;
+  margin: 15px 0;
+  transition: all 50ms linear;
+  color: dodgerblue;
+`
 
 const MyMapComponent = compose(
   withProps({
@@ -15,6 +24,16 @@ const MyMapComponent = compose(
     containerElement: <div style={{ height: `400px` }} />,
     mapElement: <div style={{ height: `100%` }} />,
   }),
+  withStateHandlers(() => ({
+    currentDetail: null
+  }), {
+    openDetails: () => ({ currentDetail }) => ({
+      currentDetail,
+    }),
+    resetDetails: () => () => ({
+      currentDetail: null,
+    })
+  }),
   withScriptjs,
   withGoogleMap,
 )(props => (
@@ -22,10 +41,26 @@ const MyMapComponent = compose(
     {props.markers &&
       props.markers.map(m => (
         <Marker
+          key={m.id}
           position={{ ...m.location }}
-          onClick={() => props.goToDetail(m.id)}
+          onClick={() => props.openDetails({ currentDetail: m.id })}
           title={m.data.name}
-        />
+        >
+          { props.currentDetail === m.id ? (
+            <InfoWindow
+              onCloseClick={props.resetDetails}
+            >
+              <div>
+                <Typography variant='body1'>Nome: {m.data.name}</Typography>
+                <Typography variant='body1'>Endereço: {m.data.address}</Typography>
+                <SeeMoreLink onClick={() => props.goToDetail(m.id)}>
+                  Ver mais detalhes
+                </SeeMoreLink>
+              </div>
+            </InfoWindow>
+          ) : null
+          }
+        </Marker>
       ))}
   </GoogleMap>
 ));
