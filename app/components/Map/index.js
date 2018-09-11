@@ -22,7 +22,7 @@ const MyMapComponent = compose(
       'https://maps.googleapis.com/maps/api/js?key=AIzaSyA70pIpiayu0GmfYAvG1CP9UeeZZX2wMN4&v=3',
     loadingElement: <div style={{ height: `100%` }} />,
     containerElement: <div style={{ height: `400px` }} />,
-    mapElement: <div style={{ height: `100%` }} />,
+    mapElement: <div style={{ height: `calc(100vh - 56px)` }} />,
   }),
   withStateHandlers(() => ({
     currentDetail: null
@@ -37,7 +37,20 @@ const MyMapComponent = compose(
   withScriptjs,
   withGoogleMap,
 )(props => (
-  <GoogleMap defaultZoom={12} defaultCenter={{ lat: -23.573, lng: -46.635 }}>
+  <GoogleMap
+    defaultZoom={12}
+    defaultCenter={{ lat: -23.573, lng: -46.635 }}
+    defaultOptions={{
+      // these following 7 options turn certain controls off see link below
+      streetViewControl: false,
+      scaleControl: false,
+      mapTypeControl: false,
+      panControl: false,
+      zoomControl: false,
+      rotateControl: false,
+      fullscreenControl: false
+    }}
+  >
     {props.markers &&
       props.markers.map(m => (
         <Marker
@@ -49,6 +62,9 @@ const MyMapComponent = compose(
           { props.currentDetail === m.id ? (
             <InfoWindow
               onCloseClick={props.resetDetails}
+              options={{
+                maxWidth: 300,
+              }}
             >
               <div>
                 <Typography variant='body1'>Nome: {m.data.name}</Typography>

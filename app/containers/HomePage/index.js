@@ -69,12 +69,8 @@ export class HomePage extends React.PureComponent {
 
   render() {
     return (
-      <div style={{ padding: '10px'}}>
+      <div>
         <HomePageAppBar onChange={this.handleSearch} />
-        <Typography style={{ margin: '15px 0' }} variant="subheading">
-          Clique nos marcadores abaixo para ver mais detalhes sobre uma
-          república:
-        </Typography>
         <Map
           goToDetail={this.props.goToDetail}
           markers={this.state.republics}

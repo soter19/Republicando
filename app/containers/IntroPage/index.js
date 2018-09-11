@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { Typography, Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import MapThumb from 'images/staticmap.jpg'
+import ListThumb from 'images/staticlist.jpg'
 
 const StyledTitle = styled(Typography)`
   margin: 20px 0;
@@ -66,7 +67,30 @@ const MapButton = styled.div`
       z-index: -1;
     }
   }
-`
+`;
+
+const ListButton = styled.div`
+  & > a > button {
+    background-color: transparent;
+    background-size: cover;
+    font-size: 20px;
+    color: black;
+    z-index: 1;
+    
+    &:before {
+      content: "";
+      background: url(${ListThumb}) center;
+      background-size: cover;
+      opacity: 0.3;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      position: absolute;
+      z-index: -1;
+    }
+  }
+`;
 
 export default class FeaturePage extends React.Component {
   // eslint-disable-line react/prefer-stateless-function
@@ -90,13 +114,13 @@ export default class FeaturePage extends React.Component {
             <Typography variant='body2'>Encontre as repúblicas no mapa:</Typography>
             <Typography variant='caption'>Clique nos marcadores vermelhos para ver detalhes</Typography>
           </MapButton>
-          <div>
+          <ListButton>
             <Link to="/republic-list">
               <Button variant="raised">Lista</Button>
             </Link>
             <Typography variant='body2'>Encontre as repúblicas em uma lista:</Typography>
             <Typography variant='caption'>Clique na foto da república para detalhes</Typography>
-          </div>
+          </ListButton>
         </ButtonWrapper>
       </div>
     );
