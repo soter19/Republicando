@@ -16,9 +16,8 @@ import Typography from '@material-ui/core/Typography/Typography';
 import CardMedia from '@material-ui/core/CardMedia/CardMedia';
 import Card from '@material-ui/core/Card/Card';
 import Button from '@material-ui/core/Button/Button';
-import RefreshIcon from '@material-ui/icons/Refresh'
-import Map from '../../components/Map';
 import { getRepublic, applyToOffer, getOffers } from '../../api';
+import LoadingIndicator from '../../components/LoadingIndicator';
 
 const StyledCardMedia = styled(CardMedia)`
   width: 100%;
@@ -58,7 +57,7 @@ export class RepublicDetail extends React.PureComponent {
 
   render() {
     const { republic, offerFeedback, offers } = this.state;
-    if (!republic) return false;
+    if (!republic) return (<LoadingIndicator/>);
 
     return (
       <div style={{ padding: '10px'}}>

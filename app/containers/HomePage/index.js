@@ -20,7 +20,7 @@ import Geocode from 'react-geocode';
 
 import injectReducer from 'utils/injectReducer';
 import reducer from './reducer';
-
+import SearchBox from "react-google-maps/lib/components/places/SearchBox";
 import { makeSelectFirestoreClients } from '../App/selectors';
 import { DefaultNavBar } from '../../components/Header/NavBar';
 import { getRepublics } from '../../api';
