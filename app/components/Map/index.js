@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { compose, withProps, withStateHandlers} from 'recompose';
 import SearchIcon from '@material-ui/icons/Search';
 import {
-  GoogleMap, InfoWindow,
+  GoogleMap,
+  InfoWindow,
   Marker,
   withGoogleMap,
   withScriptjs,
@@ -51,8 +52,9 @@ const MyMapComponent = compose(
     center: { lat: -23.573, lng: -46.635 },
     zoom: 12,
   }), {
-    openDetails: () => ({ currentDetail }) => ({
+    openDetails: () => ({ currentDetail, center }) => ({
       currentDetail,
+      center,
     }),
     resetDetails: () => () => ({
       currentDetail: null,
@@ -75,6 +77,9 @@ const MyMapComponent = compose(
     const geocode = (await geocodeByAddress(address))[0];
     let zoom = 12;
     switch(geocode.types.length) {
+      case 1:
+        zoom = 18;
+        break;
       case 2:
         zoom = 13;
         break;
@@ -86,8 +91,7 @@ const MyMapComponent = compose(
         break;
       default:
         break;
-    }
-    console.log(zoom)
+    };
     const latLng = await getLatLng(geocode);
     props.setZoom(zoom);
     props.setCenter(latLng);
@@ -112,7 +116,7 @@ const MyMapComponent = compose(
         <Marker
           key={m.id}
           position={{ ...m.location }}
-          onClick={() => props.openDetails({ currentDetail: m.id })}
+          onClick={() => props.openDetails({ currentDetail: m.id, center: m.location })}
           title={m.data.name}
         >
           { props.currentDetail === m.id ? (
@@ -123,8 +127,8 @@ const MyMapComponent = compose(
               }}
             >
               <Fragment>
-                <Typography variant='body1'>Nome: {m.data.name}</Typography>
-                <Typography variant='body1'>Endereço: {m.data.address}</Typography>
+                <Typography variant='headline'>{m.data.name}</Typography>
+                <Typography variant='body1'>{m.data.address}</Typography>
                 <SeeMoreLink onClick={() => props.goToDetail(m.id)}>
                   Ver mais detalhes
                 </SeeMoreLink>
