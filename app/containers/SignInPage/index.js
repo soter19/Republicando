@@ -13,6 +13,14 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import { push } from 'react-router-redux';
+import * as firebase from "firebase/app";
+import "firebase/auth";
+import {
+  FirebaseAuthProvider,
+  FirebaseAuthConsumer,
+  IfFirebaseAuthed,
+  IfFirebaseAuthedAnd
+} from "@react-firebase/auth";
 
 import injectReducer from 'utils/injectReducer';
 import makeSelectSignInPage from './selectors';
