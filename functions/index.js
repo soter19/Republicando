@@ -38,6 +38,26 @@ class Republic {
   }
 }
 
+class Client {
+  constructor({ id, name, email }){
+    this.id = id;
+    this.name = name;
+    this.email = email;
+  }
+
+  isValid() {
+    return this.id && this.name && this.email;
+  }
+
+  toObj() {
+    const { name, email } = this;
+    return {
+      name,
+      email,
+    }
+  }
+}
+
 // utils
 
 const parseDocument = snap => ({
@@ -157,6 +177,23 @@ exports.createRepublic = functions.https.onRequest((req, res) => {
       res.status(500).send({ error });
       return;
     });
+});
+
+exports.createClient = functions.https.onRequest((req, res) => {
+  enableCors(res, req);
+  const newClient = new Client(req.body);
+  if(!newClient.isValid()) {
+    res.status(400).send(errorResponse('Invalid Model'));
+    return;
+  }
+  firestore
+    .collection('clients')
+    .doc(newClient.id)
+    .set(newClient.toObj())
+    .then(r => {
+      res.status(200).send({ success: 'ok' });
+      return;
+    })
 });
 
 // UPDATE
