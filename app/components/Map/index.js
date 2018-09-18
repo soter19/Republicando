@@ -2,6 +2,8 @@ import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import { compose, withProps, withStateHandlers} from 'recompose';
 import SearchIcon from '@material-ui/icons/Search';
+import MyLocationIcon from '@material-ui/icons/MyLocation';
+import { Typography, Button ,Card, TextField } from '@material-ui/core';
 import {
   GoogleMap,
   InfoWindow,
@@ -14,8 +16,8 @@ import {
   getLatLng,
 } from 'react-places-autocomplete';
 import PlacesAutocomplete from 'react-places-autocomplete';
-import { Typography, Button ,Card, TextField } from '@material-ui/core';
 import InputAdornment from '@material-ui/core/InputAdornment/InputAdornment';
+import CircularProgress from '@material-ui/core/CircularProgress/CircularProgress';
 
 const SeeMoreLink = styled(Button).attrs({variant: 'raised'})`
   cursor: pointer;
@@ -38,17 +40,24 @@ const SearchBox = styled(Card)`
   }
 `;
 
+const LocationIconButton = styled(Button)`
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+`;
+
 const MyMapComponent = compose(
   withProps({
     googleMapURL:
       'https://maps.googleapis.com/maps/api/js?key=AIzaSyA70pIpiayu0GmfYAvG1CP9UeeZZX2wMN4&libraries=places&v=3',
     loadingElement: <div style={{ height: `100%` }} />,
-    containerElement: <div style={{ height: `400px`, position: 'relative' }} />,
+    containerElement: <div style={{ position: 'relative' }} />,
     mapElement: <div style={{ height: `calc(100vh - 56px)` }} />,
   }),
   withStateHandlers(() => ({
     currentDetail: null,
     currSearch: '',
+    isGettingLocation: false,
     center: { lat: -23.573, lng: -46.635 },
     zoom: 12,
   }), {
@@ -67,6 +76,9 @@ const MyMapComponent = compose(
     }),
     setZoom: () => (zoom) => ({
       zoom,
+    }),
+    toggleGettingLocation: ({ isGettingLocation }) => () => ({
+      isGettingLocation: !isGettingLocation,
     })
   }),
   withScriptjs,
@@ -95,6 +107,22 @@ const MyMapComponent = compose(
     const latLng = await getLatLng(geocode);
     props.setZoom(zoom);
     props.setCenter(latLng);
+  };
+  const getGeoLocation = () => {
+    if (navigator.geolocation) {
+      props.toggleGettingLocation();
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          props.setCenter({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          })
+          props.toggleGettingLocation();
+        }
+      )
+    } else {
+      error => console.log(error)
+    }
   };
   return (
     <GoogleMap
@@ -127,9 +155,10 @@ const MyMapComponent = compose(
               }}
             >
               <Fragment>
-                <Typography variant='headline'>{m.data.name}</Typography>
+                <Typography variant='subheading'>{m.data.name}</Typography>
+                <Typography variant='body1'>{m.data.description.substring(0, 120)}...</Typography>
                 <Typography variant='body1'>{m.data.address}</Typography>
-                <SeeMoreLink onClick={() => props.goToDetail(m.id)}>
+                <SeeMoreLink onClick={() => props.goToDetail(m.id)} fullWidth>
                   Ver mais detalhes
                 </SeeMoreLink>
               </Fragment>
@@ -184,6 +213,9 @@ const MyMapComponent = compose(
           </SearchBox>
         )}
       </PlacesAutocomplete>
+      <LocationIconButton onClick={getGeoLocation} variant="fab">
+        { props.isGettingLocation ? (<CircularProgress />) : (<MyLocationIcon />)}
+      </LocationIconButton>
     </GoogleMap>
   )
 });

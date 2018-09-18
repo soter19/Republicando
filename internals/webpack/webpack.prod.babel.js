@@ -70,11 +70,11 @@ module.exports = require('./webpack.base.babel')({
     }),
 
     new WebpackPwaManifest({
-      name: 'React Boilerplate',
-      short_name: 'React BP',
-      description: 'My React Boilerplate-based project!',
+      name: 'Republicando - Encontre sua República!',
+      short_name: 'Republicando',
+      description: 'Republicando!',
       background_color: '#fafafa',
-      theme_color: '#b1624d',
+      theme_color: '#41addd',
       icons: [
         {
           src: path.resolve('app/images/icon-512x512.png'),

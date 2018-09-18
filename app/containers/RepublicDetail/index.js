@@ -18,6 +18,18 @@ import Card from '@material-ui/core/Card/Card';
 import Button from '@material-ui/core/Button/Button';
 import { getRepublic, applyToOffer, getOffers } from '../../api';
 import LoadingIndicator from '../../components/LoadingIndicator';
+import Slider from "react-slick";
+import CardActions from '@material-ui/core/CardActions/CardActions';
+
+const settings = {
+  dots: true,
+  arrows: false,
+  centerMode: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 2,
+  slidesToScroll: 1
+};
 
 const StyledCardMedia = styled(CardMedia)`
   width: 100%;
@@ -26,6 +38,15 @@ const StyledCardMedia = styled(CardMedia)`
 
 const StyleCard = styled(Card)`
   max-width: 100%;
+`;
+
+const OfferCard = styled(Card)`
+  max-width: 97%;
+  min-height: 200px;
+  
+  &:focus {
+    outline: unset;
+  }
 `;
 
 /* eslint-disable react/prefer-stateless-function */
@@ -61,7 +82,6 @@ export class RepublicDetail extends React.PureComponent {
 
     return (
       <div style={{ padding: '10px'}}>
-        <StyleCard>
           <StyledCardMedia image={republic.data.photoUrl} />
           <CardContent>
             <Typography variant="headline" component="h5">
@@ -71,28 +91,30 @@ export class RepublicDetail extends React.PureComponent {
             <Typography component="p">{republic.data.description}</Typography>
             <hr style={{ margin: '10px 0' }}/>
             <Typography component="p"><b>Endereço:</b> {republic.data.address}</Typography>
-            <Typography component="p"><b>Aluguel:</b> R${republic.data.rentValue},00</Typography>
           </CardContent>
-        </StyleCard>
-        <hr />
         <Typography variant="title">Vagas</Typography>
+        <Slider {...settings}>
         {offers &&
-          offers.map((offer, i) => (
-            <Fragment>
-              <p>
-                {i + 1} - {offer.data.name} - {offer.data.description}
-              </p>
-              <Button
-                size="small"
-                variant="contained"
-                color="primary"
-                disabled={offerFeedback === false}
-                onClick={() => this.handleApply(offer.id)}
-              >
-                CANDIDATAR-SE
-              </Button>
-            </Fragment>
+          offers.map(offer => (
+            <OfferCard>
+              <CardContent>
+                <Typography variant='headline'>{offer.data.name}</Typography>
+                <Typography variant='caption'>{offer.data.description}</Typography>
+              </CardContent>
+               <CardActions>
+                 <Button
+                   size="small"
+                   variant="flat"
+                   color="primary"
+                   disabled={offerFeedback === false}
+                   onClick={() => this.handleApply(offer.id)}
+                 >
+                   CANDIDATAR-SE
+                 </Button>
+               </CardActions>
+            </OfferCard>
           ))}
+        </Slider>
         <Snackbar
           open={offerFeedback}
           autoHideDuration={2000}
