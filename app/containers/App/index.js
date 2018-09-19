@@ -34,8 +34,7 @@ export default function App() {
     <AppWrapper>
       <Header />
       <Switch>
-        <Route exact path="/" component={IntroPage} />
-        <Route exact path="/republic-map" component={HomePage} />
+        <Route exact path="/" component={HomePage} />
         <Route exact path="/signIn" component={SignInPage} />
         <Route exact path="/signUp" component={SignUpPage} />
         <Route path="/features" component={FeaturePage} />

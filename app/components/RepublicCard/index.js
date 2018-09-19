@@ -30,7 +30,7 @@ export class RepublicCard extends React.PureComponent {
         <StyledCardMedia image={data.photoUrl} />
         <CardContent>
           <Typography variant="headline" component="h5">
-            {data.title}
+            {data.name}
           </Typography>
           <Typography component="p">{data.description}</Typography>
           <Typography component="p">{data.address}</Typography>

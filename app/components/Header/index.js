@@ -65,7 +65,7 @@ class Header extends React.Component {
                 component="nav"
                 subheader={<ListSubheader component="div">Nested List Items</ListSubheader>}
               >
-                <Link to="/republic-map">
+                <Link to="/">
                   <ListItem button onClick={() => this.setState({ menuOpen: false })}>
                     <ListItemIcon>
                       <MapIcon/>
