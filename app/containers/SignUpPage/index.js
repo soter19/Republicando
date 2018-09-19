@@ -7,103 +7,138 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 import { compose } from 'redux';
 import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button/Button';
-import { push } from 'react-router-redux';
-import { doCreateUserWithEmailAndPassword } from 'api/auth'
-
-const byPropKey = (propertyName, value) => () => ({
-    [propertyName]: value,
-});
+import { doCreateUserWithEmailAndPassword } from 'api/auth';
+import { getCurrentUser } from '../../api/auth';
+import { createClientOnDatabase } from '../../api';
+import LoadingIndicator from '../../components/LoadingIndicator';
 
 const TextFieldSignUp = styled(TextField)`
-  margin: 20px 0 !important;
+  margin: 10px 0;
 `;
 
 const ButtonSignUp = styled(Button)`
-  margin: 100px 0 20px 0 !important;
+  margin: 20px 0;
 `;
 
 /* eslint-disable react/prefer-stateless-function */
 export class SignUpPage extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      error: null,
+      isLoading: false,
+    };
+  }
 
-    onClick = (event) => {
-        const {
-            username,
-            email,
-            passwordOne,
-        } = this.state;
 
-        doCreateUserWithEmailAndPassword(email, passwordOne)
-            .then(authUser => {
-                alert('OI' + passwordOne  + ' ' + email);
-                // push("/republic-map")
-            })
-            .catch(error => {
-                // alert('OI BIELE COM ERRO' + passwordOne  + ' ' + email);
+  handleSubmit = (event) => {
+    const {
+      name,
+      email,
+      password,
+    } = this.state;
 
-                this.setState(byPropKey('error', error));
-            });
+    const {
+      goToHome,
+    } = this.props;
 
-        event.preventDefault();
+    this.toggleLoading();
+    try {
+      doCreateUserWithEmailAndPassword(email, password)
+        .then(() => {
+          const user = getCurrentUser();
+          user.updateProfile({
+            displayName: name,
+          });
+          const newClient = { id: user.uid, name, email };
+          createClientOnDatabase(newClient).then(() => {
+            this.toggleLoading();
+            goToHome();
+          });
+        });
+    } catch (error) {
+      this.setState({ error });
     }
+
+    event.preventDefault();
+  };
+
+  handleOnChange = (e) => {
+    const { value, id } = e.target;
+    this.setState({ [id]: value });
+  };
+
+  toggleLoading = () => this.setState({ isLoading: !this.state.isLoading });
 
   render() {
     const {
-        username,
-        email,
-        passwordOne,
-        passwordTwo,
-        error,
-    } = this.props;
+      name,
+      email,
+      password,
+      confirmPassword,
+      error,
+      isLoading,
+    } = this.state;
 
-      const isInvalid =
-          passwordOne !== passwordTwo ||
-          passwordOne === '' ||
-          email === '' ||
-          username === '';
+    const isInvalid =
+      password !== confirmPassword ||
+      password === '' ||
+      email === '' ||
+      name === '';
 
     return (
       <Fragment>
+        {isLoading && <LoadingIndicator />}
         <TextFieldSignUp
-            required
-            id="name"
-            label="Name"
-            type="text"
-            value={username}
-            onChange={event => this.setState(byPropKey('username', event.target.value))}/>
+          required
+          id="name"
+          label="Nome Completo"
+          type="text"
+          value={name}
+          onChange={this.handleOnChange}
+        />
         <TextFieldSignUp
-            required
-            id="email"
-            label="Email"
-            type="text"
-            value={email}
-            onChange={event => this.setState(byPropKey('email', event.target.value))}/>
+          required
+          id="email"
+          label="E-mail"
+          type="email"
+          value={email}
+          onChange={this.handleOnChange}
+        />
         <TextFieldSignUp
-            required
-            id="password"
-            label="Password"
-            type="password"
-            value={passwordOne}
-            onChange={event => this.setState(byPropKey('passwordOne', event.target.value))}/>
+          required
+          id="password"
+          label="Senha"
+          type="password"
+          value={password}
+          onChange={this.handleOnChange}
+        />
         <TextFieldSignUp
-            required
-            id="confirmPassword"
-            label="Confirm password"
-            type="password"
-            value={passwordTwo}
-            onChange={event => this.setState(byPropKey('passwordTwo', event.target.value))}/>
-          <ButtonSignUp
+          required
+          id="confirmPassword"
+          label="Confirme a Senha"
+          type="password"
+          value={confirmPassword}
+          onChange={this.handleOnChange}
+        />
+        <ButtonSignUp
           disabled={isInvalid}
           variant="contained"
           color="primary"
           type="submit"
-          onClick={this.onClick}
-        > Cadastrar
-        </ButtonSignUp>
-          { error && <p>{error.message} OI bele</p> }
+          text="Cadastrar"
+          onClick={this.handleSubmit}
+        />
+        {error && <p>{error.message} OI bele</p>}
       </Fragment>
     );
   }
@@ -111,11 +146,13 @@ export class SignUpPage extends React.PureComponent {
 
 SignUpPage.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  goToHome: PropTypes.func.isRequired,
 };
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch
+    dispatch,
+    goToHome: () => dispatch(push('/')),
   };
 }
 

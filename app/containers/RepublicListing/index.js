@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { compose } from 'redux';
-import RepublicaCard from '../../components/RepublicaCard';
+import RepublicCard from '../../components/RepublicCard';
 import MUIList from '@material-ui/core/List';
 import MUIListItem from '@material-ui/core/ListItem';
 import { getRepublics } from '../../api';
@@ -51,7 +51,7 @@ export class RepublicListing extends React.PureComponent {
       <List>
         {republics.map(rep => (
           <ListItem button onClick={() => goToDetail(rep.id)}>
-            <RepublicaCard republic={rep} />
+            <RepublicCard republic={rep} />
           </ListItem>
         ))}
       </List>

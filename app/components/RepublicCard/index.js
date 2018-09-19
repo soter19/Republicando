@@ -1,6 +1,6 @@
 /**
  *
- * RepublicaCard
+ * RepublicCard
  *
  */
 
@@ -22,7 +22,7 @@ const StyleCard = styled(Card)`
   width: 100%;
 `;
 
-export class RepublicaCard extends React.PureComponent {
+export class RepublicCard extends React.PureComponent {
   render() {
     const { data } = this.props.republic;
     return (
@@ -40,8 +40,8 @@ export class RepublicaCard extends React.PureComponent {
   }
 }
 
-RepublicaCard.propTypes = {
+RepublicCard.propTypes = {
   republic: PropTypes.object.isRequired,
 };
 
-export default RepublicaCard;
+export default RepublicCard;

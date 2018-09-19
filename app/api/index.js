@@ -36,3 +36,10 @@ export const getOffers = async (republicId) =>
 
 export const applyToOffer = offerId =>
   axios.get(`${BASE_URL}${APPLY_TO_OFFER}?offerId=${offerId}`);
+
+// Clients
+
+const CREATE_CLIENT = 'createClient';
+
+export const createClientOnDatabase = (newClient) =>
+  axios.post(`${BASE_URL}${CREATE_CLIENT}`, newClient);

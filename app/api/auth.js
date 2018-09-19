@@ -3,6 +3,10 @@ import 'firebase/auth';
 
 export const auth = firebase.auth();
 
+// Get Current User
+
+export const getCurrentUser = () => auth.currentUser;
+
 // Sign Up
 export const doCreateUserWithEmailAndPassword = (email, password) =>
     auth.createUserWithEmailAndPassword(email, password);

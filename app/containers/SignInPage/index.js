@@ -25,7 +25,7 @@ import {
 import injectReducer from 'utils/injectReducer';
 import makeSelectSignInPage from './selectors';
 import reducer from './reducer';
-import RepublicaCard from '../../components/RepublicaCard';
+import RepublicCard from '../../components/RepublicCard';
 
 const TextFieldSignIn = styled(TextField)`
   margin: 20px 0 !important;
