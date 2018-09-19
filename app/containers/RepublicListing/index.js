@@ -14,6 +14,7 @@ import RepublicCard from '../../components/RepublicCard';
 import MUIList from '@material-ui/core/List';
 import MUIListItem from '@material-ui/core/ListItem';
 import { getRepublics } from '../../api';
+import { getCurrentUser } from '../../api/auth';
 
 const ListItem = styled(MUIListItem)`
   width: 100%;

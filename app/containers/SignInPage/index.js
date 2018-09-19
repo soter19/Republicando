@@ -13,26 +13,18 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import { push } from 'react-router-redux';
-import * as firebase from "firebase/app";
-import "firebase/auth";
-import {
-  FirebaseAuthProvider,
-  FirebaseAuthConsumer,
-  IfFirebaseAuthed,
-  IfFirebaseAuthedAnd
-} from "@react-firebase/auth";
-
 import injectReducer from 'utils/injectReducer';
 import makeSelectSignInPage from './selectors';
 import reducer from './reducer';
-import RepublicCard from '../../components/RepublicCard';
+import { doSignInWithEmailAndPassword } from '../../api/auth';
+import { login } from '../App/actions';
 
 const TextFieldSignIn = styled(TextField)`
-  margin: 20px 0 !important;
+  margin: 20px 0;
 `;
 
 const ButtonSignIn = styled(Button)`
-  margin: 100px 0 20px 0 !important;
+  margin: 20px 0;
 `;
 
 const MyLink = styled.div`
@@ -41,23 +33,55 @@ const MyLink = styled.div`
 
 /* eslint-disable react/prefer-stateless-function */
 export class SignInPage extends React.PureComponent {
+  constructor(props){
+    super(props);
+    this.state = {
+      email: '',
+      password: '',
+    }
+  }
+
+  handleLogin = () => {
+    const { email, password } = this.state;
+    const { doLogin } = this.props;
+
+    doLogin(email, password);
+  };
+
+  handleFieldChange = ({ target }) => {
+    const { id, value } = target;
+    this.setState({ [id]: value })
+  };
+
   render() {
+    const { email, password } = this.state;
     const { goToRoute } = this.props;
     return (
       <Fragment>
-        <TextFieldSignIn required id="email" label="Email" margin="dense" />
+        <TextFieldSignIn
+          required
+          id="email"
+          label="Email"
+          type="email"
+          margin="dense"
+          value={email}
+          onChange={this.handleFieldChange}
+        />
         <TextFieldSignIn
           required
           id="password"
           label="Password"
+          type="password"
           margin="dense"
+          value={password}
+          onChange={this.handleFieldChange}
         />
         <MyLink onClick={() => goToRoute('/signUp')}>Cadastre-se</MyLink>
         <ButtonSignIn
           size="small"
           variant="contained"
           color="primary"
-          onClick={() => goToRoute('/')}
+          onClick={this.handleLogin}
         >
           Login
         </ButtonSignIn>
@@ -69,6 +93,7 @@ export class SignInPage extends React.PureComponent {
 SignInPage.propTypes = {
   dispatch: PropTypes.func.isRequired,
   goToRoute: PropTypes.func.isRequired,
+  doLogin: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -79,6 +104,7 @@ function mapDispatchToProps(dispatch) {
   return {
     dispatch,
     goToRoute: route => dispatch(push(route)),
+    doLogin: (email, password) => login(dispatch)(email, password),
   };
 }
 
@@ -87,9 +113,6 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-const withReducer = injectReducer({ key: 'signInPage', reducer });
-
 export default compose(
-  withReducer,
   withConnect,
 )(SignInPage);

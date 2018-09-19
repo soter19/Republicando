@@ -15,21 +15,24 @@ import createReducer from './reducers';
 
 const sagaMiddleware = createSagaMiddleware();
 
-export default function configureStore(initialState = {}, history) {
-  const firebaseConfig = {
-    apiKey: 'AIzaSyAhq0SmGJZfXyuGCma52dSUoPK87HUlpS4',
-    authDomain: 'republicando-123.firebaseapp.com',
-    databaseURL: 'https://republicando-123.firebaseio.com',
-    projectId: 'republicando-123',
-    storageBucket: 'republicando-123.appspot.com',
-    messagingSenderId: '352916716074',
-  };
-  const rfConfig = {}; // optional redux-firestore Config Options
+const firebaseConfig = {
+  apiKey: 'AIzaSyAhq0SmGJZfXyuGCma52dSUoPK87HUlpS4',
+  authDomain: 'republicando-123.firebaseapp.com',
+  databaseURL: 'https://republicando-123.firebaseio.com',
+  projectId: 'republicando-123',
+  storageBucket: 'republicando-123.appspot.com',
+  messagingSenderId: '352916716074',
+};
+const rfConfig = {}; // optional redux-firestore Config Options
 
-  // Initialize firebase instance
-  firebase.initializeApp(firebaseConfig);
-  // Initialize Cloud Firestore through Firebase
-  firebase.firestore();
+// Initialize firebase instance
+firebase.initializeApp(firebaseConfig);
+// Initialize Cloud Firestore through Firebase
+firebase.firestore();
+
+export const auth = firebase.auth();
+
+export default function configureStore(initialState = {}, history) {
 
   // Create the store with two middlewares
   // 1. sagaMiddleware: Makes redux-sagas work

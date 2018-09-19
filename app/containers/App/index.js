@@ -16,10 +16,14 @@ import SignUpPage from 'containers/SignUpPage/Loadable';
 import RepublicListing from 'containers/RepublicListing/Loadable';
 import RepublicDetail from 'containers/RepublicDetail/Loadable';
 import FeaturePage from 'containers/FeaturePage/Loadable';
-import IntroPage from 'containers/IntroPage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
+import { push } from 'react-router-redux';
+import connect from 'react-redux/es/connect/connect';
+import { createStructuredSelector } from 'reselect';
+import { compose } from 'recompose';
+import { withFirestore } from 'react-redux-firebase';
 
 const AppWrapper = styled.div`
   max-width: calc(768px + 16px * 2);
@@ -35,8 +39,8 @@ export default function App() {
       <Header />
       <Switch>
         <Route exact path="/" component={HomePage} />
-        <Route exact path="/signIn" component={SignInPage} />
-        <Route exact path="/signUp" component={SignUpPage} />
+        <Route path="/signIn" component={SignInPage} />
+        <Route path="/signUp" component={SignUpPage} />
         <Route path="/features" component={FeaturePage} />
         <Route path="/republic-list" component={RepublicListing} />
         <Route path="/republic-detail/:id" component={RepublicDetail} />

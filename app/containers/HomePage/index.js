@@ -10,12 +10,9 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import { createStructuredSelector } from 'reselect';
-import { withFirestore } from 'react-redux-firebase';
 import Map from 'components/Map';
 import Geocode from 'react-geocode';
 
-import injectReducer from 'utils/injectReducer';
-import reducer from './reducer';
 import { makeSelectFirestoreClients } from '../App/selectors';
 import { DefaultNavBar } from '../../components/Header/NavBar';
 import { getRepublics } from '../../api';
@@ -24,7 +21,7 @@ const NavBar = styled.div`
   display: grid;
 `;
 
-const HomePageAppBar = ({ onChange }) => (
+const HomePageAppBar = () => (
   <DefaultNavBar>
     <NavBar />
   </DefaultNavBar>
@@ -56,15 +53,10 @@ export class HomePage extends React.PureComponent {
     return payload.results[0].geometry.location;
   }
 
-  handleSearch({ target }) {
-    if (!target.value || target.value.length < 5) return;
-    // Geocode.fromAddress(target.value).then(this.latLongFromPayload)
-  }
-
   render() {
     return (
       <Fragment>
-        <HomePageAppBar onChange={this.handleSearch} />
+        <HomePageAppBar />
         <Map
           goToDetail={this.props.goToDetail}
           markers={this.state.republics}
@@ -91,10 +83,6 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-const withReducer = injectReducer({ key: 'home', reducer });
-
 export default compose(
-  withReducer,
   withConnect,
-  withFirestore,
 )(HomePage);

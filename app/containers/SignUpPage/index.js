@@ -125,7 +125,7 @@ export class SignUpPage extends React.PureComponent {
         <TextFieldSignUp
           required
           id="confirmPassword"
-          label="Confirme a Senha"
+          label="Confirmação de Senha"
           type="password"
           value={confirmPassword}
           onChange={this.handleOnChange}
@@ -135,10 +135,11 @@ export class SignUpPage extends React.PureComponent {
           variant="contained"
           color="primary"
           type="submit"
-          text="Cadastrar"
           onClick={this.handleSubmit}
-        />
-        {error && <p>{error.message} OI bele</p>}
+        >
+          Cadastrar-se
+        </ButtonSignUp>
+        {error && <p>{error.message}</p>}
       </Fragment>
     );
   }
