@@ -40,7 +40,7 @@ export class RepublicListing extends React.PureComponent {
   }
 
   componentWillMount() {
-    getRepublics().then(republics => {
+    getRepublics(id).then(republics => {
       this.setState({ republics });
     });
   }
