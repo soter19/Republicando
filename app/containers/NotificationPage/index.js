@@ -13,13 +13,16 @@ import styled from "styled-components";
 import MUIListItem from "@material-ui/core/ListItem/ListItem";
 import MUIList from "@material-ui/core/List/List";
 import {getNotifications} from "../../api";
-import {getMe} from "../../api";
-import {makeSelectFirestoreClients, makeSelectUserData} from "../App/selectors";
+import {makeSelectUserData} from "../App/selectors";
 import {createStructuredSelector} from "reselect";
+import ListSubheader from "@material-ui/core/ListSubheader/ListSubheader";
+import Divider from "@material-ui/core/Divider/Divider";
+import SwipeableDrawer from "@material-ui/core/SwipeableDrawer/SwipeableDrawer";
+
 
 const ListItem = styled(MUIListItem)`
   width: 100%;
-  padding: 10px;
+  padding: 5px;
 `;
 
 const List = styled(MUIList)`
@@ -50,9 +53,18 @@ export class NotificationPage extends React.PureComponent {
 
 	render() {
 		const {notifications} = this.state;
+		const { user } = this.props;
+		if(user && notifications.length === 0) {
+			getNotifications(user.republicId).then(notifications => {
+				this.setState({ notifications });
+			});
+		}
 		return (
 			<Fragment>
-				{ notifications && (<List>
+				{ notifications && (<List
+					subheader={<ListSubheader component="div">Notificações</ListSubheader>}
+				>
+					<Divider/>
 					{notifications.map(notif => (
 						<ListItem>
 							<NotificationCard notification={notif}/>

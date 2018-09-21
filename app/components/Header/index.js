@@ -10,6 +10,7 @@ import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import MenuIcon from '@material-ui/icons/Menu';
 import MapIcon from '@material-ui/icons/Map';
 import ListIcon from '@material-ui/icons/List';
+import NotificationsIcon from '@material-ui/icons/Notifications';
 import ExitIcon from '@material-ui/icons/ExitToApp';
 import IconButton from '@material-ui/core/IconButton';
 import { List as MUIList, ListItem } from '@material-ui/core';
@@ -72,9 +73,11 @@ class Header extends React.Component {
 				dispatch(loginSuccessAction({
           id: user.uid,
           email: user.email,
-          republicId: completeUser.data.republicId
+          republicId: completeUser.data.republicId,
+          name: user.displayName,
+          isLogged: true
 				}));
-				// this.setState({ username: user.displayName, isLogged: true });
+				this.setState({ username: user.displayName, isLogged: true });
       });
     });
   };
@@ -138,6 +141,13 @@ class Header extends React.Component {
               <GenerateListItem action={'/'} Icon={MapIcon} text={'Mapa de Repúblicas'}/>
               <GenerateListItem action={'/republic-list'} Icon={ListIcon} text={'Lista de Repúblicas'}/>
             </List>
+						<Divider/>
+						<List
+							component="nav"
+							subheader={<ListSubheader component="div">Minha República</ListSubheader>}
+						>
+							<GenerateListItem action={'/notifications'} Icon={NotificationsIcon} text={'Notifications'}/>
+						</List>
           </SwipeableDrawer>
           <div id="portal-header"/>
           {/* ^ THIS IS A PORTAL, DO NOT REMOVE IT! */}

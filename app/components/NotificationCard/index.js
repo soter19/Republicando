@@ -12,7 +12,7 @@ import CardContent from "@material-ui/core/CardContent/CardContent";
 import Card from "@material-ui/core/Card/Card";
 
 const StyleCard = styled(Card)`
-  min-height: 100px;
+  min-height: 70px;
   width: 100%;
 `;
 
