@@ -14,6 +14,8 @@ import MUIListItem from "@material-ui/core/ListItem/ListItem";
 import MUIList from "@material-ui/core/List/List";
 import {getNotifications} from "../../api";
 import {getMe} from "../../api";
+import {makeSelectFirestoreClients, makeSelectUserData} from "../App/selectors";
+import {createStructuredSelector} from "reselect";
 
 const ListItem = styled(MUIListItem)`
   width: 100%;
@@ -37,12 +39,13 @@ export class NotificationPage extends React.PureComponent {
 		};
 	}
 
-	componentDidMount() {
-		getMe().then( user => {
+	componentDidUpdate(prevProps){
+		const { user } = this.props;
+		if(prevProps.user !== user){
 			getNotifications(user.republicId).then(notifications => {
 				this.setState({ notifications });
 			});
-		})
+		}
 	}
 
 	render() {
@@ -65,14 +68,19 @@ NotificationPage.propTypes = {
 	dispatch: PropTypes.func.isRequired,
 };
 
+
+const mapStateToProps = createStructuredSelector({
+	user: makeSelectUserData(),
+});
+
 function mapDispatchToProps(dispatch) {
 	return ({
-		dispatch
+		dispatch,
 	});
 }
 
 const withConnect = connect(
-	null,
+	mapStateToProps,
 	mapDispatchToProps,
 );
 
