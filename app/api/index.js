@@ -84,7 +84,7 @@ export const getUserTypeFromId = (userId) => {
 
 // Notifications
 
-export const getNotifications = async (republicId = '1B0OXAhMcS3gifDsACJ2') => {
+export const getNotifications = async (republicId) => {
     if (!republicId) return false;
       const notifications = await axios
         .get(`${BASE_URL}${GET_NOTIFICATIONS}?republicId=${republicId}`)

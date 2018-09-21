@@ -13,6 +13,7 @@ import styled from "styled-components";
 import MUIListItem from "@material-ui/core/ListItem/ListItem";
 import MUIList from "@material-ui/core/List/List";
 import {getNotifications} from "../../api";
+import {getMe} from "../../api";
 
 const ListItem = styled(MUIListItem)`
   width: 100%;
@@ -36,10 +37,12 @@ export class NotificationPage extends React.PureComponent {
 		};
 	}
 
-	componentWillMount() {
-		getNotifications().then(notifications => {
-			this.setState({ notifications });
-		});
+	componentDidMount() {
+		getMe().then( user => {
+			getNotifications(user.republicId).then(notifications => {
+				this.setState({ notifications });
+			});
+		})
 	}
 
 	render() {
