@@ -196,6 +196,22 @@ exports.createClient = functions.https.onRequest((req, res) => {
     })
 });
 
+exports.getClient = functions.https.onRequest((req, res) => {
+  enableCors(res, req);
+  const { clientId } = req.query;
+  if (!clientId) {
+    res.status(400).send(errorResponse('Invalid clientId'));
+    return;
+  }
+  firestore
+    .collection('clients')
+    .doc(clientId)
+    .get()
+    .then(snap => {
+      return res.status(200).send(parseDocument(snap));
+    });
+});
+
 // UPDATE
 
 exports.applyToOffer = functions.https.onRequest((req, res) => {

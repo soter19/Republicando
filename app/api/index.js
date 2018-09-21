@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getCurrentUser } from './auth';
 const https = require('https');
 
 const BASE_URL = 'https://us-central1-republicando-123.cloudfunctions.net/';
@@ -40,6 +41,16 @@ export const applyToOffer = offerId =>
 // Clients
 
 const CREATE_CLIENT = 'createClient';
+const GET_CLIENT = 'getClient';
 
 export const createClientOnDatabase = (newClient) =>
   axios.post(`${BASE_URL}${CREATE_CLIENT}`, newClient);
+
+const getClient = (clientId) => axios.get(`${BASE_URL}${GET_CLIENT}?clientId=${clientId}`);
+
+export const getMe = async () => {
+  const user = getCurrentUser();
+  const { uid } = user;
+  const client = await getClient(uid);
+  return client.data;
+};

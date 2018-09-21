@@ -56,13 +56,13 @@ class Header extends React.Component {
   }
 
   componentDidMount() {
-    const { location } = this.props;
+    const { location, goToLogin } = this.props;
     auth.onAuthStateChanged((user) => {
       if(!user){
         this.setState({ isLogged: false });
         const { pathname } = location;
         if(pathname !== 'signUp' && pathname !== 'signIn'){
-          this.props.goToLogin();
+          goToLogin();
         }
         return
       }
