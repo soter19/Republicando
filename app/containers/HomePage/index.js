@@ -16,14 +16,30 @@ import Geocode from 'react-geocode';
 import { makeSelectFirestoreClients } from '../App/selectors';
 import { DefaultNavBar } from '../../components/Header/NavBar';
 import { getRepublics } from '../../api';
+import Slide from '@material-ui/core/Slide';
+import IconButton from '@material-ui/core/IconButton/IconButton';
+import FilterIcon from '@material-ui/icons/FilterList';
+import Dialog from '@material-ui/core/Dialog/Dialog';
+import Button from '@material-ui/core/Button/Button';
+import Typography from '@material-ui/core/Typography/Typography';
+import Divider from '@material-ui/core/Divider/Divider';
+import Checkbox from '@material-ui/core/Checkbox/Checkbox';
+import FilterDialog from '../../components/FilterDialog';
 
 const NavBar = styled.div`
   display: grid;
 `;
 
-const HomePageAppBar = () => (
+const HomePageAppBar = ({ action }) => (
   <DefaultNavBar>
-    <NavBar />
+    <NavBar>
+      <IconButton
+        color="inherit"
+        onClick={action}
+      >
+        <FilterIcon />
+      </IconButton>
+    </NavBar>
   </DefaultNavBar>
 );
 
@@ -32,6 +48,7 @@ export class HomePage extends React.PureComponent {
     super(props);
     this.state = {
       republics: [],
+      filterIsOpen: false,
     };
   }
   componentWillMount() {
@@ -39,9 +56,7 @@ export class HomePage extends React.PureComponent {
     getRepublics().then(async republics => {
       const res = await republics.map(async rep => ({
         ...rep,
-        location: this.latLongFromPayload(
-          await Geocode.fromAddress(rep.data.address),
-        ),
+        location: (await Geocode.fromAddress(rep.data.address)).results[0].geometry.location,
       }));
       Promise.all(res).then(response => {
         this.setState({ republics: response });
@@ -49,17 +64,22 @@ export class HomePage extends React.PureComponent {
     });
   }
 
-  latLongFromPayload(payload) {
-    return payload.results[0].geometry.location;
-  }
+  toggleFilterDialog = () => {
+    const { filterIsOpen: old } = this.state;
+    this.setState({ filterIsOpen: !old })
+  };
 
   render() {
     return (
       <Fragment>
-        <HomePageAppBar />
+        <HomePageAppBar action={this.toggleFilterDialog} />
         <Map
           goToDetail={this.props.goToDetail}
           markers={this.state.republics}
+        />
+        <FilterDialog
+          isOpen={this.state.filterIsOpen}
+          onClose={this.toggleFilterDialog}
         />
       </Fragment>
 

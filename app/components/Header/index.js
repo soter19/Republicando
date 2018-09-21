@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar/Toolbar';
@@ -10,9 +10,7 @@ import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import MenuIcon from '@material-ui/icons/Menu';
 import MapIcon from '@material-ui/icons/Map';
 import ListIcon from '@material-ui/icons/List';
-import PersonIcon from '@material-ui/icons/Person';
 import ExitIcon from '@material-ui/icons/ExitToApp';
-import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import { List as MUIList, ListItem } from '@material-ui/core';
 import ListItemIcon from '@material-ui/core/ListItemIcon/ListItemIcon';
@@ -23,11 +21,8 @@ import { auth } from 'configureStore';
 import { doSignOut } from '../../api/auth';
 import { push } from 'react-router-redux';
 import connect from 'react-redux/es/connect/connect';
-import injectReducer from '../../utils/injectReducer';
-import reducer from '../../containers/HomePage/reducer';
 import { compose } from 'recompose';
-import { withFirestore } from 'react-redux-firebase';
-import { makeSelectFirestoreClients, makeSelectUserData } from '../../containers/App/selectors';
+import { makeSelectUserData } from '../../containers/App/selectors';
 
 const List = styled(MUIList)`
   a {
@@ -56,15 +51,22 @@ class Header extends React.Component {
     this.state = {
       menuOpen: false,
       username: '',
+      isLogged: false,
     };
   }
 
   componentDidMount() {
+    const { location } = this.props;
     auth.onAuthStateChanged((user) => {
       if(!user){
-        this.props.goToLogin();
+        this.setState({ isLogged: false });
+        const { pathname } = location;
+        if(pathname !== 'signUp' && pathname !== 'signIn'){
+          this.props.goToLogin();
+        }
+        return
       }
-      this.setState({ username: user.displayName });
+      this.setState({ username: user.displayName, isLogged: true });
     });
   };
 
@@ -74,7 +76,6 @@ class Header extends React.Component {
   };
 
   render() {
-    console.log(this.props);
     const GenerateListItem = ({ action, Icon, text }) => {
       const useAction = action instanceof Function;
       const WrapperComponent = !useAction ? Link : StyledLink;
@@ -91,18 +92,20 @@ class Header extends React.Component {
         </WrapperComponent>
       );
     };
-    const { hasSecondaryToolbar } = this.props;
-    const { menuOpen, username } = this.state;
+    const { menuOpen, username, isLogged } = this.state;
     return (
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            color="inherit"
-            onClick={() => this.setState({ menuOpen: true })}
-          >
-            <MenuIcon/>
-          </IconButton>
-          <Typography variant='headline' color='inherit'><AppTitleLink to="/">Republicando</AppTitleLink></Typography>
+          { isLogged && (
+            <IconButton
+              color="inherit"
+              onClick={() => this.setState({ menuOpen: true })}
+            >
+              <MenuIcon/>
+            </IconButton>
+          )
+          }
+          <Typography variant='title' color='inherit' style={{ flexGrow: '1' }}><AppTitleLink to="/">Republicando</AppTitleLink></Typography>
           <SwipeableDrawer
             open={menuOpen}
             onOpen={() => this.setState({ menuOpen: true })}
@@ -128,12 +131,6 @@ class Header extends React.Component {
           <div id="portal-header"/>
           {/* ^ THIS IS A PORTAL, DO NOT REMOVE IT! */}
         </Toolbar>
-        {hasSecondaryToolbar ? (
-          <Toolbar>
-            <Typography variant="title" color="inherit"/>
-            <Button color="inherit">Login</Button>
-          </Toolbar>
-        ) : null}
       </AppBar>
     );
   }
@@ -166,5 +163,5 @@ const withConnect = connect(
 
 export default compose(
   withConnect,
-  withFirestore,
+  withRouter,
 )(Header);

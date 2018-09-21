@@ -18,17 +18,14 @@ import makeSelectSignInPage from './selectors';
 import reducer from './reducer';
 import { doSignInWithEmailAndPassword } from '../../api/auth';
 import { login } from '../App/actions';
+import { Link } from 'react-router-dom';
 
-const TextFieldSignIn = styled(TextField)`
-  margin: 20px 0;
+const PageWrapper = styled.div`
+  margin: 0 20px;
 `;
 
 const ButtonSignIn = styled(Button)`
   margin: 20px 0;
-`;
-
-const MyLink = styled.div`
-  cursor: pointer;
 `;
 
 /* eslint-disable react/prefer-stateless-function */
@@ -55,37 +52,39 @@ export class SignInPage extends React.PureComponent {
 
   render() {
     const { email, password } = this.state;
-    const { goToRoute } = this.props;
     return (
-      <Fragment>
-        <TextFieldSignIn
+      <PageWrapper>
+        <TextField
           required
           id="email"
-          label="Email"
+          label="E-mail"
           type="email"
           margin="dense"
+          fullWidth
           value={email}
           onChange={this.handleFieldChange}
         />
-        <TextFieldSignIn
+        <TextField
           required
           id="password"
-          label="Password"
+          label="Senha"
           type="password"
           margin="dense"
+          fullWidth
           value={password}
           onChange={this.handleFieldChange}
         />
-        <MyLink onClick={() => goToRoute('/signUp')}>Cadastre-se</MyLink>
+        <Link to="/signUp">Cadastre-se</Link>
         <ButtonSignIn
           size="small"
           variant="contained"
           color="primary"
           onClick={this.handleLogin}
+          fullWidth
         >
           Login
         </ButtonSignIn>
-      </Fragment>
+      </PageWrapper>
     );
   }
 }
