@@ -12,7 +12,6 @@ import {compose} from 'redux';
 import styled from "styled-components";
 import MUIListItem from "@material-ui/core/ListItem/ListItem";
 import MUIList from "@material-ui/core/List/List";
-import Typography from "@material-ui/core/Typography/Typography";
 import {getNotifications} from "../../api";
 
 const ListItem = styled(MUIListItem)`
@@ -46,13 +45,15 @@ export class NotificationPage extends React.PureComponent {
 	render() {
 		const {notifications} = this.state;
 		return (
-			<List>
-				{notifications && notifications.map(notif => (
-					<ListItem>
-						<NotificationCard notification={notif}/>
-					</ListItem>
-				))}
-			</List>
+			<Fragment>
+				{ notifications && (<List>
+					{notifications.map(notif => (
+						<ListItem>
+							<NotificationCard notification={notif}/>
+						</ListItem>
+					))}
+				</List>)}
+			</Fragment>
 		);
 	}
 }

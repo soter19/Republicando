@@ -17,22 +17,22 @@ const StyleCard = styled(Card)`
 `;
 
 class NotificationCard extends React.PureComponent {
-  render() {
-    console.log(this.props)
-      const { notification } = this.props;
-      return (
-          <StyleCard>
-              <CardContent>
-                  <Typography variant="headline" component="h5">{notification.title}</Typography>
-                  <Typography component="p">{notification.description}</Typography>
-              </CardContent>
-          </StyleCard>
-      );
-  }
+	render() {
+		const {notification} = this.props;
+		console.log(this.props)
+		return (
+			<StyleCard>
+				<CardContent>
+					<Typography variant="headline" component="h5">{notification.title}</Typography>
+					<Typography component="p">{notification.description}</Typography>
+				</CardContent>
+			</StyleCard>
+		);
+	}
 }
 
 NotificationCard.propTypes = {
-    notification: PropTypes.object.isRequired,
+	notification: PropTypes.object.isRequired,
 };
 
 export default NotificationCard;
