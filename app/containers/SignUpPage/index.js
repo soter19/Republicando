@@ -14,8 +14,9 @@ import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button/Button';
 import { doCreateUserWithEmailAndPassword } from 'api/auth';
 import { getCurrentUser } from '../../api/auth';
-import { createClientOnDatabase } from '../../api';
+import { createAdminOnDatabase, createClientOnDatabase } from '../../api';
 import LoadingIndicator from '../../components/LoadingIndicator';
+import Switch from '@material-ui/core/Switch/Switch';
 
 const TextFieldSignUp = styled(TextField)`
   margin: 10px 0;
@@ -36,6 +37,7 @@ export class SignUpPage extends React.PureComponent {
       confirmPassword: '',
       error: null,
       isLoading: false,
+      isAdmin: false,
     };
   }
 
@@ -45,6 +47,7 @@ export class SignUpPage extends React.PureComponent {
       name,
       email,
       password,
+      isAdmin
     } = this.state;
 
     const {
@@ -59,11 +62,19 @@ export class SignUpPage extends React.PureComponent {
           user.updateProfile({
             displayName: name,
           });
-          const newClient = { id: user.uid, name, email };
-          createClientOnDatabase(newClient).then(() => {
-            this.toggleLoading();
-            goToHome();
-          });
+          if(!isAdmin){
+            const newClient = { id: user.uid, name, email };
+            createClientOnDatabase(newClient).then(() => {
+              this.toggleLoading();
+              goToHome();
+            });
+          } else {
+            const newAdmin = { id: user.uid, name, email };
+            createAdminOnDatabase(newAdmin).then(() => {
+              this.toggleLoading();
+              goToHome();
+            })
+          }
         });
     } catch (error) {
       this.setState({ error });
@@ -78,6 +89,8 @@ export class SignUpPage extends React.PureComponent {
   };
 
   toggleLoading = () => this.setState({ isLoading: !this.state.isLoading });
+
+  toggleAdmin = () => this.setState({ isAdmin: !this.state.isAdmin });
 
   render() {
     const {
@@ -98,6 +111,7 @@ export class SignUpPage extends React.PureComponent {
     return (
       <Fragment>
         {isLoading && <LoadingIndicator />}
+        <Switch value="checkedC" onChange={this.toggleAdmin} />
         <TextFieldSignUp
           required
           id="name"
@@ -130,6 +144,9 @@ export class SignUpPage extends React.PureComponent {
           value={confirmPassword}
           onChange={this.handleOnChange}
         />
+        { this.state.isAdmin ?
+          <h1>Oi bele</h1>
+          : <h1>tchau bele</h1> }
         <ButtonSignUp
           disabled={isInvalid}
           variant="contained"

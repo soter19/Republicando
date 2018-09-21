@@ -58,6 +58,26 @@ class Client {
   }
 }
 
+class Admin {
+  constructor({ id, name, email }){
+    this.id = id;
+    this.name = name;
+    this.email = email;
+  }
+
+  isValid() {
+    return this.id && this.name && this.email;
+  }
+
+  toObj() {
+    const { name, email } = this;
+    return {
+      name,
+      email,
+    }
+  }
+}
+
 // utils
 
 const parseDocument = snap => ({
@@ -84,7 +104,7 @@ const errorResponse = message => ({ error: message });
 
 // functions
 
-// GET
+// Offers
 
 exports.getOffers = functions.https.onRequest((req, res) => {
   enableCors(res, req);
@@ -124,6 +144,21 @@ exports.getOffersCount = functions.https.onRequest((req, res) => {
     .catch(console.error);
 });
 
+exports.applyToOffer = functions.https.onRequest((req, res) => {
+  enableCors(res, req);
+  const { offerId } = req.query;
+
+  if (!offerId) {
+    res.status(400).send(errorResponse('Missing Parameters'));
+    return;
+  }
+
+  res.status(200).send({ ok: 'Success!' });
+  return;
+});
+
+// Republic
+
 exports.getRepublics = functions.https.onRequest((req, res) => {
   enableCors(res, req);
   const response = [];
@@ -156,8 +191,6 @@ exports.getRepublic = functions.https.onRequest((req, res) => {
     });
 });
 
-// CREATE
-
 exports.createRepublic = functions.https.onRequest((req, res) => {
   enableCors(res, req);
   const newRep = new Republic(req.body);
@@ -178,6 +211,8 @@ exports.createRepublic = functions.https.onRequest((req, res) => {
       return;
     });
 });
+
+// Client
 
 exports.createClient = functions.https.onRequest((req, res) => {
   enableCors(res, req);
@@ -212,25 +247,21 @@ exports.getClient = functions.https.onRequest((req, res) => {
     });
 });
 
-// UPDATE
+// Admin
 
-exports.applyToOffer = functions.https.onRequest((req, res) => {
+exports.createAdmin = functions.https.onRequest((req, res) => {
   enableCors(res, req);
-  const { offerId } = req.query;
-
-  if (!offerId) {
-    res.status(400).send(errorResponse('Missing Parameters'));
+  const newAdmin = new Admin(req.body);
+  if(!newAdmin.isValid()) {
+    res.status(400).send(errorResponse('Invalid Model'));
     return;
   }
-
-  res.status(200).send({ ok: 'Success!' });
-  return;
-
-  // firestore
-  //   .collection('offers')
-  //   .doc(offerId)
-  //   .delete()
-  //   .then(res.status(200).send({ ok: 'Success!' }));
+  firestore
+    .collection('admins')
+    .doc(newAdmin.id)
+    .set(newAdmin.toObj())
+    .then(r => {
+      res.status(200).send({ success: 'ok' });
+      return;
+    })
 });
-
-// DELETE

@@ -38,6 +38,13 @@ export const getOffers = async (republicId) =>
 export const applyToOffer = offerId =>
   axios.get(`${BASE_URL}${APPLY_TO_OFFER}?offerId=${offerId}`);
 
+// Admins
+
+const CREATE_ADMIN = 'createAdmin';
+
+export const createAdminOnDatabase = (newAdmin) =>
+  axios.post(`${BASE_URL}${CREATE_ADMIN}`, newAdmin);
+
 // Clients
 
 const CREATE_CLIENT = 'createClient';
