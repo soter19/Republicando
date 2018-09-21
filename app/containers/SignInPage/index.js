@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import TextField from '@material-ui/core/TextField';
+import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import { push } from 'react-router-redux';
@@ -30,12 +31,12 @@ const ButtonSignIn = styled(Button)`
 
 /* eslint-disable react/prefer-stateless-function */
 export class SignInPage extends React.PureComponent {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       email: '',
       password: '',
-    }
+    };
   }
 
   handleLogin = () => {
@@ -47,43 +48,46 @@ export class SignInPage extends React.PureComponent {
 
   handleFieldChange = ({ target }) => {
     const { id, value } = target;
-    this.setState({ [id]: value })
+    this.setState({ [id]: value });
   };
 
   render() {
     const { email, password } = this.state;
     return (
       <PageWrapper>
-        <TextField
-          required
-          id="email"
-          label="E-mail"
-          type="email"
-          margin="dense"
-          fullWidth
-          value={email}
-          onChange={this.handleFieldChange}
-        />
-        <TextField
-          required
-          id="password"
-          label="Senha"
-          type="password"
-          margin="dense"
-          fullWidth
-          value={password}
-          onChange={this.handleFieldChange}
-        />
-        <Link to="/signUp">Cadastre-se</Link>
-        <ButtonSignIn
-          size="small"
-          variant="contained"
-          color="primary"
-          onClick={this.handleLogin}
-          fullWidth
-        >
-          Login
-        </ButtonSignIn>
+        <FormControl>
+          <TextField
+            required
+            id="email"
+            label="E-mail"
+            type="email"
+            margin="dense"
+            fullWidth
+            value={email}
+            onChange={this.handleFieldChange}
+          />
+          <TextField
+            required
+            id="password"
+            label="Senha"
+            type="password"
+            margin="dense"
+            fullWidth
+            value={password}
+            onChange={this.handleFieldChange}
+          />
+          <Link to="/signUp">Cadastre-se</Link>
+          <ButtonSignIn
+            size="small"
+            variant="contained"
+            color="primary"
+            type={'submit'}
+            onClick={this.handleLogin}
+            fullWidth
+          >
+            Login
+          </ButtonSignIn>
+        </FormControl>
       </PageWrapper>
     );
   }

@@ -15,9 +15,10 @@
  *    }
  */
 
-import { LOGIN_START, LOGIN_SUCCESS, LOGIN_ERROR } from './constants';
+import { LOGIN_START, LOGIN_SUCCESS, LOGIN_ERROR, SET_USER_TYPE } from './constants';
 import { replace } from 'react-router-redux';
 import { doSignInWithEmailAndPassword } from '../../api/auth';
+import { getUserTypeFromId } from '../../api';
 
 export const loginStartAction = () => ({
   type: LOGIN_START,
@@ -33,11 +34,21 @@ export const loginErrorAction = (payload) => ({
   payload,
 });
 
+export const setUserType = (userType) => ({
+  type: SET_USER_TYPE,
+  payload: {
+    userType
+  }
+});
 
 
 export const login = (dispatch) => (email, password) => {
   dispatch(loginStartAction());
-  doSignInWithEmailAndPassword(email, password).then(() => {
+  doSignInWithEmailAndPassword(email, password).then(({ user }) => {
+    getUserTypeFromId(user.uid).then((res) => {
+      debugger
+      dispatch(setUserType(res))
+    });
     dispatch(loginSuccessAction({ email, password }));
     dispatch(replace('/'))
   }).catch((e) => dispatch(loginErrorAction(e)))

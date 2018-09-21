@@ -62,6 +62,7 @@ export class SignUpPage extends React.PureComponent {
           user.updateProfile({
             displayName: name,
           });
+          debugger
           if(!isAdmin){
             const newClient = { id: user.uid, name, email };
             createClientOnDatabase(newClient).then(() => {

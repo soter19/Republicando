@@ -28,7 +28,7 @@ const rfConfig = {}; // optional redux-firestore Config Options
 // Initialize firebase instance
 firebase.initializeApp(firebaseConfig);
 // Initialize Cloud Firestore through Firebase
-firebase.firestore();
+export const firestore = firebase.firestore();
 
 export const auth = firebase.auth();
 

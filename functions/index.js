@@ -100,6 +100,11 @@ const enableCors = (res, req) => {
   // Continue with function code
 };
 
+const baseEndpoint = (action) => functions.https.onRequest((req, res) => {
+  enableCors(res, req);
+  action(res, req);
+});
+
 const errorResponse = message => ({ error: message });
 
 // functions
@@ -265,3 +270,23 @@ exports.createAdmin = functions.https.onRequest((req, res) => {
       return;
     })
 });
+
+// Tags
+
+exports.getAllTags = baseEndpoint((res, req) => {
+  const response = [];
+  firestore
+    .collection('tags')
+    .get()
+    .then(snapshot => {
+      snapshot.forEach(d => {
+        response.push({ id: d.id, name: (d.data()).name });
+      });
+      res.status(200).send(response);
+      return true;
+    })
+    .catch(console.error);
+});
+
+
+
