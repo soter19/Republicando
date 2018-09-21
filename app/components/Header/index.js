@@ -23,6 +23,7 @@ import { push } from 'react-router-redux';
 import connect from 'react-redux/es/connect/connect';
 import { compose } from 'recompose';
 import { makeSelectUserData } from '../../containers/App/selectors';
+import {login, loginSuccessAction} from "../../containers/App/actions";
 
 const List = styled(MUIList)`
   a {
@@ -56,7 +57,7 @@ class Header extends React.Component {
   }
 
   componentDidMount() {
-    const { location, goToLogin } = this.props;
+    const { location, goToLogin, dispatch } = this.props;
     auth.onAuthStateChanged((user) => {
       if(!user){
         this.setState({ isLogged: false });
@@ -66,6 +67,7 @@ class Header extends React.Component {
         }
         return
       }
+      dispatch(loginSuccessAction({ id: user.uid, email: user.email}));
       this.setState({ username: user.displayName, isLogged: true });
     });
   };

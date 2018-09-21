@@ -13,7 +13,7 @@ import { createStructuredSelector } from 'reselect';
 import Map from 'components/Map';
 import Geocode from 'react-geocode';
 
-import { makeSelectFirestoreClients } from '../App/selectors';
+import {makeSelectFirestoreClients, makeSelectUserData} from '../App/selectors';
 import { DefaultNavBar } from '../../components/Header/NavBar';
 import { getRepublics } from '../../api';
 import Slide from '@material-ui/core/Slide';
@@ -70,6 +70,7 @@ export class HomePage extends React.PureComponent {
   };
 
   render() {
+    console.log(this.props.user);
     return (
       <Fragment>
         <HomePageAppBar action={this.toggleFilterDialog} />
@@ -91,6 +92,7 @@ HomePage.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({
   clients: makeSelectFirestoreClients(),
+  user: makeSelectUserData(),
 });
 
 const mapDispatchToProps = dispatch => ({

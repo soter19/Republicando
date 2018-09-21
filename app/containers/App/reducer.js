@@ -28,14 +28,13 @@ function appReducer(state = initialState, action) {
     case LOGIN_START:
       return state.set('loading', true);
     case LOGIN_SUCCESS:
-      return state.set('loading', false).set('userData', {...payload});
+      return state.set('loading', false).set('userData', fromJS({...payload}));
     case LOGIN_ERROR:
       return state.set({
         loading: false,
         error: payload,
       });
     case SET_USER_TYPE:
-      debugger
       return state.set('currentUserType', payload.userType,);
     default:
       return state;

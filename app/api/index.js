@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { getCurrentUser } from './auth';
-import {firestore} from '../configureStore';
+import { firestore } from '../configureStore';
 
 const https = require('https');
 

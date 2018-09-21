@@ -46,10 +46,9 @@ export const login = (dispatch) => (email, password) => {
   dispatch(loginStartAction());
   doSignInWithEmailAndPassword(email, password).then(({ user }) => {
     getUserTypeFromId(user.uid).then((res) => {
-      debugger
       dispatch(setUserType(res))
     });
-    dispatch(loginSuccessAction({ email, password }));
+    dispatch(loginSuccessAction({ id: user.uid, email}));
     dispatch(replace('/'))
   }).catch((e) => dispatch(loginErrorAction(e)))
 };
