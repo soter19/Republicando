@@ -24,6 +24,7 @@ import connect from 'react-redux/es/connect/connect';
 import { compose } from 'recompose';
 import { makeSelectUserData } from '../../containers/App/selectors';
 import {login, loginSuccessAction} from "../../containers/App/actions";
+import {getMe} from "../../api";
 
 const List = styled(MUIList)`
   a {
@@ -67,8 +68,14 @@ class Header extends React.Component {
         }
         return
       }
-      dispatch(loginSuccessAction({ id: user.uid, email: user.email}));
-      this.setState({ username: user.displayName, isLogged: true });
+      getMe().then((completeUser) => {
+				dispatch(loginSuccessAction({
+          id: user.uid,
+          email: user.email,
+          republicId: completeUser.data.republicId
+				}));
+				// this.setState({ username: user.displayName, isLogged: true });
+      });
     });
   };
 
@@ -95,6 +102,7 @@ class Header extends React.Component {
       );
     };
     const { menuOpen, username, isLogged } = this.state;
+    const { user } = this.props;
     return (
       <AppBar position="static">
         <Toolbar>
@@ -108,6 +116,7 @@ class Header extends React.Component {
           )
           }
           <Typography variant='title' color='inherit' style={{ flexGrow: '1' }}><AppTitleLink to="/">Republicando</AppTitleLink></Typography>
+          {/* MENU */}
           <SwipeableDrawer
             open={menuOpen}
             onOpen={() => this.setState({ menuOpen: true })}

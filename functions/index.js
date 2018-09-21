@@ -268,7 +268,7 @@ exports.createAdmin = functions.https.onRequest((req, res) => {
     .then(r => {
       res.status(200).send({ success: 'ok' });
       return;
-    })
+  });
 });
 
 // Tags
@@ -288,5 +288,20 @@ exports.getAllTags = baseEndpoint((res, req) => {
     .catch(console.error);
 });
 
+// Notifications
 
-
+exports.getNotifications = functions.https.onRequest((req, res) => {
+	enableCors(res, req); // Rodar em localhost
+    const { republicId } = req.query; // pegando parametro da URL (SO PODE SER GET)
+    if(!republicId) {
+      res.status(400).send(errorResponse('Invalid Params')); // tratamento de erro
+      return;
+    }
+    firestore
+      .collection('republics')
+      .doc(republicId) // buscando no banco republica especifica
+      .get()
+      .then(snap => {
+      return res.status(200).send(parseDocument(snap).data.messages);
+  });
+});

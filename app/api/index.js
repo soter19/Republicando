@@ -11,6 +11,7 @@ const BASE_URL = 'https://us-central1-republicando-123.cloudfunctions.net/';
 
 const GET_REPUBLICS = 'getRepublics';
 const GET_REPUBLIC = 'getRepublic';
+const GET_NOTIFICATIONS = 'getNotifications';
 
 export const getRepublics = async () => {
   const republics = await axios
@@ -64,7 +65,6 @@ export const getMe = async () => {
   return client.data;
 };
 
-
 export const getUserTypeFromId = (userId) => {
   const checks = [firestore.collection('clients').doc(userId).get(),firestore.collection('admins').doc(userId).get()];
   return Promise.all(checks).then((docs) => {
@@ -79,5 +79,15 @@ export const getUserTypeFromId = (userId) => {
       throw new Exception('fucking kidding me');
     }
     return userType;
-  });
+    }
+  )};
+
+// Notifications
+
+export const getNotifications = async (republicId) => {
+    if (!republicId) return false;
+      const notifications = await axios
+        .get(`${BASE_URL}${GET_NOTIFICATIONS}?republicId=${republicId}`)
+        .catch(console.error);
+      return notifications && notifications.data;
 };
