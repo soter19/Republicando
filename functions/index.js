@@ -111,8 +111,7 @@ const errorResponse = message => ({ error: message });
 
 // Offers
 
-exports.getOffers = functions.https.onRequest((req, res) => {
-  enableCors(res, req);
+exports.getOffers = baseEndpoint((res, req) => {
   const { republicId } = req.query;
   if (!republicId) {
     res.status(400).send(errorResponse('Missing Parameters'));
@@ -132,8 +131,7 @@ exports.getOffers = functions.https.onRequest((req, res) => {
     .catch(console.error);
 });
 
-exports.getOffersCount = functions.https.onRequest((req, res) => {
-  enableCors(res, req);
+exports.getOffersCount = baseEndpoint((res, req) => {
   const { republicId } = req.query;
   if (!republicId) {
     res.status(400).send(errorResponse('Missing Parameters'));
@@ -149,8 +147,7 @@ exports.getOffersCount = functions.https.onRequest((req, res) => {
     .catch(console.error);
 });
 
-exports.applyToOffer = functions.https.onRequest((req, res) => {
-  enableCors(res, req);
+exports.applyToOffer = baseEndpoint((res, req) => {
   const { offerId } = req.query;
 
   if (!offerId) {
@@ -164,8 +161,7 @@ exports.applyToOffer = functions.https.onRequest((req, res) => {
 
 // Republic
 
-exports.getRepublics = functions.https.onRequest((req, res) => {
-  enableCors(res, req);
+exports.getRepublics = baseEndpoint((res, req) => {
   const response = [];
   firestore
     .collection('republics')
@@ -180,8 +176,22 @@ exports.getRepublics = functions.https.onRequest((req, res) => {
     .catch(console.error);
 });
 
-exports.getRepublic = functions.https.onRequest((req, res) => {
-  enableCors(res, req);
+exports.searchRepublicsByTag = baseEndpoint((res, req) => {
+  const { tags } = req.body;
+  const response = [];
+  firestore
+    .collection('republics')
+    .then(snapshot => {
+      snapshot.forEach(d => {
+        response.push(parseDocument(d));
+      });
+      res.status(200).send(response);
+      return true;
+    })
+    .catch(console.error);
+});
+
+exports.getRepublic = baseEndpoint((res, req) => {
   const { republicId } = req.query;
   if (!republicId) {
     res.status(400).send(errorResponse('Missing Parameters'));
@@ -196,8 +206,7 @@ exports.getRepublic = functions.https.onRequest((req, res) => {
     });
 });
 
-exports.createRepublic = functions.https.onRequest((req, res) => {
-  enableCors(res, req);
+exports.createRepublic = baseEndpoint((res, req) => {
   const newRep = new Republic(req.body);
   if (!newRep.isValid()) {
     res.status(400).send(errorResponse('Invalid Model'));
@@ -219,8 +228,7 @@ exports.createRepublic = functions.https.onRequest((req, res) => {
 
 // Client
 
-exports.createClient = functions.https.onRequest((req, res) => {
-  enableCors(res, req);
+exports.createClient = baseEndpoint((res, req) => {
   const newClient = new Client(req.body);
   if(!newClient.isValid()) {
     res.status(400).send(errorResponse('Invalid Model'));
@@ -236,8 +244,7 @@ exports.createClient = functions.https.onRequest((req, res) => {
     })
 });
 
-exports.getClient = functions.https.onRequest((req, res) => {
-  enableCors(res, req);
+exports.getClient = baseEndpoint((res, req) => {
   const { clientId } = req.query;
   if (!clientId) {
     res.status(400).send(errorResponse('Invalid clientId'));
@@ -254,8 +261,7 @@ exports.getClient = functions.https.onRequest((req, res) => {
 
 // Admin
 
-exports.createAdmin = functions.https.onRequest((req, res) => {
-  enableCors(res, req);
+exports.createAdmin = baseEndpoint((res, req) => {
   const newAdmin = new Admin(req.body);
   if(!newAdmin.isValid()) {
     res.status(400).send(errorResponse('Invalid Model'));
@@ -269,6 +275,21 @@ exports.createAdmin = functions.https.onRequest((req, res) => {
       res.status(200).send({ success: 'ok' });
       return;
   });
+});
+
+exports.getAdmin = baseEndpoint((res, req) => {
+  const { adminId } = req.query;
+  if (!adminId) {
+    res.status(400).send(errorResponse('Invalid adminId'));
+    return;
+  }
+  firestore
+    .collection('admins')
+    .doc(adminId)
+    .get()
+    .then(snap => {
+      return res.status(200).send(parseDocument(snap));
+    });
 });
 
 // Tags
@@ -290,8 +311,7 @@ exports.getAllTags = baseEndpoint((res, req) => {
 
 // Notifications
 
-exports.getNotifications = functions.https.onRequest((req, res) => {
-	enableCors(res, req); // Rodar em localhost
+exports.getNotifications = baseEndpoint((res, req) => {
     const { republicId } = req.query; // pegando parametro da URL (SO PODE SER GET)
     if(!republicId) {
       res.status(400).send(errorResponse('Invalid Params')); // tratamento de erro

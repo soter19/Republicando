@@ -19,11 +19,6 @@ import { getRepublics } from '../../api';
 import Slide from '@material-ui/core/Slide';
 import IconButton from '@material-ui/core/IconButton/IconButton';
 import FilterIcon from '@material-ui/icons/FilterList';
-import Dialog from '@material-ui/core/Dialog/Dialog';
-import Button from '@material-ui/core/Button/Button';
-import Typography from '@material-ui/core/Typography/Typography';
-import Divider from '@material-ui/core/Divider/Divider';
-import Checkbox from '@material-ui/core/Checkbox/Checkbox';
 import FilterDialog from '../../components/FilterDialog';
 
 const NavBar = styled.div`

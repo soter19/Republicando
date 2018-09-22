@@ -18,6 +18,7 @@ import {createStructuredSelector} from "reselect";
 import ListSubheader from "@material-ui/core/ListSubheader/ListSubheader";
 import Divider from "@material-ui/core/Divider/Divider";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer/SwipeableDrawer";
+import LoadingIndicator from '../../components/LoadingIndicator';
 
 
 const ListItem = styled(MUIListItem)`
@@ -39,6 +40,7 @@ export class NotificationPage extends React.PureComponent {
 		super(props);
 		this.state = {
 			notifications: [],
+			loading: true,
 		};
 	}
 
@@ -46,17 +48,17 @@ export class NotificationPage extends React.PureComponent {
 		const { user } = this.props;
 		if(prevProps.user !== user){
 			getNotifications(user.republicId).then(notifications => {
-				this.setState({ notifications });
+				this.setState({ notifications, loading: false });
 			});
 		}
 	}
 
 	render() {
-		const {notifications} = this.state;
+		const { notifications, loading } = this.state;
 		const { user } = this.props;
 		if(user && notifications.length === 0) {
 			getNotifications(user.republicId).then(notifications => {
-				this.setState({ notifications });
+        this.setState({ notifications, loading: false });
 			});
 		}
 		return (
@@ -64,6 +66,7 @@ export class NotificationPage extends React.PureComponent {
 				{ notifications && (<List
 					subheader={<ListSubheader component="div">Notificações</ListSubheader>}
 				>
+          { loading && <LoadingIndicator /> }
 					<Divider/>
 					{notifications.map(notif => (
 						<ListItem>

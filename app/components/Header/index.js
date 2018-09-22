@@ -146,7 +146,7 @@ class Header extends React.Component {
 							component="nav"
 							subheader={<ListSubheader component="div">Minha República</ListSubheader>}
 						>
-							<GenerateListItem action={'/notifications'} Icon={NotificationsIcon} text={'Notifications'}/>
+							<GenerateListItem action={'/notifications'} Icon={NotificationsIcon} text={'Mensagens'}/>
 						</List>
           </SwipeableDrawer>
           <div id="portal-header"/>

@@ -44,9 +44,12 @@ export const applyToOffer = offerId =>
 // Admins
 
 const CREATE_ADMIN = 'createAdmin';
+const GET_ADMIN = 'getAdmin';
 
 export const createAdminOnDatabase = (newAdmin) =>
   axios.post(`${BASE_URL}${CREATE_ADMIN}`, newAdmin);
+
+const getAdmin = (adminId) => axios.get(`${BASE_URL}${GET_ADMIN}?adminId=${adminId}`);
 
 // Clients
 
@@ -61,8 +64,14 @@ const getClient = (clientId) => axios.get(`${BASE_URL}${GET_CLIENT}?clientId=${c
 export const getMe = async () => {
   const user = getCurrentUser();
   const { uid } = user;
-  const client = await getClient(uid);
-  return client.data;
+  const userType = await getUserTypeFromId(uid);
+  let me;
+  if(userType === 'admins'){
+    me = await getAdmin(uid);
+  } else {
+    me = await getClient(uid);
+  }
+  return me.data;
 };
 
 export const getUserTypeFromId = (userId) => {
