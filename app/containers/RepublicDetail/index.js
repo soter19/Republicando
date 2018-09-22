@@ -16,10 +16,13 @@ import Typography from '@material-ui/core/Typography/Typography';
 import CardMedia from '@material-ui/core/CardMedia/CardMedia';
 import Card from '@material-ui/core/Card/Card';
 import Button from '@material-ui/core/Button/Button';
-import { getRepublic, applyToOffer, getOffers } from '../../api';
+import {getRepublic, applyToOffer, getOffers, getMe, getNotifications} from '../../api';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import Slider from "react-slick";
 import CardActions from '@material-ui/core/CardActions/CardActions';
+import {loginSuccessAction} from "../App/actions";
+import {makeSelectUserData} from "../App/selectors";
+import {createStructuredSelector} from "reselect";
 
 const settings = {
   dots: true,
@@ -49,18 +52,19 @@ const OfferCard = styled(Card)`
   }
 `;
 
-/* eslint-disable react/prefer-stateless-function */
 export class RepublicDetail extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       republic: null,
       offerFeedback: undefined,
+      clientIsFromThisRepublic: false,
     };
   }
 
   componentDidMount() {
-    const { id } = this.props.match.params;
+    const { match, user} = this.props;
+		const { id } = match.params;
     if (!id) {
       this.props.goToHomePage();
     }
@@ -68,7 +72,18 @@ export class RepublicDetail extends React.PureComponent {
       this.setState({ republic });
     });
     getOffers(id).then(offers => this.setState({ offers: offers.data }));
+    if(user) {
+			this.setState({ clientIsFromThisRepublic: id === user.republicId })
+    }
   }
+
+	componentDidUpdate(prevProps){
+		const { user, match } = this.props;
+		const { id } = match.params;
+		if(prevProps.user !== user){
+			this.setState({ clientIsFromThisRepublic: id === user.republicId })
+		}
+	}
 
   handleApply = (id) => {
     applyToOffer(id).then(() => {
@@ -77,7 +92,7 @@ export class RepublicDetail extends React.PureComponent {
   };
 
   render() {
-    const { republic, offerFeedback, offers } = this.state;
+    const { republic, offerFeedback, offers, clientIsFromThisRepublic } = this.state;
     if (!republic) return (<LoadingIndicator/>);
 
     return (
@@ -92,29 +107,35 @@ export class RepublicDetail extends React.PureComponent {
             <hr style={{ margin: '10px 0' }}/>
             <Typography component="p"><b>Endereço:</b> {republic.data.address}</Typography>
           </CardContent>
-        <Typography variant="title">Vagas</Typography>
-        <Slider {...settings}>
-        {offers &&
-          offers.map(offer => (
-            <OfferCard>
-              <CardContent>
-                <Typography variant='headline'>{offer.data.name}</Typography>
-                <Typography variant='caption'>{offer.data.description}</Typography>
-              </CardContent>
-               <CardActions>
-                 <Button
-                   size="small"
-                   variant="flat"
-                   color="primary"
-                   disabled={offerFeedback === false}
-                   onClick={() => this.handleApply(offer.id)}
-                 >
-                   CANDIDATAR-SE
-                 </Button>
-               </CardActions>
-            </OfferCard>
-          ))}
-        </Slider>
+        {!clientIsFromThisRepublic && (
+          <div>
+						<Typography variant="title">Vagas</Typography>
+						<Slider {...settings}>
+							{offers &&
+							offers.map(offer => (
+								<OfferCard>
+									<CardContent>
+										<Typography variant='headline'>{offer.data.name}</Typography>
+										<Typography variant='caption'>{offer.data.description}</Typography>
+									</CardContent>
+									<CardActions>
+										<Button
+											size="small"
+											variant="flat"
+											color="primary"
+											disabled={offerFeedback === false}
+											onClick={() => this.handleApply(offer.id)}
+										>
+											CANDIDATAR-SE
+										</Button>
+									</CardActions>
+								</OfferCard>
+							))}
+						</Slider>
+          </div>
+        )
+        }
+
         <Snackbar
           open={offerFeedback}
           autoHideDuration={2000}
@@ -130,6 +151,10 @@ RepublicDetail.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
+const mapStateToProps = createStructuredSelector({
+  user: makeSelectUserData(),
+});
+
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
@@ -138,7 +163,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 const withConnect = connect(
-  null,
+	mapStateToProps,
   mapDispatchToProps,
 );
 

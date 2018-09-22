@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography/Typography';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import MenuIcon from '@material-ui/icons/Menu';
 import MapIcon from '@material-ui/icons/Map';
+import HomeIcon from '@material-ui/icons/Home';
 import ListIcon from '@material-ui/icons/List';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import ExitIcon from '@material-ui/icons/ExitToApp';
@@ -140,13 +141,22 @@ class Header extends React.Component {
             >
               <GenerateListItem action={'/'} Icon={MapIcon} text={'Mapa de Repúblicas'}/>
               <GenerateListItem action={'/republic-list'} Icon={ListIcon} text={'Lista de Repúblicas'}/>
-            </List>
+							<GenerateListItem action={'/'} Icon={HomeIcon} text={'Minhas vagas'}/>
+						</List>
 						<Divider/>
 						<List
 							component="nav"
 							subheader={<ListSubheader component="div">Minha República</ListSubheader>}
 						>
+							<GenerateListItem action={'/republic-detail/' + user.republicId} Icon={HomeIcon} text={'Detalhe da república'}/>
 							<GenerateListItem action={'/notifications'} Icon={NotificationsIcon} text={'Mensagens'}/>
+						</List>
+						<Divider/>
+						<List
+							component="nav"
+							subheader={<ListSubheader component="div">Admin</ListSubheader>}
+						>
+							<GenerateListItem action={'/'} Icon={HomeIcon} text={'Minhas repúblicas'}/>
 						</List>
           </SwipeableDrawer>
           <div id="portal-header"/>
