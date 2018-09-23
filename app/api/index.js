@@ -11,7 +11,6 @@ const BASE_URL = 'https://us-central1-republicando-123.cloudfunctions.net/';
 
 const GET_REPUBLICS = 'getRepublics';
 const GET_REPUBLIC = 'getRepublic';
-const GET_NOTIFICATIONS = 'getNotifications';
 
 export const getRepublics = async () => {
   const republics = await axios
@@ -92,6 +91,8 @@ export const getUserTypeFromId = (userId) => {
   )};
 
 // Notifications
+
+const GET_NOTIFICATIONS = 'getNotifications';
 
 export const getNotifications = async (republicId) => {
     if (!republicId) return false;

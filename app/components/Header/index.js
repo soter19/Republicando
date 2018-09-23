@@ -141,7 +141,7 @@ class Header extends React.Component {
             >
               <GenerateListItem action={'/'} Icon={MapIcon} text={'Mapa de Repúblicas'}/>
               <GenerateListItem action={'/republic-list'} Icon={ListIcon} text={'Lista de Repúblicas'}/>
-							<GenerateListItem action={'/'} Icon={HomeIcon} text={'Minhas vagas'}/>
+							<GenerateListItem action={'/my-offers'} Icon={HomeIcon} text={'Minhas vagas'}/>
 						</List>
 						<Divider/>
 						<List
@@ -157,6 +157,13 @@ class Header extends React.Component {
 							subheader={<ListSubheader component="div">Admin</ListSubheader>}
 						>
 							<GenerateListItem action={'/'} Icon={HomeIcon} text={'Minhas repúblicas'}/>
+						</List>
+						<Divider/>
+						<List
+							component="nav"
+							subheader={<ListSubheader component="div">Apenas para teste</ListSubheader>}
+						>
+							<GenerateListItem action={'/edit-offer'} Icon={HomeIcon} text={'Criar vaga'}/>
 						</List>
           </SwipeableDrawer>
           <div id="portal-header"/>

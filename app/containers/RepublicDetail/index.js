@@ -45,7 +45,7 @@ const StyleCard = styled(Card)`
 
 const OfferCard = styled(Card)`
   max-width: 97%;
-  min-height: 200px;
+  max-height: 400px;
   
   &:focus {
     outline: unset;
@@ -72,7 +72,7 @@ export class RepublicDetail extends React.PureComponent {
       this.setState({ republic });
     });
     getOffers(id).then(offers => this.setState({ offers: offers.data }));
-    if(user) {
+		if(user) {
 			this.setState({ clientIsFromThisRepublic: id === user.republicId })
     }
   }
@@ -117,7 +117,8 @@ export class RepublicDetail extends React.PureComponent {
 									<CardContent>
 										<Typography variant='headline'>{offer.data.name}</Typography>
 										<Typography variant='caption'>{offer.data.description}</Typography>
-									</CardContent>
+                    <Typography variant='button'> {String(offer.data.renderValue)}</Typography>
+                  </CardContent>
 									<CardActions>
 										<Button
 											size="small"
