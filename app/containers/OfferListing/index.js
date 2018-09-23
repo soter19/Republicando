@@ -16,6 +16,10 @@ import MUIListItem from '@material-ui/core/ListItem';
 import Button from "@material-ui/core/Button/Button";
 import styled from "styled-components";
 import Card from "@material-ui/core/Card/Card";
+import { getMyOffers, getOfferById, unapplyToOffer } from '../../api';
+import { createStructuredSelector } from "reselect";
+import { makeSelectUserData } from '../App/selectors';
+import LoadingIndicator from '../../components/LoadingIndicator';
 
 const ListItem = styled(MUIListItem)`
   width: 100%;
@@ -45,98 +49,57 @@ export class OfferListing extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.state = {
-			offers: [],
+			offers: null,
 		};
 	}
 
-	componentWillMount() {
-  // TODO INTEGRAÇAO GET MY OFFERS
-	}
+	componentDidUpdate(prevProps) {
+	  const { user } = this.props;
+	  if(prevProps.user !== user){
+      const { offers } = user;
+      Promise.all(offers.map(getOfferById)).then((offers) => this.setState({ offers }));
+    }
+  }
+
+  handleUnaply = (offerId) => {
+		const { id : clientId } = this.props.user;
+
+    unapplyToOffer(offerId , clientId).then(() => {
+    	const newOffers = this.state.offers.filter((o) => o.id !== offerId);
+			this.setState({ offers: newOffers });
+		});
+  }
 
   render() {
 		const { offers } = this.state;
 
+		if(!offers) return <LoadingIndicator />;
+
 		return (<div>
 			<Title variant="title">Minhas Vagas</Title>
-				{/*<List>*/}
-					{/*{offers &&*/}
-            {/*offers.map(offer => (*/}
-						{/*<ListItem>*/}
-							{/*<OfferCard>*/}
-								{/*<CardContent>*/}
-									{/*<Typography variant='headline'>{offer.data.name}</Typography>*/}
-									{/*<Typography variant='caption'>{offer.data.description}</Typography>*/}
-				          {/*<Typography variant='button'>{String(offer.data.renderValue)}</Typography>*/}
-                {/*</CardContent>*/}
-								{/*<CardActions>*/}
-									{/*<Button*/}
-										{/*size="small"*/}
-										{/*variant="flat"*/}
-										{/*color="primary" >*/}
-										{/*DESCANDIDATAR-SE*/}
-									{/*</Button>*/}
-								{/*</CardActions>*/}
-							{/*</OfferCard>*/}
-						{/*</ListItem>*/}
-					{/*))}*/}
-				{/*</List>*/}
-
-				{/*//TODO REMOVER CÓDIGO A BAIXO QUANDO INTEGRAÇAO ESTIVER PRONTA*/}
 				<List>
+					{offers.map(offer => (
 						<ListItem>
 							<OfferCard>
 								<CardContent>
-									<Typography variant='headline'>Titulo da vaga</Typography>
-									<Typography variant='caption'>Descricacao da vaga</Typography>
-									<Typography variant='button'>Valor: R$ 700,00</Typography>
+									<Typography variant='headline'>{offer.name}</Typography>
+									<Typography variant='caption'>{offer.description}</Typography>
+				          <Typography variant='button'>{offer.renderValue}</Typography>
                 </CardContent>
 								<CardActions>
 									<Button
 										size="small"
 										variant="flat"
-										color="primary" >
+										color="primary"
+                    onClick={() => this.handleUnaply(offer.id)}
+									>
 										DESCANDIDATAR-SE
 									</Button>
 								</CardActions>
 							</OfferCard>
 						</ListItem>
-            <ListItem>
-              <OfferCard>
-                <CardContent>
-                  <Typography variant='headline'>Titulo da vaga</Typography>
-                  <Typography variant='caption'>Descricacao da vaga</Typography>
-									<Typography variant='button'>Valor: R$ 700,00</Typography>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    size="small"
-                    variant="flat"
-                    color="primary" >
-                    DESCANDIDATAR-SE
-                  </Button>
-                </CardActions>
-              </OfferCard>
-            </ListItem>
-            <ListItem>
-              <OfferCard>
-                <CardContent>
-                  <Typography variant='headline'>Titulo da vaga</Typography>
-                  <Typography variant='caption'>Descricacao da vaga</Typography>
-									<Typography variant='button'>Valor: R$ 700,00</Typography>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    size="small"
-                    variant="flat"
-                    color="primary" >
-                    DESCANDIDATAR-SE
-                  </Button>
-                </CardActions>
-              </OfferCard>
-            </ListItem>
+					))}
 				</List>
-
-
 		</div>
     );
   }
@@ -146,6 +109,10 @@ OfferListing.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
+const mapStateToProps = createStructuredSelector({
+  user: makeSelectUserData(),
+});
+
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
@@ -153,7 +120,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 const withConnect = connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 );
 

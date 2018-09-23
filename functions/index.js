@@ -147,7 +147,7 @@ exports.getOffersCount = baseEndpoint((res, req) => {
     .catch(console.error);
 });
 
-exports.applyToOffer = baseEndpoint(async (res, req) => {
+exports.applyToOffer = baseEndpoint((res, req) => {
   const { offerId, clientId } = req.query;
 
   if (!offerId || !clientId) {
@@ -155,15 +155,48 @@ exports.applyToOffer = baseEndpoint(async (res, req) => {
     return;
   }
 
-  await firestore.collection('offers').doc(offerId).set(
-    { candidates: clientId },
-    { merge: true }
-  );
+  const offerRef = firestore.collection('offers').doc(offerId);
+  const clientsRef = firestore.collection('clients').doc(clientId);
 
-  await firestore.collection('clients').doc(clientId).set(
-    { offers: offerId },
-    { merge: true }
-  );
+  offerRef.get().then((snap) => {
+    const candidates = snap.data().candidates;
+    const newList = [...candidates, clientId];
+    offerRef.update({ candidates: newList });
+  });
+
+  clientsRef.get().then((snap) => {
+    const offers = snap.data().offers;
+    const newList = [...offers, offerId];
+    clientsRef.update({ offers: newList });
+  });
+
+  res.status(200).send({ ok: 'Success!' });
+
+  return;
+});
+
+exports.unapplyToOffer = baseEndpoint((res, req) => {
+  const { offerId, clientId } = req.query;
+
+  if (!offerId || !clientId) {
+    res.status(400).send(errorResponse('Missing Parameters'));
+    return;
+  }
+
+  const offerRef = firestore.collection('offers').doc(offerId);
+  const clientsRef = firestore.collection('clients').doc(clientId);
+
+  offerRef.get().then((snap) => {
+    const candidates = snap.data().candidates;
+    const newList = candidates.filter((c) => c !== clientId)
+    offerRef.update({ candidates: newList });
+  });
+
+  clientsRef.get().then((snap) => {
+    const offers = snap.data().offers;
+    const newList = offers.filter((o) => o !== offerId)
+    clientsRef.update({ offers: newList });
+  });
 
   res.status(200).send({ ok: 'Success!' });
   return;
@@ -308,23 +341,6 @@ exports.getAdmin = baseEndpoint((res, req) => {
     .then(snap => {
       return res.status(200).send(parseDocument(snap));
     });
-});
-
-// Tags
-
-exports.getAllTags = baseEndpoint((res, req) => {
-  const response = [];
-  firestore
-    .collection('tags')
-    .get()
-    .then(snapshot => {
-      snapshot.forEach(d => {
-        response.push({ id: d.id, name: (d.data()).name });
-      });
-      res.status(200).send(response);
-      return true;
-    })
-    .catch(console.error);
 });
 
 // Notifications

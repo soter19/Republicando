@@ -4,8 +4,23 @@ import { firestore } from '../configureStore';
 
 const https = require('https');
 
-const BASE_URL = 'https://us-central1-republicando-123.cloudfunctions.net/';
-// const BASE_URL = 'http://localhost:5000/republicando-123/us-central1/';
+// const BASE_URL = 'https://us-central1-republicando-123.cloudfunctions.net/';
+const BASE_URL = 'http://localhost:5000/republicando-123/us-central1/';
+
+// Tags
+
+export const getAllTags = () => {
+  return firestore
+    .collection('tags')
+    .get()
+    .then(snapshot => {
+      let tags = [];
+      snapshot.forEach(d => {
+        tags.push({ id: d.id, name: (d.data()).name });
+      });
+      return tags;
+    })
+};
 
 // Republics
 
@@ -38,6 +53,7 @@ export const searchRepublicsByTag = async (tags) => {
 
 const GET_OFFERS = 'getOffers';
 const APPLY_TO_OFFER = 'applyToOffer';
+const UNAPPLY_TO_OFFER = 'unapplyToOffer';
 
 export const getOffers = async (republicId) =>
   axios.get(`${BASE_URL}${GET_OFFERS}?republicId=${republicId}`).catch(e => {
@@ -46,6 +62,13 @@ export const getOffers = async (republicId) =>
 
 export const applyToOffer = (offerId, clientId) =>
   axios.get(`${BASE_URL}${APPLY_TO_OFFER}?offerId=${offerId}&clientId=${clientId}`);
+
+export const unapplyToOffer = (offerId, clientId) =>
+  axios.get(`${BASE_URL}${UNAPPLY_TO_OFFER}?offerId=${offerId}&clientId=${clientId}`);
+
+export const getOfferById = async (id) => {
+  return firestore.collection('offers').doc(id).get().then((doc) => ({ id , ...doc.data() }));
+};
 
 // Admins
 

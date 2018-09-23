@@ -74,9 +74,9 @@ class Header extends React.Component {
 				dispatch(loginSuccessAction({
           id: user.uid,
           email: user.email,
-          republicId: completeUser.data.republicId,
           name: user.displayName,
-          isLogged: true
+          isLogged: true,
+          ...completeUser.data
 				}));
 				this.setState({ username: user.displayName, isLogged: true });
       });

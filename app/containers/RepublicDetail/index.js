@@ -86,7 +86,8 @@ export class RepublicDetail extends React.PureComponent {
 	}
 
   handleApply = (id) => {
-    applyToOffer(id).then(() => {
+    const { user } = this.props;
+    applyToOffer(id, user.id).then(() => {
       this.setState({ offerFeedback: true });
     });
   };
@@ -117,7 +118,7 @@ export class RepublicDetail extends React.PureComponent {
 									<CardContent>
 										<Typography variant='headline'>{offer.data.name}</Typography>
 										<Typography variant='caption'>{offer.data.description}</Typography>
-                    <Typography variant='button'> {String(offer.data.renderValue)}</Typography>
+                    <Typography variant='button'>R${offer.data.rentValue},00</Typography>
                   </CardContent>
 									<CardActions>
 										<Button
