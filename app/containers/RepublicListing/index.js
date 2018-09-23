@@ -13,8 +13,11 @@ import { compose } from 'redux';
 import RepublicCard from '../../components/RepublicCard';
 import MUIList from '@material-ui/core/List';
 import MUIListItem from '@material-ui/core/ListItem';
-import { getRepublics } from '../../api';
+import { getRepublicsApi } from '../../api';
 import { getCurrentUser } from '../../api/auth';
+import { createStructuredSelector } from "reselect";
+import { makeSelectFirestoreClients, makeSelectRepublics, makeSelectUserData } from '../App/selectors';
+import { getRepublics } from '../App/actions';
 
 const ListItem = styled(MUIListItem)`
   width: 100%;
@@ -34,20 +37,17 @@ const List = styled(MUIList)`
 export class RepublicListing extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.state = {
-      republics: [],
-    };
   }
 
   componentWillMount() {
-    getRepublics().then(republics => {
-      this.setState({ republics });
-    });
+    const { getRepublics, republics } = this.props;
+    if(republics.length === 0){
+      getRepublics();
+    }
   }
 
   render() {
-    const { republics } = this.state;
-    const { goToDetail } = this.props;
+    const { republics, goToDetail } = this.props;
     return (
       <List>
         {republics.map(rep => (
@@ -64,15 +64,22 @@ RepublicListing.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
+const mapStateToProps = createStructuredSelector({
+  clients: makeSelectFirestoreClients(),
+  user: makeSelectUserData(),
+  republics: makeSelectRepublics(),
+});
+
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
     goToDetail: republicId => dispatch(push(`/republic-detail/${republicId}`)),
+    getRepublics: () => getRepublics(dispatch),
   };
 }
 
 const withConnect = connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 );
 

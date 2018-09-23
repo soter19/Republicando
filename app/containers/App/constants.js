@@ -14,3 +14,6 @@ export const LOGIN_ERROR = 'LOGIN_ERROR';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 
 export const SET_USER_TYPE = 'SET_USER_TYPE';
+
+export const SET_FILTER = 'SET_FILTER';
+export const SET_REPUBLICS = 'SET_REPUBLICS';

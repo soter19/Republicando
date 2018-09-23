@@ -28,7 +28,7 @@ const GET_REPUBLICS = 'getRepublics';
 const GET_REPUBLIC = 'getRepublic';
 const SEARCH_REPUBLICS_BY_ID = 'searchRepublicsByTag';
 
-export const getRepublics = async () => {
+export const getRepublicsApi = async () => {
   const republics = await axios
     .get(`${BASE_URL}${GET_REPUBLICS}`)
     .catch(console.error);
@@ -44,9 +44,11 @@ export const getRepublic = async republicId => {
 };
 
 export const searchRepublicsByTag = async (tags) => {
+  debugger
   const republic = await axios
-    .get(`${BASE_URL}${SEARCH_REPUBLICS_BY_ID}`)
+    .post(`${BASE_URL}${SEARCH_REPUBLICS_BY_ID}`, { tags })
     .catch(console.error);
+  return republic && republic.data;
 };
 
 // Offers

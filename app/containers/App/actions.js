@@ -15,10 +15,11 @@
  *    }
  */
 
-import { LOGIN_START, LOGIN_SUCCESS, LOGIN_ERROR, SET_USER_TYPE } from './constants';
+import { LOGIN_START, LOGIN_SUCCESS, LOGIN_ERROR, SET_USER_TYPE, SET_REPUBLICS } from './constants';
 import { replace } from 'react-router-redux';
 import { doSignInWithEmailAndPassword } from '../../api/auth';
-import { getUserTypeFromId } from '../../api';
+import { getRepublicsApi, getUserTypeFromId, searchRepublicsByTag } from '../../api';
+import Geocode from 'react-geocode';
 
 export const loginStartAction = () => ({
   type: LOGIN_START,
@@ -40,6 +41,39 @@ export const setUserType = (userType) => ({
     userType
   }
 });
+
+export const setRepublics = (republics) => ({
+  type: SET_REPUBLICS,
+  payload: {
+    republics,
+  }
+});
+
+export const getRepublics = (dispatch) => {
+  Geocode.setApiKey('AIzaSyA70pIpiayu0GmfYAvG1CP9UeeZZX2wMN4');
+  getRepublicsApi().then(async republics => {
+    const res = await republics.map(async rep => ({
+      ...rep,
+      location: (await Geocode.fromAddress(rep.data.address)).results[0].geometry.location,
+    }));
+    Promise.all(res).then(response => {
+      dispatch(setRepublics(response));
+    });
+  });
+};
+
+export const getRepublicsByTag = (dispatch) => (tags) => {
+  Geocode.setApiKey('AIzaSyA70pIpiayu0GmfYAvG1CP9UeeZZX2wMN4');
+  searchRepublicsByTag(tags).then(async republics => {
+    const res = await republics.map(async rep => ({
+      ...rep,
+      location: (await Geocode.fromAddress(rep.data.address)).results[0].geometry.location,
+    }));
+    Promise.all(res).then(response => {
+      dispatch(setRepublics(response));
+    });
+  });
+};
 
 
 export const login = (dispatch) => (email, password) => {

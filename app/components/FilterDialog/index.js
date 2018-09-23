@@ -17,6 +17,9 @@ import List from '@material-ui/core/List/List';
 import { getAllTags } from '../../api';
 import ListItemText from '@material-ui/core/ListItemText/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction/ListItemSecondaryAction';
+import { makeSelectFilters } from '../../containers/App/selectors';
+import { setFilter } from './actions';
+import { getRepublicsByTag } from '../../containers/App/actions';
 
 function Transition(props) {
   return <Slide direction="up" {...props} />;
@@ -32,6 +35,7 @@ class FilterDialog extends PureComponent {
     super(props);
     this.state = {
       availableFilters: [],
+      tempFilters: [],
     };
   }
 
@@ -39,25 +43,47 @@ class FilterDialog extends PureComponent {
     getAllTags().then((tags) => {
       this.setState({ availableFilters: tags });
     });
-    debugger;
   }
 
   componentDidMount() {
 
   }
 
+  handleFilterSelection = (e) => {
+    const { value, id } = e.target;
+    // TODO IMPROVE THIS SHITTY LOGIC
+    this.setState({
+      tempFilters:
+        [...this.state.tempFilters, id]
+    });
+  };
+
   getFilters = (availableFilters) => {
+    const { filters } = this.props;
     return availableFilters.map(({name, id}) => (
       <Fragment>
         <ListItem>
           <ListItemText primary={name}/>
           <ListItemSecondaryAction>
-            <Checkbox id={id} onChange={console.log} value={name}/>
+            <Checkbox
+              id={id}
+              onChange={this.handleFilterSelection}
+              value={name}
+            />
           </ListItemSecondaryAction>
           <Divider/>
         </ListItem>
       </Fragment>
     ))
+  };
+
+  applyFilters = () => {
+    const { setFilters, onClose } = this.props;
+    const { tempFilters } = this.state;
+    setFilters(tempFilters);
+    this.setState({
+      tempFilters: [],
+    }, onClose);
   };
 
   render() {
@@ -77,10 +103,10 @@ class FilterDialog extends PureComponent {
               this.getFilters(availableFilters)
             }
           </List>
-          <Button color="primary" onClick={console.log}>
+          <Button fullWidth color="primary" onClick={this.applyFilters}>
             Aplicar
           </Button>
-          <Button color="inherit" onClick={onClose}>
+          <Button fullWidth color="inherit" onClick={onClose}>
             Fechar
           </Button>
         </FilterDialogWrapper>
@@ -95,11 +121,17 @@ FilterDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = createStructuredSelector({});
+const mapStateToProps = createStructuredSelector({
+  filters: makeSelectFilters(),
+});
 
 const mapDispatchToProps = dispatch => ({
   dispatch,
   goToDetail: republicId => dispatch(push(`/republic-detail/${republicId}`)),
+  setFilters: filters => {
+    dispatch(setFilter(filters));
+    getRepublicsByTag(dispatch)(filters);
+  }
 });
 
 const withConnect = connect(
