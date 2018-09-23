@@ -959,3 +959,46 @@ SyntaxError: Unexpected token (
 [info] ✔  functions: getAdmin: http://localhost:5000/republicando-123/us-central1/getAdmin
 [info] ✔  functions: getRepublics: http://localhost:5000/republicando-123/us-central1/getRepublics
 [info] ✔  functions: createRepublic: http://localhost:5000/republicando-123/us-central1/createRepublic
+[debug] [2018-09-23T22:53:54.838Z] ----------------------------------------------------------------------
+[debug] [2018-09-23T22:53:54.842Z] Command:       /Users/isabelelima/.nvm/versions/node/v8.1.4/bin/node /Users/isabelelima/.nvm/versions/node/v8.1.4/bin/firebase serve
+[debug] [2018-09-23T22:53:54.842Z] CLI Version:   4.2.1
+[debug] [2018-09-23T22:53:54.842Z] Platform:      darwin
+[debug] [2018-09-23T22:53:54.842Z] Node Version:  v8.1.4
+[debug] [2018-09-23T22:53:54.843Z] Time:          Sun Sep 23 2018 19:53:54 GMT-0300 (-03)
+[debug] [2018-09-23T22:53:54.843Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-09-23T22:53:54.866Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-09-23T22:53:54.866Z] > authorizing via signed-in user
+[debug] [2018-09-23T22:53:54.869Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2018-09-23T22:53:54.869Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+
+[debug] [2018-09-23T22:54:01.721Z] <<< HTTP RESPONSE 200
+[debug] [2018-09-23T22:54:01.795Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/republicando-123  
+ 
+[debug] [2018-09-23T22:54:04.642Z] <<< HTTP RESPONSE 200
+[debug] [2018-09-23T22:54:04.644Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/republicando-123  
+ 
+[debug] [2018-09-23T22:54:07.021Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/isabelelima/FIAP/Republicando'...
+[info] 
+[info] i  functions: Preparing to emulate functions.
+[debug] [2018-09-23T22:54:08.705Z] Fetching environment
+[debug] [2018-09-23T22:54:08.708Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/352916716074:getServerAppConfig  
+ 
+[debug] [2018-09-23T22:54:11.613Z] <<< HTTP RESPONSE 200
+[debug] [2018-09-23T22:54:11.614Z] Starting @google-cloud/functions-emulator
+[debug] [2018-09-23T22:54:14.817Z] Parsing function triggers
+[info] ✔  functions: getOffers: http://localhost:5000/republicando-123/us-central1/getOffers
+[info] ✔  functions: getOffersCount: http://localhost:5000/republicando-123/us-central1/getOffersCount
+[info] ✔  functions: applyToOffer: http://localhost:5000/republicando-123/us-central1/applyToOffer
+[info] ✔  functions: unapplyToOffer: http://localhost:5000/republicando-123/us-central1/unapplyToOffer
+[info] ✔  functions: createRepublic: http://localhost:5000/republicando-123/us-central1/createRepublic
+[info] ✔  functions: getAdmin: http://localhost:5000/republicando-123/us-central1/getAdmin
+[info] ✔  functions: searchRepublicsByTag: http://localhost:5000/republicando-123/us-central1/searchRepublicsByTag
+[info] ✔  functions: getRepublic: http://localhost:5000/republicando-123/us-central1/getRepublic
+[info] ✔  functions: getNotifications: http://localhost:5000/republicando-123/us-central1/getNotifications
+[info] ✔  functions: getClient: http://localhost:5000/republicando-123/us-central1/getClient
+[info] ✔  functions: getRepublics: http://localhost:5000/republicando-123/us-central1/getRepublics
+[info] ✔  functions: createClient: http://localhost:5000/republicando-123/us-central1/createClient
+[info] ✔  functions: createAdmin: http://localhost:5000/republicando-123/us-central1/createAdmin

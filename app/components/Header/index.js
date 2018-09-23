@@ -11,6 +11,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import MapIcon from '@material-ui/icons/Map';
 import HomeIcon from '@material-ui/icons/Home';
 import ListIcon from '@material-ui/icons/List';
+import PersonIcon from '@material-ui/icons/Person';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import ExitIcon from '@material-ui/icons/ExitToApp';
 import IconButton from '@material-ui/core/IconButton';
@@ -164,6 +165,7 @@ class Header extends React.Component {
 							subheader={<ListSubheader component="div">Apenas para teste</ListSubheader>}
 						>
 							<GenerateListItem action={'/edit-offer'} Icon={HomeIcon} text={'Criar vaga'}/>
+							<GenerateListItem action={'/candidates'} Icon={PersonIcon} text={'Lista de candidatos'}/>
 						</List>
           </SwipeableDrawer>
           <div id="portal-header"/>

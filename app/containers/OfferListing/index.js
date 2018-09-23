@@ -75,8 +75,9 @@ export class OfferListing extends React.PureComponent {
 
 		if(!offers) return <LoadingIndicator />;
 
-		return (<div>
-			<Title variant="title">Minhas Vagas</Title>
+		return (
+		  <div>
+				<Title variant="title">Minhas Vagas</Title>
 				<List>
 					{offers.map(offer => (
 						<ListItem>

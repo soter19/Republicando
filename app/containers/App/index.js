@@ -18,6 +18,7 @@ import RepublicDetail from 'containers/RepublicDetail/Loadable';
 import FeaturePage from 'containers/FeaturePage/Loadable';
 import NotificationPage from 'containers/NotificationPage/Loadable';
 import EditOffersPage from 'containers/EditOffersPage/Loadable';
+import CandidatesListing from 'containers/CandidatesListing/Loadable';
 import OfferListing from 'containers/OfferListing/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import Header from 'components/Header';
@@ -46,6 +47,7 @@ export default function App() {
         <Route path="/notifications" component={NotificationPage} />
 				<Route path="/edit-offer" component={EditOffersPage} />
 				<Route path="/my-offers" component={OfferListing} />
+				<Route path="/candidates" component={CandidatesListing} />
         <Route path="" component={NotFoundPage} />
       </Switch>
       <Footer />

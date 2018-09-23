@@ -23,8 +23,8 @@ class NotificationCard extends React.PureComponent {
 		return (
 			<StyleCard>
 				<CardContent>
-					<Typography variant="headline" component="h5">{notification.title}</Typography>
-					<Typography component="p">{notification.description}</Typography>
+					<Typography variant="title" component="h5">{notification.title}</Typography>
+					<Typography component="subheading">{notification.description}</Typography>
 				</CardContent>
 			</StyleCard>
 		);
