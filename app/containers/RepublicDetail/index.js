@@ -163,7 +163,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 const withConnect = connect(
-	mapStateToProps,
+  mapStateToProps,
   mapDispatchToProps,
 );
 

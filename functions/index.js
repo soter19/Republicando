@@ -147,13 +147,23 @@ exports.getOffersCount = baseEndpoint((res, req) => {
     .catch(console.error);
 });
 
-exports.applyToOffer = baseEndpoint((res, req) => {
-  const { offerId } = req.query;
+exports.applyToOffer = baseEndpoint(async (res, req) => {
+  const { offerId, clientId } = req.query;
 
-  if (!offerId) {
+  if (!offerId || !clientId) {
     res.status(400).send(errorResponse('Missing Parameters'));
     return;
   }
+
+  await firestore.collection('offers').doc(offerId).set(
+    { candidates: clientId },
+    { merge: true }
+  );
+
+  await firestore.collection('clients').doc(clientId).set(
+    { offers: offerId },
+    { merge: true }
+  );
 
   res.status(200).send({ ok: 'Success!' });
   return;
@@ -178,9 +188,17 @@ exports.getRepublics = baseEndpoint((res, req) => {
 
 exports.searchRepublicsByTag = baseEndpoint((res, req) => {
   const { tags } = req.body;
+  const createTagQuery = (collection) => {
+    let composedQuery = collection;
+    tags.forEach(tag => {
+      composedQuery = composedQuery.where(`tags.${tag}`, '==', true)
+    });
+    return composedQuery;
+  };
   const response = [];
-  firestore
-    .collection('republics')
+  createTagQuery(
+    firestore.collection('republics'))
+    .get()
     .then(snapshot => {
       snapshot.forEach(d => {
         response.push(parseDocument(d));

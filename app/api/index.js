@@ -12,6 +12,7 @@ const BASE_URL = 'https://us-central1-republicando-123.cloudfunctions.net/';
 const GET_REPUBLICS = 'getRepublics';
 const GET_REPUBLIC = 'getRepublic';
 const GET_NOTIFICATIONS = 'getNotifications';
+const SEARCH_REPUBLICS_BY_ID = 'searchRepublicsByTag';
 
 export const getRepublics = async () => {
   const republics = await axios
@@ -28,6 +29,12 @@ export const getRepublic = async republicId => {
   return republic && republic.data;
 };
 
+export const searchRepublicsByTag = async (tags) => {
+  const republic = await axios
+    .get(`${BASE_URL}${SEARCH_REPUBLICS_BY_ID}`)
+    .catch(console.error);
+};
+
 // Offers
 
 const GET_OFFERS = 'getOffers';
@@ -38,8 +45,8 @@ export const getOffers = async (republicId) =>
     console.error(e);
   });
 
-export const applyToOffer = offerId =>
-  axios.get(`${BASE_URL}${APPLY_TO_OFFER}?offerId=${offerId}`);
+export const applyToOffer = (offerId, clientId) =>
+  axios.get(`${BASE_URL}${APPLY_TO_OFFER}?offerId=${offerId}&clientId=${clientId}`);
 
 // Admins
 
