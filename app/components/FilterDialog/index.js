@@ -60,6 +60,7 @@ class FilterDialog extends PureComponent {
 
   getFilters = (availableFilters) => {
     const { filters } = this.props;
+    debugger
     return availableFilters.map(({name, id}) => (
       <Fragment>
         <ListItem>
@@ -67,6 +68,7 @@ class FilterDialog extends PureComponent {
           <ListItemSecondaryAction>
             <Checkbox
               id={id}
+              defaultChecked={filters.includes(id)}
               onChange={this.handleFilterSelection}
               value={name}
             />
