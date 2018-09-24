@@ -44,7 +44,6 @@ export const getRepublic = async republicId => {
 };
 
 export const searchRepublicsByTag = async (tags) => {
-  debugger
   const republic = await axios
     .post(`${BASE_URL}${SEARCH_REPUBLICS_BY_ID}`, { tags })
     .catch(console.error);

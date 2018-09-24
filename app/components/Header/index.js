@@ -25,9 +25,9 @@ import { doSignOut } from '../../api/auth';
 import { push } from 'react-router-redux';
 import connect from 'react-redux/es/connect/connect';
 import { compose } from 'recompose';
-import { makeSelectUserData } from '../../containers/App/selectors';
-import {login, loginSuccessAction} from "../../containers/App/actions";
-import {getMe} from "../../api";
+import { makeSelectUserData, makeSelectUserType } from '../../containers/App/selectors';
+import { login, loginSuccessAction, setUserType } from '../../containers/App/actions';
+import { getMe, getUserTypeFromId } from '../../api';
 
 const List = styled(MUIList)`
   a {
@@ -79,6 +79,9 @@ class Header extends React.Component {
           isLogged: true,
           ...completeUser.data
 				}));
+        getUserTypeFromId(user.uid).then((res) => {
+          dispatch(setUserType(res))
+        });
 				this.setState({ username: user.displayName, isLogged: true });
       });
     });
@@ -107,7 +110,7 @@ class Header extends React.Component {
       );
     };
     const { menuOpen, username, isLogged } = this.state;
-    const { user } = this.props;
+    const { user, userType } = this.props;
     return (
       <AppBar position="static">
         <Toolbar>
@@ -131,7 +134,6 @@ class Header extends React.Component {
               component="nav"
               subheader={<ListSubheader component="div">Olá, {username}</ListSubheader>}
             >
-              {/*<GenerateListItem action={'/profile'} Icon={PersonIcon} text={'Perfil'} />*/}
               <GenerateListItem action={this.handleSignOut} Icon={ExitIcon} text={'Logout'}/>
             </List>)
             }
@@ -142,23 +144,25 @@ class Header extends React.Component {
             >
               <GenerateListItem action={'/'} Icon={MapIcon} text={'Mapa de Repúblicas'}/>
               <GenerateListItem action={'/republic-list'} Icon={ListIcon} text={'Lista de Repúblicas'}/>
-							<GenerateListItem action={'/my-offers'} Icon={HomeIcon} text={'Minhas vagas'}/>
+              { !user.republicId && <GenerateListItem action={'/my-offers'} Icon={HomeIcon} text={'Minhas vagas'}/>}
 						</List>
 						<Divider/>
+            { user.republicId && (
 						<List
 							component="nav"
 							subheader={<ListSubheader component="div">Minha República</ListSubheader>}
 						>
 							<GenerateListItem action={'/republic-detail/' + user.republicId} Icon={HomeIcon} text={'Detalhe da república'}/>
 							<GenerateListItem action={'/notifications'} Icon={NotificationsIcon} text={'Mensagens'}/>
-						</List>
+						</List>)
+            }
 						<Divider/>
-						<List
+            { userType === 'admins' && (<List
 							component="nav"
 							subheader={<ListSubheader component="div">Admin</ListSubheader>}
 						>
 							<GenerateListItem action={'/'} Icon={HomeIcon} text={'Minhas repúblicas'}/>
-						</List>
+						</List>)}
 						<Divider/>
 						<List
 							component="nav"
@@ -188,6 +192,7 @@ Header.defaultProps = {
 
 const mapStateToProps = createStructuredSelector({
   user: makeSelectUserData(),
+  userType: makeSelectUserType(),
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -28,19 +28,13 @@ const settings = {
   dots: true,
   arrows: false,
   centerMode: true,
-  infinite: true,
   speed: 500,
-  slidesToShow: 2,
-  slidesToScroll: 1
+  infinite: false,
 };
 
 const StyledCardMedia = styled(CardMedia)`
   width: 100%;
   height: 300px;
-`;
-
-const StyleCard = styled(Card)`
-  max-width: 100%;
 `;
 
 const OfferCard = styled(Card)`

@@ -57,7 +57,7 @@ export class OfferListing extends React.PureComponent {
 	  const { user } = this.props;
 	  if(prevProps.user !== user){
       const { offers } = user;
-      Promise.all(offers.map(getOfferById)).then((offers) => this.setState({ offers }));
+      Promise.all(offers.map(getOfferById)).then((offers) => this.setState({ offers: offers ? offers : [] }));
     }
   }
 

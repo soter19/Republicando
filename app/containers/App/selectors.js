@@ -14,6 +14,9 @@ const makeSelectFirestoreClients = () =>
 export const makeSelectUserData = () =>
   createSelector(selectGlobal, data => data && data.get('userData').toJS());
 
+export const makeSelectUserType = () =>
+  createSelector(selectGlobal, data => data && data.get('currentUserType'));
+
 export const makeSelectFilters = () =>
   createSelector(selectGlobal, data => data && data.get('currentFilters').toJS());
 

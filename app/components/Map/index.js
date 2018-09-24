@@ -116,12 +116,10 @@ const MyMapComponent = compose(
           props.setCenter({
             lat: position.coords.latitude,
             lng: position.coords.longitude
-          })
+          });
           props.toggleGettingLocation();
         }
       )
-    } else {
-      error => console.log(error)
     }
   };
   return (
