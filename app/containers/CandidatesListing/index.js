@@ -22,6 +22,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Divider from "@material-ui/core/Divider/Divider";
+import ListSubheader from '@material-ui/core/ListSubheader';
 
 const ListItem = styled(MUIListItem)`
   width: 100%;
@@ -35,10 +36,6 @@ const List = styled(MUIList)`
   @media (max-width: 600px) {
     grid-template-columns: 1fr;
   }
-`;
-
-const Title = styled(Typography)`
-  padding: 10px;
 `;
 
 const AvatarUser = styled(Avatar)`
@@ -55,9 +52,12 @@ export class CandidatesListing extends React.PureComponent {
   render() {
     return (
 			<div>
-				<Title variant="title">Candidatos</Title>
-				<List>
-						<ListItem>
+				<List
+					component="nav"
+					subheader={<ListSubheader component="div">Candidatos</ListSubheader>}
+				>
+					<Divider/>
+					<ListItem>
               <ListItemAvatar>
                 <AvatarUser>
                   <PersonIcon />

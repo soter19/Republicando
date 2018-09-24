@@ -11,39 +11,57 @@ import { compose } from 'redux';
 import styled from "styled-components";
 import TextField from "@material-ui/core/TextField/TextField";
 import Button from "@material-ui/core/Button/Button";
+import ListSubheader from "@material-ui/core/ListSubheader/ListSubheader";
 import Typography from "@material-ui/core/Typography/Typography";
+import CardContent from "@material-ui/core/CardContent/CardContent";
 
+const TextFieldCreate = styled(TextField)`
+  margin: 10px;
+`;
+
+const ButtonCreate = styled(Button)`
+  margin: 10px;
+`;
+
+const Title = styled(Typography)`
+  margin: 10px;
+`;
+
+const Subtitle = styled(Typography)`
+  margin: 10px;
+`;
 
 export class EditOffersPage extends React.PureComponent {
   render() {
 		return (
 			<Fragment>
-				<Typography variant="title">Criar vaga:</Typography>
-				<TextField
+				<Title variant='title'>Criar vaga </Title>
+				<Subtitle variant='subheadings'>Insira os dados: </Subtitle>
+				<TextFieldCreate
 					required
 					id="name"
 					label="Nome"
 					type="text"
         />
-				<TextField
+				<TextFieldCreate
 					required
 					id="description"
 					label="Descrição"
 					type="text"
 				/>
-				<TextField
+				<TextFieldCreate
 					required
 					id="price"
 					label="Valor R$"
 					type="number"
 				/>
-				<Button
+				<ButtonCreate
 					variant="contained"
 					color="primary"
 					type="submit"
 				>
 					Criar vaga
-				</Button>
+				</ButtonCreate>
 			</Fragment>
 		);  }
 }

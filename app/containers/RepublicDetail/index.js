@@ -16,11 +16,11 @@ import Typography from '@material-ui/core/Typography/Typography';
 import CardMedia from '@material-ui/core/CardMedia/CardMedia';
 import Card from '@material-ui/core/Card/Card';
 import Button from '@material-ui/core/Button/Button';
-import {getRepublic, applyToOffer, getOffers, getMe, getNotifications} from '../../api';
-import LoadingIndicator from '../../components/LoadingIndicator';
+import Chip from '@material-ui/core/Chip';
 import Slider from "react-slick";
 import CardActions from '@material-ui/core/CardActions/CardActions';
-import {loginSuccessAction} from "../App/actions";
+import {getRepublic, applyToOffer, getOffers, getMe, getNotifications, getAllTags} from '../../api';
+import LoadingIndicator from '../../components/LoadingIndicator';
 import {makeSelectUserData} from "../App/selectors";
 import {createStructuredSelector} from "reselect";
 
@@ -35,7 +35,8 @@ const settings = {
 };
 
 const StyledCardMedia = styled(CardMedia)`
-  width: 100%;
+  margin: 10px;
+  min-width: 90%;
   height: 300px;
 `;
 
@@ -52,6 +53,13 @@ const OfferCard = styled(Card)`
   }
 `;
 
+const Title = styled(Typography)`
+  margin: 10px;
+`;
+
+const ChipTags = styled(Chip)`
+  margin: 4px;
+`;
 export class RepublicDetail extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -59,6 +67,9 @@ export class RepublicDetail extends React.PureComponent {
       republic: null,
       offerFeedback: undefined,
       clientIsFromThisRepublic: false,
+			chipTags: [
+
+			],
     };
   }
 
@@ -70,6 +81,15 @@ export class RepublicDetail extends React.PureComponent {
     }
     getRepublic(id).then(republic => {
       this.setState({ republic });
+			getAllTags().then((tags, i) => {
+			  const chipTags = Object.keys(republic.data.tags).map(tag => {
+					return {
+					  key: i,
+					  label: tags.find((t) => t.id === tag).name,
+					}
+				});
+				this.setState({ chipTags });
+			});
     });
     getOffers(id).then(offers => this.setState({ offers: offers.data }));
 		if(user) {
@@ -93,30 +113,37 @@ export class RepublicDetail extends React.PureComponent {
   };
 
   render() {
-    const { republic, offerFeedback, offers, clientIsFromThisRepublic } = this.state;
+    const { republic, offerFeedback, offers, clientIsFromThisRepublic, chipTags } = this.state;
     if (!republic) return (<LoadingIndicator/>);
 
     return (
       <div style={{ padding: '10px'}}>
-          <StyledCardMedia image={republic.data.photoUrl} />
+				<Title variant='title'>{republic.data.name}</Title>
+        <StyledCardMedia image={republic.data.photoUrl} />
           <CardContent>
             <Typography variant="headline" component="h5">
               {republic.data.title}
             </Typography>
-            <Typography component="p" variant='subheading'>Descrição:</Typography>
-            <Typography component="p">{republic.data.description}</Typography>
+            <Typography component="p" variant='title'>Descrição:</Typography>
+            <Typography component="p" variant='subheading'>{republic.data.description}</Typography>
             <hr style={{ margin: '10px 0' }}/>
-            <Typography component="p"><b>Endereço:</b> {republic.data.address}</Typography>
+            <Typography component="p" variant='body2'><b>Endereço:</b> {republic.data.address}</Typography>
           </CardContent>
+          <div>
+						<Title variant="title">Características</Title>
+            {chipTags.map( tags => (
+							<ChipTags label={tags.label}/>
+						))}
+          </div>
         {!clientIsFromThisRepublic && (
           <div>
-						<Typography variant="title">Vagas</Typography>
+						<Title variant="title">Vagas</Title>
 						<Slider {...settings}>
 							{offers &&
 							offers.map(offer => (
 								<OfferCard>
 									<CardContent>
-										<Typography variant='headline'>{offer.data.name}</Typography>
+										<Typography variant='body1'>{offer.data.name}</Typography>
 										<Typography variant='caption'>{offer.data.description}</Typography>
                     <Typography variant='button'>R${offer.data.rentValue},00</Typography>
                   </CardContent>
