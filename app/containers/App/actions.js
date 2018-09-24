@@ -20,6 +20,7 @@ import { replace } from 'react-router-redux';
 import { doSignInWithEmailAndPassword } from '../../api/auth';
 import { getRepublicsApi, getUserTypeFromId, searchRepublicsByTag } from '../../api';
 import Geocode from 'react-geocode';
+import {makeSelectUserType} from "./selectors";
 
 export const loginStartAction = () => ({
   type: LOGIN_START,
@@ -81,8 +82,12 @@ export const login = (dispatch) => (email, password) => {
   doSignInWithEmailAndPassword(email, password).then(({ user }) => {
     getUserTypeFromId(user.uid).then((res) => {
       dispatch(setUserType(res))
+      if(res === 'admins'){
+				dispatch(replace('/republic-list-admin'))
+      } else {
+				dispatch(replace('/'))
+      }
     });
-    dispatch(loginSuccessAction({ id: user.uid, email}));
-    dispatch(replace('/'))
+		dispatch(loginSuccessAction({ id: user.uid, email}));
   }).catch((e) => dispatch(loginErrorAction(e)))
 };

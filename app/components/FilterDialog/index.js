@@ -60,7 +60,6 @@ class FilterDialog extends PureComponent {
 
   getFilters = (availableFilters) => {
     const { filters } = this.props;
-    debugger
     return availableFilters.map(({name, id}) => (
       <Fragment>
         <ListItem>

@@ -138,32 +138,40 @@ class Header extends React.Component {
             </List>)
             }
             <Divider/>
-            <List
-              component="nav"
-              subheader={<ListSubheader component="div">Encontrar Repúblicas</ListSubheader>}
-            >
-              <GenerateListItem action={'/'} Icon={MapIcon} text={'Mapa de Repúblicas'}/>
-              <GenerateListItem action={'/republic-list'} Icon={ListIcon} text={'Lista de Repúblicas'}/>
-              { !user.republicId && <GenerateListItem action={'/my-offers'} Icon={HomeIcon} text={'Minhas vagas'}/>}
-						</List>
-						<Divider/>
-            { user.republicId && (
-						<List
-							component="nav"
-							subheader={<ListSubheader component="div">Minha República</ListSubheader>}
-						>
-							<GenerateListItem action={'/republic-detail/' + user.republicId} Icon={HomeIcon} text={'Detalhe da república'}/>
-							<GenerateListItem action={'/notifications'} Icon={NotificationsIcon} text={'Mensagens'}/>
-						</List>)
-            }
-						<Divider/>
+            { userType === 'clients' && (
+              <div>
+								<List
+									component="nav"
+									subheader={<ListSubheader component="div">Encontrar Repúblicas</ListSubheader>}
+								>
+									<GenerateListItem action={'/'} Icon={MapIcon} text={'Mapa de Repúblicas'}/>
+									<GenerateListItem action={'/republic-list'} Icon={ListIcon} text={'Lista de Repúblicas'}/>
+									{ !user.republicId && <GenerateListItem action={'/my-offers'} Icon={HomeIcon} text={'Minhas vagas'}/>}
+								</List>
+								<Divider/>
+								{ user.republicId && (
+								  <div>
+										<List
+											component="nav"
+											subheader={<ListSubheader component="div">Minha República</ListSubheader>}
+										>
+											<GenerateListItem action={'/republic-detail/' + user.republicId} Icon={HomeIcon} text={'Detalhe da república'}/>
+											<GenerateListItem action={'/notifications'} Icon={NotificationsIcon} text={'Mensagens'}/>
+										</List>
+										<Divider/>
+                  </div>
+                  )}
+              </div>
+            )}
             { userType === 'admins' && (<List
 							component="nav"
 							subheader={<ListSubheader component="div">Admin</ListSubheader>}
 						>
-							<GenerateListItem action={'/'} Icon={HomeIcon} text={'Minhas repúblicas'}/>
+							<GenerateListItem action={'/republic-list-admin'} Icon={HomeIcon} text={'Minhas repúblicas'}/>
 						</List>)}
 						<Divider/>
+
+            {/*//TODO REMOVER*/}
 						<List
 							component="nav"
 							subheader={<ListSubheader component="div">Apenas para teste</ListSubheader>}

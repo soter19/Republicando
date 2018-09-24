@@ -20,6 +20,7 @@ import NotificationPage from 'containers/NotificationPage/Loadable';
 import EditOffersPage from 'containers/EditOffersPage/Loadable';
 import CandidatesListing from 'containers/CandidatesListing/Loadable';
 import OfferListing from 'containers/OfferListing/Loadable';
+import RepublicListingAdmin from 'containers/RepublicListingAdmin/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
@@ -48,6 +49,7 @@ export default function App() {
 				<Route path="/edit-offer" component={EditOffersPage} />
 				<Route path="/my-offers" component={OfferListing} />
 				<Route path="/candidates" component={CandidatesListing} />
+				<Route path="/republic-list-admin" component={RepublicListingAdmin} />
         <Route path="" component={NotFoundPage} />
       </Switch>
       <Footer />

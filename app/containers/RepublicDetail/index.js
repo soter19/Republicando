@@ -23,6 +23,14 @@ import {getRepublic, applyToOffer, getOffers, getMe, getNotifications, getAllTag
 import LoadingIndicator from '../../components/LoadingIndicator';
 import {makeSelectUserData} from "../App/selectors";
 import {createStructuredSelector} from "reselect";
+import Divider from "@material-ui/core/Divider/Divider";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar/ListItemAvatar";
+import PersonIcon from "@material-ui/core/SvgIcon/SvgIcon";
+import ListItemText from "@material-ui/core/ListItemText/ListItemText";
+import MUIListItem from "@material-ui/core/ListItem/ListItem";
+import MUIList from "@material-ui/core/List/List";
+import Avatar from "@material-ui/core/Avatar/Avatar";
+import ListSubheader from "@material-ui/core/ListSubheader/ListSubheader";
 
 const settings = {
   dots: true,
@@ -54,6 +62,27 @@ const Title = styled(Typography)`
 const ChipTags = styled(Chip)`
   margin: 4px;
 `;
+
+const ListItem = styled(MUIListItem)`
+  width: 100%;
+  padding: 10px;
+`;
+
+const List = styled(MUIList)`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const AvatarUser = styled(Avatar)`
+  background-color: dodgerblue;
+  width: 50px;
+  height: 50px;
+`;
+
 export class RepublicDetail extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -112,26 +141,68 @@ export class RepublicDetail extends React.PureComponent {
 
     return (
       <div style={{ padding: '10px'}}>
-				<Title variant='title'>{republic.data.name}</Title>
+				<Title variant='subheading'>{republic.data.name}</Title>
         <StyledCardMedia image={republic.data.photoUrl} />
           <CardContent>
             <Typography variant="headline" component="h5">
               {republic.data.title}
             </Typography>
-            <Typography component="p" variant='title'>Descrição:</Typography>
-            <Typography component="p" variant='subheading'>{republic.data.description}</Typography>
-            <hr style={{ margin: '10px 0' }}/>
-            <Typography component="p" variant='body2'><b>Endereço:</b> {republic.data.address}</Typography>
+            <Typography component="p" variant='subheading'><b>Descrição:</b></Typography>
+            <Typography component="p" variant='body2'>{republic.data.description}</Typography>
+						<Typography component="p" variant='subheading'><b>Endereço:</b></Typography>
+						<Typography component="p" variant='body2'>{republic.data.address}</Typography>
+            {/*<hr style={{ margin: '10px 20px' }}/>*/}
+            {/*<Typography component="p" variant='body2'><b>Endereço:</b> {republic.data.address}</Typography>*/}
           </CardContent>
+
           <div>
-						<Title variant="title">Características</Title>
+						<Divider/>
+						<ListSubheader component="div">Características</ListSubheader>
             {chipTags.map( tags => (
 							<ChipTags label={tags.label}/>
 						))}
           </div>
+					<List>
+						<Divider/>
+						<ListSubheader component="div">Moradores</ListSubheader>
+						<ListItem>
+							<ListItemAvatar>
+								<AvatarUser>
+									<PersonIcon />
+								</AvatarUser>
+							</ListItemAvatar>
+							<ListItemText
+								primary="Nome do morador 1"
+								secondary="Bio do candidato"
+							/>
+						</ListItem>
+						<ListItem>
+							<ListItemAvatar>
+								<AvatarUser>
+									<PersonIcon />
+								</AvatarUser>
+							</ListItemAvatar>
+							<ListItemText
+								primary="Nome do morador 2"
+								secondary="Bio do candidato"
+							/>
+						</ListItem>
+						<ListItem>
+						<ListItemAvatar>
+							<AvatarUser>
+								<PersonIcon />
+							</AvatarUser>
+						</ListItemAvatar>
+						<ListItemText
+							primary="Nome do morador 3"
+							secondary="Bio do candidato"
+						/>
+					</ListItem>
+					</List>
         {!clientIsFromThisRepublic && (
           <div>
-						<Title variant="title">Vagas</Title>
+						<Divider/>
+						<ListSubheader component="div">Vagas</ListSubheader>
 						<Slider {...settings}>
 							{offers &&
 							offers.map(offer => (

@@ -1,0 +1,43 @@
+[debug] [2018-09-24T18:26:02.306Z] ----------------------------------------------------------------------
+[debug] [2018-09-24T18:26:02.309Z] Command:       /Users/isabelelima/.nvm/versions/node/v8.1.4/bin/node /Users/isabelelima/.nvm/versions/node/v8.1.4/bin/firebase serve
+[debug] [2018-09-24T18:26:02.310Z] CLI Version:   4.2.1
+[debug] [2018-09-24T18:26:02.310Z] Platform:      darwin
+[debug] [2018-09-24T18:26:02.310Z] Node Version:  v8.1.4
+[debug] [2018-09-24T18:26:02.311Z] Time:          Mon Sep 24 2018 15:26:02 GMT-0300 (-03)
+[debug] [2018-09-24T18:26:02.311Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-09-24T18:26:02.335Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-09-24T18:26:02.336Z] > authorizing via signed-in user
+[debug] [2018-09-24T18:26:02.338Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2018-09-24T18:26:02.339Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+
+[debug] [2018-09-24T18:26:02.595Z] <<< HTTP RESPONSE 200
+[debug] [2018-09-24T18:26:02.640Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/republicando-123  
+ 
+[debug] [2018-09-24T18:26:03.578Z] <<< HTTP RESPONSE 200
+[debug] [2018-09-24T18:26:03.580Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/republicando-123  
+ 
+[debug] [2018-09-24T18:26:04.789Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/isabelelima/FIAP/Republicando'...
+[info] 
+[info] i  functions: Preparing to emulate functions.
+[debug] [2018-09-24T18:26:06.466Z] Fetching environment
+[debug] [2018-09-24T18:26:06.473Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/352916716074:getServerAppConfig  
+ 
+[debug] [2018-09-24T18:26:06.828Z] <<< HTTP RESPONSE 200
+[debug] [2018-09-24T18:26:06.828Z] Starting @google-cloud/functions-emulator
+[debug] [2018-09-24T18:26:09.987Z] Parsing function triggers
+[info] ✔  functions: getOffers: http://localhost:5000/republicando-123/us-central1/getOffers
+[info] ✔  functions: applyToOffer: http://localhost:5000/republicando-123/us-central1/applyToOffer
+[info] ✔  functions: getOffersCount: http://localhost:5000/republicando-123/us-central1/getOffersCount
+[info] ✔  functions: unapplyToOffer: http://localhost:5000/republicando-123/us-central1/unapplyToOffer
+[info] ✔  functions: createAdmin: http://localhost:5000/republicando-123/us-central1/createAdmin
+[info] ✔  functions: getRepublics: http://localhost:5000/republicando-123/us-central1/getRepublics
+[info] ✔  functions: createRepublic: http://localhost:5000/republicando-123/us-central1/createRepublic
+[info] ✔  functions: getRepublic: http://localhost:5000/republicando-123/us-central1/getRepublic
+[info] ✔  functions: createClient: http://localhost:5000/republicando-123/us-central1/createClient
+[info] ✔  functions: getAdmin: http://localhost:5000/republicando-123/us-central1/getAdmin
+[info] ✔  functions: searchRepublicsByTag: http://localhost:5000/republicando-123/us-central1/searchRepublicsByTag
+[info] ✔  functions: getNotifications: http://localhost:5000/republicando-123/us-central1/getNotifications
+[info] ✔  functions: getClient: http://localhost:5000/republicando-123/us-central1/getClient
