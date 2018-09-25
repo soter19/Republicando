@@ -19,7 +19,7 @@ import Button from '@material-ui/core/Button/Button';
 import Chip from '@material-ui/core/Chip';
 import Slider from "react-slick";
 import CardActions from '@material-ui/core/CardActions/CardActions';
-import {getRepublic, applyToOffer, getOffers, getMe, getMessages, getAllTags} from '../../api';
+import {getRepublic, applyToOffer, getOffers, getMe, getMessages, getAllTags, getClientsByRepublicId} from '../../api';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import {makeSelectUserData, makeSelectUserType} from "../App/selectors";
 import {createStructuredSelector} from "reselect";
@@ -98,10 +98,9 @@ export class RepublicDetail extends React.PureComponent {
       republic: null,
       offerFeedback: undefined,
       clientIsFromThisRepublic: false,
-			chipTags: [
-
-			],
-    };
+			chipTags: [],
+			clients: [],
+		};
   }
 
   componentDidMount() {
@@ -112,6 +111,9 @@ export class RepublicDetail extends React.PureComponent {
     }
     getRepublic(id).then(republic => {
       this.setState({ republic });
+			getClientsByRepublicId(republic.id).then(clients => this.setState({
+				clients: clients
+			}));
 			getAllTags().then((tags, i) => {
 			  const chipTags = Object.keys(republic.data.tags).map(tag => {
 					return {
@@ -144,7 +146,7 @@ export class RepublicDetail extends React.PureComponent {
   };
 
   render() {
-    const { republic, offerFeedback, offers, clientIsFromThisRepublic, chipTags } = this.state;
+    const { republic, offerFeedback, offers, clientIsFromThisRepublic, chipTags, clients } = this.state;
     const { userType, goToMessages, goToOffers } = this.props;
     const isAdmin = userType === 'admins';
     if (!republic) return (<LoadingIndicator/>);
@@ -165,7 +167,7 @@ export class RepublicDetail extends React.PureComponent {
 
           <div>
 						<Divider/>
-						<ListSubheader component="div">Características</ListSubheader>
+						<ListSubheader component="div" color={"primary"} style={{ backgroundColor: 'inherit' }}>Características</ListSubheader>
             {chipTags.map( tags => (
 							<ChipTags label={tags.label}/>
 						))}
@@ -174,7 +176,7 @@ export class RepublicDetail extends React.PureComponent {
         {!isAdmin && !clientIsFromThisRepublic ? (
           <div>
 						<Divider/>
-						<ListSubheader component="div">Vagas</ListSubheader>
+						<ListSubheader component="div" color={"primary"} style={{ backgroundColor: 'inherit' }}>Vagas</ListSubheader>
 						<Slider {...settings}>
 							{offers &&
 							offers.map(offer => (
@@ -202,40 +204,21 @@ export class RepublicDetail extends React.PureComponent {
         ) : (
 					<List>
 						<Divider/>
-						<ListSubheader component="div">Moradores</ListSubheader>
-						<ListItem>
-							<ListItemAvatar>
-								<AvatarUser>
-									<PersonIcon />
-								</AvatarUser>
-							</ListItemAvatar>
-							<ListItemText
-								primary="Nome do morador 1"
-								secondary="Bio do candidato"
-							/>
-						</ListItem>
-						<ListItem>
-							<ListItemAvatar>
-								<AvatarUser>
-									<PersonIcon />
-								</AvatarUser>
-							</ListItemAvatar>
-							<ListItemText
-								primary="Nome do morador 2"
-								secondary="Bio do candidato"
-							/>
-						</ListItem>
-						<ListItem>
-							<ListItemAvatar>
-								<AvatarUser>
-									<PersonIcon />
-								</AvatarUser>
-							</ListItemAvatar>
-							<ListItemText
-								primary="Nome do morador 3"
-								secondary="Bio do candidato"
-							/>
-						</ListItem>
+						<ListSubheader component="div" color={"primary"} style={{ backgroundColor: 'inherit' }}>Moradores</ListSubheader>
+						{ clients &&
+							clients.map(client => (
+								<ListItem>
+									<ListItemAvatar>
+										<AvatarUser>
+											<PersonIcon />
+										</AvatarUser>
+									</ListItemAvatar>
+									<ListItemText
+										primary={client.data.name}
+										secondary={client.data.email}
+									/>
+								</ListItem>
+						))}
 					</List>
 				)}
 				{ isAdmin && (

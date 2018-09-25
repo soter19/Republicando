@@ -48,7 +48,7 @@ const OfferCard = styled(Card)`
 `;
 
 const FloatButton = styled(Button)`
-		position: absolute;
+		position: fixed;
 		bottom: 15px;
 		right: 15px;
 `;
@@ -87,8 +87,7 @@ export class RepublicOffersPage extends React.PureComponent {
 
 		return (
 			<div>
-				<List>
-					<ListSubheader component="div">Vagas</ListSubheader>
+				<List subheader={<ListSubheader component="div" color={"primary"} style={{ backgroundColor: 'white' }}>Vagas</ListSubheader>}>
 					<Divider/>
 					{offers.map(offer => (
 						<ListItem>

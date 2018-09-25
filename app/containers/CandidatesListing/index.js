@@ -52,7 +52,7 @@ export class CandidatesListing extends React.PureComponent {
 			<div>
 				<List
 					component="nav"
-					subheader={<ListSubheader component="div">Candidatos</ListSubheader>}
+					subheader={<ListSubheader component="div" color={"primary"} style={{ backgroundColor: 'white' }}>Candidatos</ListSubheader>}
 				>
 					<Divider/>
 					<ListItem>

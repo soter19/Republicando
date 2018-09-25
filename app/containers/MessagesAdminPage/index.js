@@ -87,7 +87,7 @@ export class MessagesAdminPage extends React.PureComponent {
     return (
 			<PageWrapper>
 				{ notifications && (<List
-					subheader={<ListSubheader component="div" color={"primary"} style={{ backgroundColor: 'white' }}>Notificações</ListSubheader>}
+					subheader={<ListSubheader component="div" color={"primary"} style={{ backgroundColor: 'white' }}>Mensagens</ListSubheader>}
 				>
 					{ loading && <LoadingIndicator /> }
 					<Divider/>

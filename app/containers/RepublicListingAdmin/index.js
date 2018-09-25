@@ -53,7 +53,7 @@ export class RepublicListingAdmin extends React.PureComponent {
 
 		return (
 			<List>
-				<ListSubheader>Minhas Repúblicas</ListSubheader>
+				<ListSubheader component="div" color={"primary"} style={{ backgroundColor: 'white' }}>Minhas Repúblicas</ListSubheader>
 				<Divider/>
 				{reps.length === 0 && <LoadingIndicator />}
 				{reps.map(rep => (
