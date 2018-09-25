@@ -78,7 +78,7 @@ export class EditOffersPage extends React.PureComponent {
 	handleChange = ({ target }) => this.setState({ [target.id]: target.value });
 
   render() {
-  	const { onFeeback } = this.state;
+  	const { onFeeback, rentValue, name, description, } = this.state;
 		return (
 			<Fragment>
 				<Title variant='title'>Criar vaga </Title>
@@ -89,6 +89,7 @@ export class EditOffersPage extends React.PureComponent {
 					label="Nome"
 					type="text"
 					onChange={this.handleChange}
+					value={name}
         />
 				<TextFieldCreate
 					required
@@ -96,6 +97,7 @@ export class EditOffersPage extends React.PureComponent {
 					label="Descrição"
 					type="text"
 					onChange={this.handleChange}
+					value={description}
 				/>
 				<TextFieldCreate
 					required
@@ -103,6 +105,7 @@ export class EditOffersPage extends React.PureComponent {
 					label="Valor R$"
 					type="number"
 					onChange={this.handleChange}
+					value={rentValue}
 				/>
 				<ButtonCreate
 					variant="contained"

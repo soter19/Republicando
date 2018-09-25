@@ -25,7 +25,7 @@ import {makeSelectUserData, makeSelectUserType} from "../App/selectors";
 import {createStructuredSelector} from "reselect";
 import Divider from "@material-ui/core/Divider/Divider";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar/ListItemAvatar";
-import PersonIcon from "@material-ui/core/SvgIcon/SvgIcon";
+import PersonIcon from '@material-ui/icons/person';
 import ListItemText from "@material-ui/core/ListItemText/ListItemText";
 import MUIListItem from "@material-ui/core/ListItem/ListItem";
 import MUIList from "@material-ui/core/List/List";
@@ -274,7 +274,7 @@ function mapDispatchToProps(dispatch) {
     dispatch,
     goToHomePage: () => dispatch(push('/')),
 		goToMessages: republicId => dispatch(push(`/messagesAdmin/${republicId}`)),
-		goToOffers: republicId => dispatch(push(`/offers/${republicId}`)),
+		goToOffers: republicId => dispatch(push(`/republic-offers/${republicId}`)),
 	};
 }
 

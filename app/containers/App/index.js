@@ -23,6 +23,7 @@ import EditOffersPage from 'containers/EditOffersPage/Loadable';
 import CandidatesListing from 'containers/CandidatesListing/Loadable';
 import OfferListing from 'containers/OfferListing/Loadable';
 import RepublicListingAdmin from 'containers/RepublicListingAdmin/Loadable';
+import RepublicOffersPage from 'containers/RepublicOffersPage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
@@ -49,10 +50,11 @@ export default function App() {
         <Route path="/republic-detail/:id" component={RepublicDetail} />
         <Route path="/messages" component={MessagesPage} />
 				<Route path="/messagesAdmin/:id" component={MessagesAdminPage} />
-				<Route path="/edit-offer" component={EditOffersPage} />
+				<Route path="/edit-offer/:id" component={EditOffersPage} />
 				<Route path="/my-offers" component={OfferListing} />
 				<Route path="/candidates" component={CandidatesListing} />
 				<Route path="/republic-list-admin" component={RepublicListingAdmin} />
+				<Route path="/republic-offers/:id" component={RepublicOffersPage} />
         <Route path="" component={NotFoundPage} />
       </Switch>
       <Footer />
