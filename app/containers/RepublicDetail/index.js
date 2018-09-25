@@ -154,7 +154,7 @@ export class RepublicDetail extends React.PureComponent {
 
   render() {
     const { republic, offerFeedback, offers, clientIsFromThisRepublic, chipTags, clients } = this.state;
-    const { userType, goToMessages, goToOffers } = this.props;
+    const { userType, goToMessages, goToOffers, user } = this.props;
     const isAdmin = userType === 'admins';
     if (!republic) return (<LoadingIndicator/>);
 
@@ -198,7 +198,7 @@ export class RepublicDetail extends React.PureComponent {
 											size="small"
 											variant="flat"
 											color="primary"
-											disabled={offerFeedback === false}
+											disabled={offerFeedback === false || user.offers.some((o) => o === offer.id)}
 											onClick={() => this.handleApply(offer.id)}
 										>
 											CANDIDATAR-SE

@@ -71,13 +71,14 @@ export class EditOffersPage extends React.PureComponent {
 			candidates: [],
 			republicId,
 		};
+		debugger
 		if(!this.state.id) {
       createOffer(offer).then(() => {
-        this.setState({ onFeedback: true })
+
       })
 		} else {
-      updateOffer(offer).then(() => {
-        this.setState({ onFeedback: true })
+      updateOffer({...offer, id: this.state.id}).then(() => {
+
       })
 		}
 	};

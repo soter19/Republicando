@@ -22,6 +22,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Divider from "@material-ui/core/Divider/Divider";
 import ListSubheader from '@material-ui/core/ListSubheader';
 import { getOfferById, getClientFromId, acceptCandidate, refuseCandidate } from '../../api';
+import LoadingIndicator from '../../components/LoadingIndicator';
 
 const ListItem = styled(MUIListItem)`
   width: 100%;
@@ -51,48 +52,52 @@ export class CandidatesListing extends React.PureComponent {
 	constructor(props){
 		super(props);
 		this.state = {
+		  loading: true,
 			candidates: [],
 		};
 	}
 
 	componentWillMount(){
-
+    this.getCandidates();
 	}
 
 	getCandidates = () => {
     const { id } = this.props.match.params;
     getOfferById(id).then((offer) => {
-      const candidates = offer.candidates.map((clientId) => {
-        return getClientFromId(clientId).then((snap) => ({
-          id: snap.id,
-          data: snap.data(),
-        }))
-      });
-      Promise.all(candidates).then((candidates) => this.setState({ candidates }));
+      if(offer.candidates){
+        const candidates = offer.candidates.map((clientId) => {
+          return getClientFromId(clientId).then((snap) => ({
+            id: snap.id,
+            data: snap.data(),
+          }))
+        });
+      Promise.all(candidates).then((candidates) => this.setState({ candidates, loading: false }));
+    } else {
+        this.setState({ loading: false });
+      }
     })
 	};
 
-	handleApprove = ({ target }) => {
-		const { id : candidateId } = target;
+	handleApprove = (candidateId) => {
 		const { id : offerId } = this.props.match.params;
 		acceptCandidate(candidateId, offerId).then(() => this.getCandidates);
 	};
 
-	handleRefuse = ({ target }) => {
-    const { id : candidateId } = target;
+	handleRefuse = (candidateId) => {
     const { id : offerId } = this.props.match.params;
     refuseCandidate(candidateId, offerId).then(() => this.getCandidates);
   };
 
 
   render() {
-		const { candidates } = this.state;
+		const { candidates, loading } = this.state;
     return (
 			<div>
 				<List
 					component="nav"
 					subheader={<ListSubheader component="div" color={"primary"} style={{ backgroundColor: 'white' }}>Candidatos</ListSubheader>}
 				>
+          { loading && <LoadingIndicator />}
 					{candidates.map((candidate) => (
             <ListItem>
               <ListItemAvatar>
@@ -106,22 +111,20 @@ export class CandidatesListing extends React.PureComponent {
               />
               <ListItemSecondaryAction>
                 <ButtonIcon
-									id={candidate.id}
 									variant="fab"
 									mini
 									color="primary"
 									aria-label="Aprove"
-                  onClick={this.handleApprove}
+                  onClick={() => this.handleApprove(candidate.id)}
 								>
                   <AproveIcon/>
                 </ButtonIcon>
                 <ButtonIcon
-									id={candidate.id}
 									variant="fab"
 									mini
 									color="secondary"
 									aria-label="Delete"
-                  onClick={this.handleRefuse()}
+                  onClick={() => this.handleRefuse(candidate.id)}
 								>
                   <DeleteIcon/>
                 </ButtonIcon>

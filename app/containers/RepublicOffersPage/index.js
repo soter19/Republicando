@@ -18,7 +18,7 @@ import MUIListItem from "@material-ui/core/ListItem/ListItem";
 import MUIList from "@material-ui/core/List/List";
 import Card from "@material-ui/core/Card/Card";
 import AddIcon from '@material-ui/icons/Add';
-import {getOffers} from "../../api";
+import { deleteOffer, getOffers } from '../../api';
 import Divider from "@material-ui/core/Divider/Divider";
 import ListSubheader from "@material-ui/core/ListSubheader/ListSubheader";
 import {push} from "react-router-redux";
@@ -70,11 +70,17 @@ export class RepublicOffersPage extends React.PureComponent {
 	componentDidMount(){
 		const { id } = this.props.match.params;
 		if(!id) return;
-		getOffers(id).then(offers => this.setState({ offers: offers.data }));
+		getOffers(id).then(offers => this.setState({ offers }));
 	}
 
-	handleClick = () => {
-
+	handleDelete = (offerId) => {
+		const { offers } = this.state;
+		this.setState({ offers: offers.filter((o) => o.id !== offerId) });
+    const { id } = this.props.match.params;
+    deleteOffer(offerId).then((a) => {
+    	debugger
+      getOffers(id).then(offers => this.setState({ offers }));
+		})
 	};
 
   render() {
@@ -102,12 +108,13 @@ export class RepublicOffersPage extends React.PureComponent {
                     color="default"
                     onClick={() => goToCandidates(offer.id)}
                   >
-                    Candidatos ({offer.data.candidates.length})
+                    Candidatos ({offer.data.candidates ? offer.data.candidates.length : 0})
                   </Button>
 									<Button
 										size="small"
 										variant="flat"
 										color="secondary"
+										onClick={() => this.handleDelete(offer.id)}
 									>
 										APAGAR
 									</Button>
@@ -140,8 +147,8 @@ function mapDispatchToProps(dispatch) {
   return {
     dispatch,
 		goToEditOffer: offerId => dispatch(push(`/offer/${offerId}`)),
-		goToCreateOffer: () => dispatch(push(`/offer/`)),
-		goToCandidates: offerId => dispatch(push(`/offer/${offerId}/candidates`))
+		goToCreateOffer: () => dispatch(push(`/offer`)),
+		goToCandidates: offerId => dispatch(push(`/candidates/${offerId}`))
 	};
 }
 

@@ -50,9 +50,9 @@ export default function App() {
         <Route path="/republic-detail/:id" component={RepublicDetail} />
         <Route path="/messages" component={MessagesPage} />
 				<Route path="/messagesAdmin/:id" component={MessagesAdminPage} />
-				<Route path="/offer/" component={EditOffersPage} />
+				<Route exact path="/offer/" component={EditOffersPage} />
 				<Route path="/offer/:id" component={EditOffersPage} />
-				<Route path="/offer/:id/candidates" component={CandidatesListing} />
+				<Route path="/candidates/:id" component={CandidatesListing} />
 				<Route path="/my-offers" component={OfferListing} />
 				<Route path="/republic-list-admin" component={RepublicListingAdmin} />
 				<Route path="/republic-offers/:id" component={RepublicOffersPage} />

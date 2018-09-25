@@ -4,8 +4,8 @@ import {firestore} from '../configureStore';
 
 const https = require('https');
 
-// const BASE_URL = 'https://us-central1-republicando-123.cloudfunctions.net/';
-const BASE_URL = 'http://localhost:5000/republicando-123/us-central1/';
+const BASE_URL = 'https://us-central1-republicando-123.cloudfunctions.net/';
+// const BASE_URL = 'http://localhost:5000/republicando-123/us-central1/';
 
 // Tags
 
@@ -75,14 +75,23 @@ export const getClientsByRepublicId = async republicId => {
 
 // Offers
 
-const GET_OFFERS = 'getOffers';
 const APPLY_TO_OFFER = 'applyToOffer';
 const UNAPPLY_TO_OFFER = 'unapplyToOffer';
 
-export const getOffers = async (republicId) =>
-	axios.get(`${BASE_URL}${GET_OFFERS}?republicId=${republicId}`).catch(e => {
-		console.error(e);
-	});
+export const getOffers = async (republicId) => {
+  return firestore
+    .collection('offers')
+    .where('republicId', '==', republicId)
+    .get()
+    .then(snapshot => {
+    	const response = [];
+      snapshot.forEach(d => {
+        response.push(parseDocument(d));
+      });
+      return response;
+    })
+    .catch(console.error);
+}
 
 export const applyToOffer = (offerId, clientId) =>
 	axios.get(`${BASE_URL}${APPLY_TO_OFFER}?offerId=${offerId}&clientId=${clientId}`);
@@ -102,6 +111,20 @@ export const updateOffer = async ({id, ...rest}) => {
 	return firestore.collection('offers').doc(id).update(rest);
 };
 
+export const deleteOffer = async (offerId) => {
+  const offerRef = firestore.collection('offers').doc(offerId);
+  return offerRef.get().then((snap) => {
+    offerRef.delete();
+  	return Promise.all(snap.data().candidates.map((clientId) => {
+  		const clientRef = firestore.collection('clients').doc(clientId);
+  		return clientRef.get().then((client) => {
+  			const newOffers = client.data().offers.filter((o) => o !== offerId);
+  			clientRef.update({ offers: newOffers });
+			})
+		}))
+	});
+}
+
 // Admins
 
 const CREATE_ADMIN = 'createAdmin';
@@ -115,8 +138,8 @@ const getAdmin = (adminId) => axios.get(`${BASE_URL}${GET_ADMIN}?adminId=${admin
 export const acceptCandidate = (candidateId, offerId) => {
   const clientRef = firestore.collection('clients').doc(candidateId);
   const offerRef = firestore.collection('offers').doc(offerId);
-  return offerRef.get().then(({ data }) => {
-		clientRef.update({ offers: [], republicId: data.republicId });
+  return offerRef.get().then((snap) => {
+		clientRef.update({ offers: [], republicId: snap.data().republicId });
 		offerRef.delete();
   });
 };
@@ -125,9 +148,9 @@ export const refuseCandidate = (candidateId, offerId) => {
   const clientRef = firestore.collection('clients').doc(candidateId);
   const offerRef = firestore.collection('offers').doc(offerId);
   return clientRef.get().then(client => {
-		offerRef.get().then(({ data }) => {
-			const newOffers = client.data.offers.filter((o) => o.id !== offerId);
-			const newCandidates = data.candidates.filter((c) => c.id !== candidateId);
+		offerRef.get().then((offer) => {
+			const newOffers = client.data().offers.filter((o) => o !== offerId);
+			const newCandidates = offer.data().candidates.filter((c) => c !== candidateId);
       clientRef.update({ offers: newOffers });
 			offerRef.update({ candidates: newCandidates });
 		});
