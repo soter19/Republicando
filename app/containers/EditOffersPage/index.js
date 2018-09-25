@@ -123,7 +123,7 @@ export class EditOffersPage extends React.PureComponent {
 					Criar vaga
 				</ButtonCreate>
 				<Snackbar
-					open={onFeedback}
+					open={this.onFeedback}
 					onClose={() => this.setState({ onFeedback: false })}
 					autoHideDuration={2000}
 				>
