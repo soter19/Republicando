@@ -55,9 +55,7 @@ const FloatButton = styled(Button)`
 
 const ButtonDiv = styled.div`
 	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-gap: 20px;
-	margin: 10px;
+	grid-template-columns: 1fr 1fr 1fr;
 	grid-template-rows: 30px;
 	`;
 
@@ -81,7 +79,7 @@ export class RepublicOffersPage extends React.PureComponent {
 
   render() {
 		const { offers } = this.state;
-		const { goToEditOffer, goToCreateOffer } = this.props;
+		const { goToEditOffer, goToCreateOffer, goToCandidates } = this.props;
 
 		if(!offers) return <LoadingIndicator />;
 
@@ -98,6 +96,14 @@ export class RepublicOffersPage extends React.PureComponent {
 									<Typography variant='button'>{offer.data.renderValue}</Typography>
 								</CardContent>
 								<ButtonDiv>
+                  <Button
+                    size="small"
+                    variant="flat"
+                    color="default"
+                    onClick={() => goToCandidates(offer.id)}
+                  >
+                    Candidatos ({offer.data.candidates.length})
+                  </Button>
 									<Button
 										size="small"
 										variant="flat"
@@ -133,8 +139,9 @@ RepublicOffersPage.propTypes = {
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
-		goToEditOffer: offerId => dispatch(push(`/edit-offer/${offerId}`)),
-		goToCreateOffer: offerId => dispatch(push(`/edit-offer/${offerId}`)),
+		goToEditOffer: offerId => dispatch(push(`/offer/${offerId}`)),
+		goToCreateOffer: () => dispatch(push(`/offer/`)),
+		goToCandidates: offerId => dispatch(push(`/offer/${offerId}/candidates`))
 	};
 }
 

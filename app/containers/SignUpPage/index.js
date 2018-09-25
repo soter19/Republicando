@@ -113,6 +113,9 @@ export class SignUpPage extends React.PureComponent {
       <Fragment>
         {isLoading && <LoadingIndicator />}
         <Switch value="checkedC" onChange={this.toggleAdmin} />
+        { this.state.isAdmin ?
+          "é administrador"
+          : "é cliente"  }
         <TextFieldSignUp
           required
           id="name"
@@ -145,9 +148,6 @@ export class SignUpPage extends React.PureComponent {
           value={confirmPassword}
           onChange={this.handleOnChange}
         />
-        { this.state.isAdmin ?
-          <h1>Oi bele</h1>
-          : <h1>tchau bele</h1> }
         <ButtonSignUp
           disabled={isInvalid}
           variant="contained"

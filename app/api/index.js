@@ -112,6 +112,28 @@ export const createAdminOnDatabase = (newAdmin) =>
 
 const getAdmin = (adminId) => axios.get(`${BASE_URL}${GET_ADMIN}?adminId=${adminId}`);
 
+export const acceptCandidate = (candidateId, offerId) => {
+  const clientRef = firestore.collection('clients').doc(candidateId);
+  const offerRef = firestore.collection('offers').doc(offerId);
+  return offerRef.get().then(({ data }) => {
+		clientRef.update({ offers: [], republicId: data.republicId });
+		offerRef.delete();
+  });
+};
+
+export const refuseCandidate = (candidateId, offerId) => {
+  const clientRef = firestore.collection('clients').doc(candidateId);
+  const offerRef = firestore.collection('offers').doc(offerId);
+  return clientRef.get().then(client => {
+		offerRef.get().then(({ data }) => {
+			const newOffers = client.data.offers.filter((o) => o.id !== offerId);
+			const newCandidates = data.candidates.filter((c) => c.id !== candidateId);
+      clientRef.update({ offers: newOffers });
+			offerRef.update({ candidates: newCandidates });
+		});
+  });
+};
+
 // Clients
 
 const CREATE_CLIENT = 'createClient';
@@ -133,6 +155,10 @@ export const getMe = async () => {
 		me = await getClient(uid);
 	}
 	return me.data;
+};
+
+export const getClientFromId = (id) => {
+  return firestore.collection('clients').doc(id).get()
 };
 
 export const getUserTypeFromId = (userId) => {

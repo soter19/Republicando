@@ -21,6 +21,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Divider from "@material-ui/core/Divider/Divider";
 import ListSubheader from '@material-ui/core/ListSubheader';
+import { getOfferById, getClientFromId, acceptCandidate, refuseCandidate } from '../../api';
 
 const ListItem = styled(MUIListItem)`
   width: 100%;
@@ -47,240 +48,86 @@ const ButtonIcon = styled(Button)`
 `;
 
 export class CandidatesListing extends React.PureComponent {
+	constructor(props){
+		super(props);
+		this.state = {
+			candidates: [],
+		};
+	}
+
+	componentWillMount(){
+
+	}
+
+	getCandidates = () => {
+    const { id } = this.props.match.params;
+    getOfferById(id).then((offer) => {
+      const candidates = offer.candidates.map((clientId) => {
+        return getClientFromId(clientId).then((snap) => ({
+          id: snap.id,
+          data: snap.data(),
+        }))
+      });
+      Promise.all(candidates).then((candidates) => this.setState({ candidates }));
+    })
+	};
+
+	handleApprove = ({ target }) => {
+		const { id : candidateId } = target;
+		const { id : offerId } = this.props.match.params;
+		acceptCandidate(candidateId, offerId).then(() => this.getCandidates);
+	};
+
+	handleRefuse = ({ target }) => {
+    const { id : candidateId } = target;
+    const { id : offerId } = this.props.match.params;
+    refuseCandidate(candidateId, offerId).then(() => this.getCandidates);
+  };
+
+
   render() {
+		const { candidates } = this.state;
     return (
 			<div>
 				<List
 					component="nav"
 					subheader={<ListSubheader component="div" color={"primary"} style={{ backgroundColor: 'white' }}>Candidatos</ListSubheader>}
 				>
-					<Divider/>
-					<ListItem>
+					{candidates.map((candidate) => (
+            <ListItem>
               <ListItemAvatar>
                 <AvatarUser>
                   <PersonIcon />
                 </AvatarUser>
               </ListItemAvatar>
               <ListItemText
-									primary="Nome do candidato"
-									secondary="Bio do candidato"
-								/>
+                primary={candidate.data.name}
+                secondary={candidate.data.email}
+              />
               <ListItemSecondaryAction>
-								<ButtonIcon variant="fab" mini color="primary" aria-label="Aprove">
-									<AproveIcon/>
-								</ButtonIcon>
-                <ButtonIcon variant="fab" mini color="secondary" aria-label="Delete">
+                <ButtonIcon
+									id={candidate.id}
+									variant="fab"
+									mini
+									color="primary"
+									aria-label="Aprove"
+                  onClick={this.handleApprove}
+								>
+                  <AproveIcon/>
+                </ButtonIcon>
+                <ButtonIcon
+									id={candidate.id}
+									variant="fab"
+									mini
+									color="secondary"
+									aria-label="Delete"
+                  onClick={this.handleRefuse()}
+								>
                   <DeleteIcon/>
                 </ButtonIcon>
               </ListItemSecondaryAction>
             </ListItem>
-						<Divider/>
-
-
-
-
-					<ListItem>
-						<ListItemAvatar>
-							<AvatarUser>
-								<PersonIcon />
-							</AvatarUser>
-						</ListItemAvatar>
-						<ListItemText
-							primary="Nome do candidato"
-							secondary="Bio do candidato"
-						/>
-						<ListItemSecondaryAction>
-							<ButtonIcon variant="fab" mini color="primary" aria-label="Aprove">
-								<AproveIcon/>
-							</ButtonIcon>
-							<ButtonIcon variant="fab" mini color="secondary" aria-label="Delete">
-								<DeleteIcon/>
-							</ButtonIcon>
-						</ListItemSecondaryAction>
-					</ListItem>
-					<Divider/>
-					<ListItem>
-					<ListItemAvatar>
-						<AvatarUser>
-							<PersonIcon />
-						</AvatarUser>
-					</ListItemAvatar>
-					<ListItemText
-						primary="Nome do candidato"
-						secondary="Bio do candidato"
-					/>
-					<ListItemSecondaryAction>
-						<ButtonIcon variant="fab" mini color="primary" aria-label="Aprove">
-							<AproveIcon/>
-						</ButtonIcon>
-						<ButtonIcon variant="fab" mini color="secondary" aria-label="Delete">
-							<DeleteIcon/>
-						</ButtonIcon>
-					</ListItemSecondaryAction>
-				</ListItem>
-					<Divider/>
-					<ListItem>
-					<ListItemAvatar>
-						<AvatarUser>
-							<PersonIcon />
-						</AvatarUser>
-					</ListItemAvatar>
-					<ListItemText
-						primary="Nome do candidato"
-						secondary="Bio do candidato"
-					/>
-					<ListItemSecondaryAction>
-						<ButtonIcon variant="fab" mini color="primary" aria-label="Aprove">
-							<AproveIcon/>
-						</ButtonIcon>
-						<ButtonIcon variant="fab" mini color="secondary" aria-label="Delete">
-							<DeleteIcon/>
-						</ButtonIcon>
-					</ListItemSecondaryAction>
-				</ListItem>
-					<Divider/>
-					<ListItem>
-					<ListItemAvatar>
-						<AvatarUser>
-							<PersonIcon />
-						</AvatarUser>
-					</ListItemAvatar>
-					<ListItemText
-						primary="Nome do candidato"
-						secondary="Bio do candidato"
-					/>
-					<ListItemSecondaryAction>
-						<ButtonIcon variant="fab" mini color="primary" aria-label="Aprove">
-							<AproveIcon/>
-						</ButtonIcon>
-						<ButtonIcon variant="fab" mini color="secondary" aria-label="Delete">
-							<DeleteIcon/>
-						</ButtonIcon>
-					</ListItemSecondaryAction>
-				</ListItem>
-					<Divider/>
-					<ListItem>
-					<ListItemAvatar>
-						<AvatarUser>
-							<PersonIcon />
-						</AvatarUser>
-					</ListItemAvatar>
-					<ListItemText
-						primary="Nome do candidato"
-						secondary="Bio do candidato"
-					/>
-					<ListItemSecondaryAction>
-						<ButtonIcon variant="fab" mini color="primary" aria-label="Aprove">
-							<AproveIcon/>
-						</ButtonIcon>
-						<ButtonIcon variant="fab" mini color="secondary" aria-label="Delete">
-							<DeleteIcon/>
-						</ButtonIcon>
-					</ListItemSecondaryAction>
-				</ListItem>
-					<Divider/>
-					<ListItem>
-					<ListItemAvatar>
-						<AvatarUser>
-							<PersonIcon />
-						</AvatarUser>
-					</ListItemAvatar>
-					<ListItemText
-						primary="Nome do candidato"
-						secondary="Bio do candidato"
-					/>
-					<ListItemSecondaryAction>
-						<ButtonIcon variant="fab" mini color="primary" aria-label="Aprove">
-							<AproveIcon/>
-						</ButtonIcon>
-						<ButtonIcon variant="fab" mini color="secondary" aria-label="Delete">
-							<DeleteIcon/>
-						</ButtonIcon>
-					</ListItemSecondaryAction>
-				</ListItem>
-					<Divider/>
-					<ListItem>
-					<ListItemAvatar>
-						<AvatarUser>
-							<PersonIcon />
-						</AvatarUser>
-					</ListItemAvatar>
-					<ListItemText
-						primary="Nome do candidato"
-						secondary="Bio do candidato"
-					/>
-					<ListItemSecondaryAction>
-						<ButtonIcon variant="fab" mini color="primary" aria-label="Aprove">
-							<AproveIcon/>
-						</ButtonIcon>
-						<ButtonIcon variant="fab" mini color="secondary" aria-label="Delete">
-							<DeleteIcon/>
-						</ButtonIcon>
-					</ListItemSecondaryAction>
-				</ListItem>
-					<Divider/>
-					<ListItem>
-						<ListItemAvatar>
-							<AvatarUser>
-								<PersonIcon />
-							</AvatarUser>
-						</ListItemAvatar>
-						<ListItemText
-							primary="Nome do candidato"
-							secondary="Bio do candidato"
-						/>
-						<ListItemSecondaryAction>
-							<ButtonIcon variant="fab" mini color="primary" aria-label="Aprove">
-								<AproveIcon/>
-							</ButtonIcon>
-							<ButtonIcon variant="fab" mini color="secondary" aria-label="Delete">
-								<DeleteIcon/>
-							</ButtonIcon>
-						</ListItemSecondaryAction>
-					</ListItem>
-					<Divider/>
-					<ListItem>
-					<ListItemAvatar>
-						<AvatarUser>
-							<PersonIcon />
-						</AvatarUser>
-					</ListItemAvatar>
-					<ListItemText
-						primary="Nome do candidato"
-						secondary="Bio do candidato"
-					/>
-					<ListItemSecondaryAction>
-						<ButtonIcon variant="fab" mini color="primary" aria-label="Aprove">
-							<AproveIcon/>
-						</ButtonIcon>
-						<ButtonIcon variant="fab" mini color="secondary" aria-label="Delete">
-							<DeleteIcon/>
-						</ButtonIcon>
-					</ListItemSecondaryAction>
-				</ListItem>
-					<Divider/>
-					<ListItem>
-					<ListItemAvatar>
-						<AvatarUser>
-							<PersonIcon />
-						</AvatarUser>
-					</ListItemAvatar>
-					<ListItemText
-						primary="Nome do candidato"
-						secondary="Bio do candidato"
-					/>
-					<ListItemSecondaryAction>
-						<ButtonIcon variant="fab" mini color="primary" aria-label="Aprove">
-							<AproveIcon/>
-						</ButtonIcon>
-						<ButtonIcon variant="fab" mini color="secondary" aria-label="Delete">
-							<DeleteIcon/>
-						</ButtonIcon>
-					</ListItemSecondaryAction>
-				</ListItem>
-					<Divider/>
-
-
+					))}
         </List>
 			</div>
     );
