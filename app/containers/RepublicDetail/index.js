@@ -273,8 +273,8 @@ function mapDispatchToProps(dispatch) {
   return {
     dispatch,
     goToHomePage: () => dispatch(push('/')),
-		goToMessages: republicId => dispatch(push(`/messages/${republicId}`)),
-		goToOffers: republicId => dispatch(push(`/notifications/${republicId}`)),
+		goToMessages: republicId => dispatch(push(`/messagesAdmin/${republicId}`)),
+		goToOffers: republicId => dispatch(push(`/offers/${republicId}`)),
 	};
 }
 

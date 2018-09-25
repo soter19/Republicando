@@ -156,7 +156,7 @@ class Header extends React.Component {
 											subheader={<ListSubheader component="div">Minha República</ListSubheader>}
 										>
 											<GenerateListItem action={'/republic-detail/' + user.republicId} Icon={HomeIcon} text={'Detalhe da república'}/>
-											<GenerateListItem action={'/notifications'} Icon={NotificationsIcon} text={'Mensagens'}/>
+											<GenerateListItem action={'/messages'} Icon={NotificationsIcon} text={'Mensagens'}/>
 										</List>
 										<Divider/>
                   </div>
