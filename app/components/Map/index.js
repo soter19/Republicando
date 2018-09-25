@@ -116,23 +116,28 @@ const MyMapComponent = compose(
         timeout: 5000,
         maximumAge: 0
       };
-      navigator.geolocation.getCurrentPosition(
-        position => {
-          props.setCenter({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          });
-          props.setSearch('');
-          props.setZoom(15);
-          props.toggleGettingLocation();
-        },
-        (error) => {
-          console.error(error);
-          alert('Não foi possível encontrar sua localização atual, tente novamente');
-          props.toggleGettingLocation();
-        },
-        options
-      )
+      navigator.permissions &&
+      navigator.permissions.query({name: 'geolocation'}).then((PermissionStatus) => {
+        if('granted' === PermissionStatus.state) {
+          navigator.geolocation.getCurrentPosition(
+            position => {
+              props.setCenter({
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+              });
+              props.setSearch('');
+              props.setZoom(15);
+              props.toggleGettingLocation();
+            },
+            (error) => {
+              console.error(error);
+              alert('Não foi possível encontrar sua localização atual, tente novamente');
+              props.toggleGettingLocation();
+            },
+            options
+          )
+        }
+      })
     }
   };
   return (
