@@ -23,6 +23,7 @@ import Divider from "@material-ui/core/Divider/Divider";
 import ListSubheader from '@material-ui/core/ListSubheader';
 import { getOfferById, getClientFromId, acceptCandidate, refuseCandidate } from '../../api';
 import LoadingIndicator from '../../components/LoadingIndicator';
+import Snackbar from "@material-ui/core/Snackbar/Snackbar";
 
 const ListItem = styled(MUIListItem)`
   width: 100%;
@@ -54,6 +55,8 @@ export class CandidatesListing extends React.PureComponent {
 		this.state = {
 		  loading: true,
 			candidates: [],
+			snackbarText: 'Candidato aprovado com sucessso!',
+			onFeedback: false,
 		};
 	}
 
@@ -81,16 +84,18 @@ export class CandidatesListing extends React.PureComponent {
 	handleApprove = (candidateId) => {
 		const { id : offerId } = this.props.match.params;
 		acceptCandidate(candidateId, offerId).then(() => this.getCandidates);
+		this.setState({ onFeedback: true, snacbkarText: 'Candidato aprovado com sucessso!' });
 	};
 
 	handleRefuse = (candidateId) => {
     const { id : offerId } = this.props.match.params;
     refuseCandidate(candidateId, offerId).then(() => this.getCandidates);
-  };
+		this.setState({ onFeedback: true, snackbarText: 'Candidato recusado com sucessso!'});
+	};
 
 
   render() {
-		const { candidates, loading } = this.state;
+		const { candidates, loading, onFeedback, snackbarText } = this.state;
     return (
 			<div>
 				<List
@@ -132,6 +137,13 @@ export class CandidatesListing extends React.PureComponent {
             </ListItem>
 					))}
         </List>
+				<Snackbar
+					open={onFeedback}
+					onClose={() => this.setState({ onFeedback: false })}
+					autoHideDuration={2000}
+					message={snackbarText}
+				>
+				</Snackbar>
 			</div>
     );
   }
