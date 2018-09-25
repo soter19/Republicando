@@ -11,7 +11,7 @@ import MapThumb from 'images/staticmap.jpg'
 import ListThumb from 'images/staticlist.jpg'
 
 const StyledTitle = styled(Typography)`
-  margin: 20px 0;
+  margin: 20px 20px;
   text-align: center;
 `;
 

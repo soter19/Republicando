@@ -11,6 +11,7 @@ import styled from 'styled-components';
 import { Switch, Route } from 'react-router-dom';
 
 import HomePage from 'containers/HomePage/Loadable';
+import IntroPage from 'containers/IntroPage/Loadable';
 import SignInPage from 'containers/SignInPage/Loadable';
 import SignUpPage from 'containers/SignUpPage/Loadable';
 import RepublicListing from 'containers/RepublicListing/Loadable';
@@ -39,7 +40,8 @@ export default function App() {
     <AppWrapper>
       <Header />
       <Switch>
-        <Route exact path="/" component={HomePage} />
+        <Route exact path="/" component={IntroPage} />
+        <Route path="/republic-map" component={HomePage} />
         <Route path="/signIn" component={SignInPage} />
         <Route path="/signUp" component={SignUpPage} />
         <Route path="/features" component={FeaturePage} />

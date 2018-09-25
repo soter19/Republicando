@@ -14,7 +14,7 @@ import Button from "@material-ui/core/Button/Button";
 import ListSubheader from "@material-ui/core/ListSubheader/ListSubheader";
 import Typography from "@material-ui/core/Typography/Typography";
 import CardContent from "@material-ui/core/CardContent/CardContent";
-import { createOffer } from '../../api';
+import { createOffer, getOfferById } from '../../api';
 import Snackbar from '@material-ui/core/Snackbar/Snackbar';
 import { createStructuredSelector } from "reselect";
 import { makeSelectUserData, makeSelectUserType } from '../App/selectors';
@@ -42,7 +42,20 @@ export class EditOffersPage extends React.PureComponent {
 			name: '',
 			description: '',
 			rentValue: '',
-			onFeeback: false,
+      onFeedback: false,
+		}
+	}
+
+	componentDidMount(){
+		const { id } = this.props.match.params;
+		if(id){
+      getOfferById(id).then(({ name, rentValue, description }) => {
+      	this.setState({
+					name,
+					rentValue,
+					description,
+				})
+			})
 		}
 	}
 
@@ -57,6 +70,7 @@ export class EditOffersPage extends React.PureComponent {
 			republicId,
 		};
 		createOffer(offer).then(() => {
+			debugger
 			this.setState({ onFeedback: true })
 		})
 	};

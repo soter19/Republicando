@@ -72,9 +72,7 @@ export const getOfferById = async (id) => {
 };
 
 export const createOffer = async (offer) => {
-  firestore.collection('offers').doc().set(offer).then(() => {
-    debugger
-  })
+  return firestore.collection('offers').doc().set(offer);
 };
 
 // Admins
@@ -145,6 +143,6 @@ export const createMessage = async (message, republicId) => {
   const newMessage = await axios
     .post(`${BASE_URL}${CREATE_MESSAGE}`, { message, republicId })
     .catch(console.error);
-  debugger
+  debugger;
   return
 };
