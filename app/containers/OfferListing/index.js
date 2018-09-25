@@ -50,10 +50,7 @@ export class OfferListing extends React.PureComponent {
 	}
 
 	componentDidMount(){
-		const { offers } = this.state;
-		if(offers === null) {
-			this.getOffers();
-		}
+		this.getOffers();
 	}
 
 	componentDidUpdate(prevProps) {

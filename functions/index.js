@@ -181,17 +181,16 @@ exports.applyToOffer = baseEndpoint((res, req) => {
     const candidates = snap.data().candidates;
     const newList = [...candidates, clientId];
     offerRef.update({ candidates: newList });
+
+    clientsRef.get().then((snap) => {
+      const offers = snap.data().offers;
+      const newList = [...offers, offerId];
+      clientsRef.update({ offers: newList }).then(() => {
+        res.status(200).send({ ok: 'Success!' });
+        return;
+      })
+    });
   });
-
-  clientsRef.get().then((snap) => {
-    const offers = snap.data().offers;
-    const newList = [...offers, offerId];
-    clientsRef.update({ offers: newList });
-  });
-
-  res.status(200).send({ ok: 'Success!' });
-
-  return;
 });
 
 exports.unapplyToOffer = baseEndpoint((res, req) => {
@@ -209,16 +208,15 @@ exports.unapplyToOffer = baseEndpoint((res, req) => {
     const candidates = snap.data().candidates;
     const newList = candidates.filter((c) => c !== clientId)
     offerRef.update({ candidates: newList });
-  });
 
-  clientsRef.get().then((snap) => {
-    const offers = snap.data().offers;
-    const newList = offers.filter((o) => o !== offerId)
-    clientsRef.update({ offers: newList });
+    clientsRef.get().then((snap) => {
+      const offers = snap.data().offers;
+      const newList = offers.filter((o) => o !== offerId);
+      clientsRef.update({ offers: newList });
+      res.status(200).send({ ok: 'Success!' });
+      return;
+    });
   });
-
-  res.status(200).send({ ok: 'Success!' });
-  return;
 });
 
 
@@ -241,6 +239,10 @@ exports.getRepublics = baseEndpoint((res, req) => {
 
 exports.searchRepublicsByTag = baseEndpoint((res, req) => {
   const { tags } = req.body;
+  if(!tags || tags.length === 0) {
+    res.status(400).send(errorResponse('Empty or missing tags'));
+    return;
+  }
   const createTagQuery = (collection) => {
     let composedQuery = collection;
     tags.forEach(tag => {
@@ -383,7 +385,7 @@ exports.getMessages = baseEndpoint((res, req) => {
 exports.createMessage = baseEndpoint((res, req) => {
   const { message, republicId } = req.body;
   if(!message || !republicId) {
-    res.status(400).send(errorResponse('Invalid Params')); // tratamento de erro
+    res.status(400).send(errorResponse('Invalid Params'));
     return;
   }
   const newMessage = new Message(message);
