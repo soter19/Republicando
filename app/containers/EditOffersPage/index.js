@@ -85,7 +85,7 @@ export class EditOffersPage extends React.PureComponent {
 	handleChange = ({ target }) => this.setState({ [target.id]: target.value });
 
   render() {
-  	const { onFeeback, rentValue, name, description, } = this.state;
+  	const { onFeedback, rentValue, name, description, } = this.state;
 		return (
 			<Fragment>
 				<Title variant='title'>Criar vaga </Title>
@@ -123,7 +123,7 @@ export class EditOffersPage extends React.PureComponent {
 					Criar vaga
 				</ButtonCreate>
 				<Snackbar
-					open={this.onFeedback}
+					open={onFeedback}
 					onClose={() => this.setState({ onFeedback: false })}
 					autoHideDuration={2000}
 				>

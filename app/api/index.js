@@ -194,9 +194,7 @@ export const getMessages = async (republicId) => {
 
 export const createMessage = async (message, republicId) => {
 	if (!republicId) return false;
-	const newMessage = await axios
+	return await axios
 		.post(`${BASE_URL}${CREATE_MESSAGE}`, {message, republicId})
 		.catch(console.error);
-	debugger;
-	return
 };

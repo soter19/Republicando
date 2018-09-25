@@ -12,7 +12,7 @@ import ListSubheader from "@material-ui/core/ListSubheader/ListSubheader";
 import LoadingIndicator from "../../components/LoadingIndicator";
 import Divider from "@material-ui/core/Divider/Divider";
 import NotificationCard from "../../components/NotificationCard";
-import {getMessages} from "../../api";
+import { createMessage, getMessages } from '../../api';
 import styled from "styled-components";
 import MUIListItem from "@material-ui/core/ListItem/ListItem";
 import Button from "@material-ui/core/Button";
@@ -58,6 +58,10 @@ export class MessagesAdminPage extends React.PureComponent {
 		this.state = {
 			notifications: [],
 			loading: true,
+			newNotification: {
+        title: '',
+        description: '',
+			},
 			open: false,
 		};
 	}
@@ -78,8 +82,24 @@ export class MessagesAdminPage extends React.PureComponent {
 		this.setState({ open: false });
 	};
 
+	handleChange = ({ target }) => {
+		const { id, value } = target;
+		this.setState({
+			newNotification: {
+				...this.state.newNotification,
+        [id]: value,
+			}
+		})
+	};
+
 	handleCreateMessageClick = () => {
-		this.setState({ open: false });
+		this.setState({ loading: true, open: false });
+    const { id } = this.props.match.params;
+    createMessage(this.state.newNotification, id).then(() => {
+      getMessages(id).then(notifications => {
+        this.setState({ notifications, loading: false });
+      });
+		});
 	};
 
 	render() {
@@ -114,6 +134,8 @@ export class MessagesAdminPage extends React.PureComponent {
 								autoFocus
 								margin="dense"
 								id="title"
+								value={this.state.newNotification.title}
+								onChange={this.handleChange}
 								label="Título"
 								type="text"
 								fullWidth
@@ -121,6 +143,8 @@ export class MessagesAdminPage extends React.PureComponent {
 							<TextField
 								margin="dense"
 								id="description"
+								value={this.state.newNotification.description}
+								onChange={this.handleChange}
 								label="Mensagem"
 								type="text"
 								fullWidth
