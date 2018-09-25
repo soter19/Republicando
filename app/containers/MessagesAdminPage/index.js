@@ -24,6 +24,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
+import Snackbar from "@material-ui/core/Snackbar/Snackbar";
 
 const ListItem = styled(MUIListItem)`
   width: 100%;
@@ -63,6 +64,7 @@ export class MessagesAdminPage extends React.PureComponent {
         description: '',
 			},
 			open: false,
+			onFeedback: false,
 		};
 	}
 
@@ -70,7 +72,8 @@ export class MessagesAdminPage extends React.PureComponent {
 		const { id } = this.props.match.params;
 		if(!id) return;
 		getMessages(id).then(notifications => {
-			this.setState({ notifications, loading: false });
+			const bla = notifications.reverse();
+			this.setState({ notifications: bla, loading: false });
 		});
 	}
 
@@ -97,13 +100,14 @@ export class MessagesAdminPage extends React.PureComponent {
     const { id } = this.props.match.params;
     createMessage(this.state.newNotification, id).then(() => {
       getMessages(id).then(notifications => {
-        this.setState({ notifications, loading: false });
+				const bla = notifications.reverse();
+				this.setState({ notifications: bla, loading: false, onFeedback: true });
       });
 		});
 	};
 
 	render() {
-		const { notifications, loading } = this.state;
+		const { notifications, loading, onFeedback } = this.state;
     return (
 			<PageWrapper>
 				{ notifications && (<List
@@ -159,6 +163,13 @@ export class MessagesAdminPage extends React.PureComponent {
 							</Button>
 						</DialogActions>
 					</Dialog>
+					<Snackbar
+						open={onFeedback}
+						onClose={() => this.setState({ onFeedback: false })}
+						autoHideDuration={2000}
+						message={<span>Mensagem enviada com sucesso!</span>}
+					>
+					</Snackbar>
 			</PageWrapper>
     );
   }

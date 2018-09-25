@@ -44,6 +44,7 @@ export class EditOffersPage extends React.PureComponent {
 			description: '',
 			rentValue: '',
       onFeedback: false,
+			snackBarText: 'Vaga criada com sucesso!',
 		}
 	}
 
@@ -72,12 +73,12 @@ export class EditOffersPage extends React.PureComponent {
 			republicId,
 		};
 		if(!this.state.id) {
-      createOffer(offer).then(() => {
-
+			createOffer(offer).then(() => {
+				this.setState({ onFeedback: true, snackBarText: 'Vaga criada com sucesso!' });
       })
 		} else {
-      updateOffer({...offer, id: this.state.id}).then(() => {
-
+			updateOffer({...offer, id: this.state.id}).then(() => {
+				this.setState({ onFeedback: true, snackBarText: 'Vaga editada com sucesso!' });
       })
 		}
 	};
@@ -85,7 +86,7 @@ export class EditOffersPage extends React.PureComponent {
 	handleChange = ({ target }) => this.setState({ [target.id]: target.value });
 
   render() {
-  	const { onFeedback, rentValue, name, description, } = this.state;
+  	const { onFeedback, rentValue, name, description, snackBarText, id} = this.state;
 		return (
 			<Fragment>
 				<Title variant='title'>Criar vaga </Title>
@@ -120,14 +121,14 @@ export class EditOffersPage extends React.PureComponent {
 					type="submit"
           onClick={this.handleSubmit}
 				>
-					Criar vaga
+					{ id ? ( 'Editar Vaga' ) : ( 'Criar Vaga' ) }
 				</ButtonCreate>
 				<Snackbar
 					open={onFeedback}
 					onClose={() => this.setState({ onFeedback: false })}
 					autoHideDuration={2000}
+					message={snackBarText}
 				>
-					Vaga criada com sucesso!
 				</Snackbar>
 			</Fragment>
 		);  }

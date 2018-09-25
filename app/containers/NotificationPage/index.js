@@ -17,7 +17,6 @@ import {makeSelectUserData} from "../App/selectors";
 import {createStructuredSelector} from "reselect";
 import ListSubheader from "@material-ui/core/ListSubheader/ListSubheader";
 import Divider from "@material-ui/core/Divider/Divider";
-import SwipeableDrawer from "@material-ui/core/SwipeableDrawer/SwipeableDrawer";
 import LoadingIndicator from '../../components/LoadingIndicator';
 
 
@@ -59,7 +58,8 @@ export class NotificationPage extends React.PureComponent {
 		const { user } = this.props;
 		if(user && notifications.length === 0) {
 			getMessages(user.republicId).then(notifications => {
-        this.setState({ notifications, loading: false });
+				const bla = notifications.reverse();
+				this.setState({ bla, loading: false });
 			});
 		}
 		return (
