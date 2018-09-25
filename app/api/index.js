@@ -4,8 +4,8 @@ import {firestore} from '../configureStore';
 
 const https = require('https');
 
-const BASE_URL = 'https://us-central1-republicando-123.cloudfunctions.net/';
-// const BASE_URL = 'http://localhost:5000/republicando-123/us-central1/';
+// const BASE_URL = 'https://us-central1-republicando-123.cloudfunctions.net/';
+const BASE_URL = 'http://localhost:5000/republicando-123/us-central1/';
 
 // Tags
 

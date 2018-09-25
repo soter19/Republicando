@@ -16,10 +16,11 @@ import MUIListItem from '@material-ui/core/ListItem';
 import Button from "@material-ui/core/Button/Button";
 import styled from "styled-components";
 import Card from "@material-ui/core/Card/Card";
-import { getMyOffers, getOfferById, unapplyToOffer } from '../../api';
+import {getMessages, getMyOffers, getOfferById, unapplyToOffer} from '../../api';
 import { createStructuredSelector } from "reselect";
 import { makeSelectUserData } from '../App/selectors';
 import LoadingIndicator from '../../components/LoadingIndicator';
+import ListSubheader from "@material-ui/core/ListSubheader/ListSubheader";
 
 const ListItem = styled(MUIListItem)`
   width: 100%;
@@ -35,11 +36,6 @@ const List = styled(MUIList)`
   }
 `;
 
-const Title = styled(Typography)`
-  padding: 10px;
-`;
-
-
 const OfferCard = styled(Card)`
   min-width: 100%;
   min-height: 120px;
@@ -53,13 +49,26 @@ export class OfferListing extends React.PureComponent {
 		};
 	}
 
+	componentDidMount(){
+		const { offers } = this.state;
+		if(offers === null) {
+			this.getOffers();
+		}
+	}
+
 	componentDidUpdate(prevProps) {
 	  const { user } = this.props;
 	  if(prevProps.user !== user){
-      const { offers } = user;
-      Promise.all(offers.map(getOfferById)).then((offers) => this.setState({ offers: offers ? offers : [] }));
+			this.getOffers();
     }
   }
+
+  getOffers = () => {
+		const { user } = this.props;
+		const { offers } = user;
+		if(!user || !offers) return false;
+		Promise.all(offers.map(getOfferById)).then((offers) => this.setState({ offers: offers ? offers : [] }));
+	}
 
   handleUnaply = (offerId) => {
 		const { id : clientId } = this.props.user;
@@ -77,8 +86,9 @@ export class OfferListing extends React.PureComponent {
 
 		return (
 		  <div>
-				<Title variant="title">Minhas Vagas</Title>
-				<List>
+				<List
+					subheader={<ListSubheader component="div" color={"primary"} style={{ backgroundColor: 'white' }}>Minhas Vagas</ListSubheader>}
+				>
 					{offers.map(offer => (
 						<ListItem>
 							<OfferCard>

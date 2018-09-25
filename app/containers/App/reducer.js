@@ -13,13 +13,13 @@
 import { fromJS } from 'immutable';
 
 import {
-  SET_USER_TYPE,
-  LOGIN_START,
-  LOGIN_SUCCESS,
-  LOGIN_ERROR,
-  SET_FILTER,
-  SET_REPUBLICS,
-  SET_LOADING,
+	SET_USER_TYPE,
+	LOGIN_START,
+	LOGIN_SUCCESS,
+	LOGIN_ERROR,
+	SET_FILTER,
+	SET_REPUBLICS,
+	SET_LOADING, SET_OFFERS,
 } from './constants';
 
 // The initial state of the App
@@ -49,6 +49,8 @@ function appReducer(state = initialState, action) {
       return state.set('republics', fromJS(payload.republics)).set('loading', false);
     case SET_LOADING:
       return state.set('loading', payload.loading);
+    case SET_OFFERS:
+      return state.setIn(['userData', 'offers'], payload.offers);
     default:
       return state;
   }

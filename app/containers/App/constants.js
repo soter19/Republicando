@@ -16,6 +16,7 @@ export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const SET_LOADING = 'SET_LOADING';
 
 export const SET_USER_TYPE = 'SET_USER_TYPE';
+export const SET_OFFERS = 'SET_OFFERS';
 
 export const SET_FILTER = 'SET_FILTER';
 export const SET_REPUBLICS = 'SET_REPUBLICS';

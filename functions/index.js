@@ -245,7 +245,7 @@ exports.searchRepublicsByTag = baseEndpoint((res, req) => {
     let composedQuery = collection;
     tags.forEach(tag => {
       composedQuery = composedQuery.where(`tags.${tag}`, '==', true)
-    });—
+    });
     return composedQuery;
   };
   const response = [];

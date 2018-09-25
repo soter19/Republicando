@@ -31,6 +31,7 @@ import MUIListItem from "@material-ui/core/ListItem/ListItem";
 import MUIList from "@material-ui/core/List/List";
 import Avatar from "@material-ui/core/Avatar/Avatar";
 import ListSubheader from "@material-ui/core/ListSubheader/ListSubheader";
+import {SET_OFFERS} from "../App/constants";
 
 const settings = {
   dots: true,
@@ -139,9 +140,15 @@ export class RepublicDetail extends React.PureComponent {
 	}
 
   handleApply = (id) => {
-    const { user } = this.props;
+    const { user, dispatch } = this.props;
     applyToOffer(id, user.id).then(() => {
       this.setState({ offerFeedback: true });
+      dispatch({
+				type: SET_OFFERS,
+				payload: {
+					offers: [...user.offers, id]
+				}
+			})
     });
   };
 

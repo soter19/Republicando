@@ -1,0 +1,40 @@
+[debug] [2018-09-25T04:05:52.671Z] ----------------------------------------------------------------------
+[debug] [2018-09-25T04:05:52.674Z] Command:       /Users/isabelelima/.nvm/versions/node/v8.1.4/bin/node /Users/isabelelima/.nvm/versions/node/v8.1.4/bin/firebase serve
+[debug] [2018-09-25T04:05:52.674Z] CLI Version:   4.2.1
+[debug] [2018-09-25T04:05:52.674Z] Platform:      darwin
+[debug] [2018-09-25T04:05:52.674Z] Node Version:  v8.1.4
+[debug] [2018-09-25T04:05:52.677Z] Time:          Tue Sep 25 2018 01:05:52 GMT-0300 (-03)
+[debug] [2018-09-25T04:05:52.677Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-09-25T04:05:52.691Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-09-25T04:05:52.691Z] > authorizing via signed-in user
+[debug] [2018-09-25T04:05:52.694Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/republicando-123  
+ 
+[debug] [2018-09-25T04:05:53.499Z] <<< HTTP RESPONSE 200
+[debug] [2018-09-25T04:05:53.501Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/republicando-123  
+ 
+[debug] [2018-09-25T04:05:54.558Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/isabelelima/FIAP/Republicando'...
+[info] 
+[info] i  functions: Preparing to emulate functions.
+[debug] [2018-09-25T04:05:55.623Z] Fetching environment
+[debug] [2018-09-25T04:05:55.626Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/352916716074:getServerAppConfig  
+ 
+[debug] [2018-09-25T04:05:55.932Z] <<< HTTP RESPONSE 200
+[debug] [2018-09-25T04:05:55.932Z] Starting @google-cloud/functions-emulator
+[debug] [2018-09-25T04:05:58.601Z] Parsing function triggers
+[info] ✔  functions: createMessage: http://localhost:5000/republicando-123/us-central1/createMessage
+[info] ✔  functions: getMessages: http://localhost:5000/republicando-123/us-central1/getMessages
+[info] ✔  functions: applyToOffer: http://localhost:5000/republicando-123/us-central1/applyToOffer
+[info] ✔  functions: getOffers: http://localhost:5000/republicando-123/us-central1/getOffers
+[info] ✔  functions: getRepublics: http://localhost:5000/republicando-123/us-central1/getRepublics
+[info] ✔  functions: unapplyToOffer: http://localhost:5000/republicando-123/us-central1/unapplyToOffer
+[info] ✔  functions: getClient: http://localhost:5000/republicando-123/us-central1/getClient
+[info] ✔  functions: getRepublic: http://localhost:5000/republicando-123/us-central1/getRepublic
+[info] ✔  functions: createAdmin: http://localhost:5000/republicando-123/us-central1/createAdmin
+[info] ✔  functions: getOffersCount: http://localhost:5000/republicando-123/us-central1/getOffersCount
+[info] ✔  functions: createClient: http://localhost:5000/republicando-123/us-central1/createClient
+[info] ✔  functions: getAdmin: http://localhost:5000/republicando-123/us-central1/getAdmin
+[info] ✔  functions: searchRepublicsByTag: http://localhost:5000/republicando-123/us-central1/searchRepublicsByTag
+[info] ✔  functions: createRepublic: http://localhost:5000/republicando-123/us-central1/createRepublic

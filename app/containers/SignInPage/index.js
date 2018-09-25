@@ -9,26 +9,25 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import TextField from '@material-ui/core/TextField';
-import FormControl from '@material-ui/core/FormControl';
+import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import { push } from 'react-router-redux';
-import injectReducer from 'utils/injectReducer';
 import makeSelectSignInPage from './selectors';
-import reducer from './reducer';
-import { doSignInWithEmailAndPassword } from '../../api/auth';
 import { login } from '../App/actions';
 import { Link } from 'react-router-dom';
 
-const PageWrapper = styled.div`
-  margin: 0 20px;
+const TextFieldSignIn = styled(TextField)`
+  margin: 10px;
 `;
 
 const ButtonSignIn = styled(Button)`
-  margin: 20px 0;
+  margin: 10px;
 `;
 
+const LinkSignUp = styled(Link)`
+  margin: 10px;
+`;
 /* eslint-disable react/prefer-stateless-function */
 export class SignInPage extends React.PureComponent {
   constructor(props) {
@@ -54,41 +53,36 @@ export class SignInPage extends React.PureComponent {
   render() {
     const { email, password } = this.state;
     return (
-      <PageWrapper>
-        <FormControl>
-          <TextField
+      <Fragment>
+          <TextFieldSignIn
             required
             id="email"
             label="E-mail"
             type="email"
             margin="dense"
-            fullWidth
             value={email}
             onChange={this.handleFieldChange}
           />
-          <TextField
+          <TextFieldSignIn
             required
             id="password"
             label="Senha"
             type="password"
             margin="dense"
-            fullWidth
             value={password}
             onChange={this.handleFieldChange}
           />
-          <Link to="/signUp">Cadastre-se</Link>
+          <LinkSignUp to="/signUp">Cadastre-se</LinkSignUp>
           <ButtonSignIn
             size="small"
             variant="contained"
             color="primary"
             type={'submit'}
             onClick={this.handleLogin}
-            fullWidth
           >
             Login
           </ButtonSignIn>
-        </FormControl>
-      </PageWrapper>
+      </Fragment>
     );
   }
 }
