@@ -110,6 +110,7 @@ export class RepublicDetail extends React.PureComponent {
     if (!id) {
       this.props.goToHomePage();
     }
+    getOffers(id).then(offers => this.setState({ offers: offers }));
     getRepublic(id).then(republic => {
       this.setState({ republic });
 			getClientsByRepublicId(republic.id).then(clients => this.setState({
@@ -125,7 +126,6 @@ export class RepublicDetail extends React.PureComponent {
 				this.setState({ chipTags });
 			});
     });
-    getOffers(id).then(offers => this.setState({ offers: offers.data }));
 		if(user) {
 			this.setState({ clientIsFromThisRepublic: id === user.republicId })
     }
@@ -198,7 +198,7 @@ export class RepublicDetail extends React.PureComponent {
 											size="small"
 											variant="flat"
 											color="primary"
-											disabled={offerFeedback === false || user.offers.some((o) => o === offer.id)}
+											disabled={offerFeedback === false || user.offers && user.offers.some((o) => o === offer.id)}
 											onClick={() => this.handleApply(offer.id)}
 										>
 											CANDIDATAR-SE
