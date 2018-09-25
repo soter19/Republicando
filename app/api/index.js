@@ -75,6 +75,10 @@ export const createOffer = async (offer) => {
   return firestore.collection('offers').doc().set(offer);
 };
 
+export const updateOffer = async ({id, ...rest}) => {
+  return firestore.collection('offers').doc(id).update(rest);
+};
+
 // Admins
 
 const CREATE_ADMIN = 'createAdmin';

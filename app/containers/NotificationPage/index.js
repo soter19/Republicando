@@ -64,7 +64,7 @@ export class NotificationPage extends React.PureComponent {
 		return (
 			<Fragment>
 				{ notifications && (<List
-					subheader={<ListSubheader component="div">Notificações</ListSubheader>}
+					subheader={<ListSubheader component="div" color={"primary"} style={{ backgroundColor: 'white' }}>Notificações</ListSubheader>}
 				>
           { loading && <LoadingIndicator /> }
 					<Divider/>

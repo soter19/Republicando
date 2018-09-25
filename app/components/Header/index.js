@@ -114,16 +114,16 @@ class Header extends React.Component {
     return (
       <AppBar position="static">
         <Toolbar>
-          { isLogged && (
-            <IconButton
-              color="inherit"
-              onClick={() => this.setState({ menuOpen: true })}
-            >
-              <MenuIcon/>
-            </IconButton>
-          )
-          }
-          <Typography variant='title' color='inherit' style={{ flexGrow: '1' }}><AppTitleLink to="/">Republicando</AppTitleLink></Typography>
+          <IconButton
+            disabled={!isLogged}
+            color="inherit"
+            onClick={() => this.setState({ menuOpen: true })}
+          >
+            <MenuIcon/>
+          </IconButton>
+          <Typography variant='title' color='inherit' style={{ flexGrow: '1' }}>
+            { isLogged ? (<AppTitleLink to="/">Republicando</AppTitleLink>) : ("Republicando") }
+          </Typography>
           {/* MENU */}
           <SwipeableDrawer
             open={menuOpen}
@@ -144,7 +144,7 @@ class Header extends React.Component {
 									component="nav"
 									subheader={<ListSubheader component="div">Encontrar Repúblicas</ListSubheader>}
 								>
-									<GenerateListItem action={'/'} Icon={MapIcon} text={'Mapa de Repúblicas'}/>
+									<GenerateListItem action={'/republic-map'} Icon={MapIcon} text={'Mapa de Repúblicas'}/>
 									<GenerateListItem action={'/republic-list'} Icon={ListIcon} text={'Lista de Repúblicas'}/>
 									{ !user.republicId && <GenerateListItem action={'/my-offers'} Icon={HomeIcon} text={'Minhas vagas'}/>}
 								</List>
@@ -170,15 +170,6 @@ class Header extends React.Component {
 							<GenerateListItem action={'/republic-list-admin'} Icon={HomeIcon} text={'Minhas repúblicas'}/>
 						</List>)}
 						<Divider/>
-
-            {/*//TODO REMOVER*/}
-						<List
-							component="nav"
-							subheader={<ListSubheader component="div">Apenas para teste</ListSubheader>}
-						>
-							<GenerateListItem action={'/edit-offer'} Icon={HomeIcon} text={'Criar vaga'}/>
-							<GenerateListItem action={'/candidates'} Icon={PersonIcon} text={'Lista de candidatos'}/>
-						</List>
           </SwipeableDrawer>
           <div id="portal-header"/>
           {/* ^ THIS IS A PORTAL, DO NOT REMOVE IT! */}

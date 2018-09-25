@@ -16,6 +16,9 @@ import {createStructuredSelector} from "reselect";
 import {makeSelectFirestoreClients, makeSelectRepublics, makeSelectUserData} from "../App/selectors";
 import {push} from "react-router-redux";
 import {getRepublics} from "../App/actions";
+import ListSubheader from '@material-ui/core/ListSubheader/ListSubheader';
+import Divider from '@material-ui/core/Divider/Divider';
+import LoadingIndicator from '../../components/LoadingIndicator';
 
 const ListItem = styled(MUIListItem)`
   width: 100%;
@@ -45,10 +48,15 @@ export class RepublicListingAdmin extends React.PureComponent {
 	}
 
 	render() {
-		const { republics, goToDetail } = this.props;
+		const { republics, goToDetail, user } = this.props;
+		const reps = republics.filter((r) => r.id === user.republicId); //TODO WILL BREAK WHEN ADMIN HAS MULTIPLE REPUBLIC IDS
+
 		return (
 			<List>
-				{republics.map(rep => (
+				<ListSubheader>Minhas Repúblicas</ListSubheader>
+				<Divider/>
+				{reps.length === 0 && <LoadingIndicator />}
+				{reps.map(rep => (
 					<ListItem button onClick={() => goToDetail(rep.id)}>
 						<RepublicCard republic={rep} />
 					</ListItem>
@@ -63,7 +71,6 @@ RepublicListingAdmin.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-	clients: makeSelectFirestoreClients(),
 	user: makeSelectUserData(),
 	republics: makeSelectRepublics(),
 });

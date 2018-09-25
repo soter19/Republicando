@@ -13,11 +13,18 @@ import { compose } from 'redux';
 import RepublicCard from '../../components/RepublicCard';
 import MUIList from '@material-ui/core/List';
 import MUIListItem from '@material-ui/core/ListItem';
-import { getRepublicsApi } from '../../api';
-import { getCurrentUser } from '../../api/auth';
 import { createStructuredSelector } from "reselect";
-import { makeSelectFirestoreClients, makeSelectRepublics, makeSelectUserData } from '../App/selectors';
+import {
+  makeSelectFirestoreClients, makeSelectLoading,
+  makeSelectRepublics,
+  makeSelectUserData,
+} from '../App/selectors';
 import { getRepublics } from '../App/actions';
+import { DefaultNavBar } from '../../components/Header/NavBar';
+import IconButton from '@material-ui/core/IconButton/IconButton';
+import FilterIcon from '@material-ui/icons/FilterList';
+import FilterDialog from '../../components/FilterDialog';
+import LoadingIndicator from '../../components/LoadingIndicator';
 
 const ListItem = styled(MUIListItem)`
   width: 100%;
@@ -33,11 +40,37 @@ const List = styled(MUIList)`
   }
 `;
 
+const NavBar = styled.div`
+  display: grid;
+`;
+
+
+const HomePageAppBar = ({ action }) => (
+  <DefaultNavBar>
+    <NavBar>
+      <IconButton
+        color="inherit"
+        onClick={action}
+      >
+        <FilterIcon />
+      </IconButton>
+    </NavBar>
+  </DefaultNavBar>
+);
+
 /* eslint-disable react/prefer-stateless-function */
 export class RepublicListing extends React.PureComponent {
   constructor(props) {
     super(props);
+    this.state = {
+      filterIsOpen: false,
+      isLoading: true,
+    }
   }
+
+  toggleFilterDialog = () => {
+    this.setState({filterIsOpen: !this.state.filterIsOpen})
+  };
 
   componentWillMount() {
     const { getRepublics, republics } = this.props;
@@ -47,15 +80,23 @@ export class RepublicListing extends React.PureComponent {
   }
 
   render() {
-    const { republics, goToDetail } = this.props;
+    const { republics, isLoading, goToDetail } = this.props;
     return (
-      <List>
-        {republics.map(rep => (
-          <ListItem button onClick={() => goToDetail(rep.id)}>
-            <RepublicCard republic={rep} />
-          </ListItem>
-        ))}
-      </List>
+      <Fragment>
+        { isLoading && <LoadingIndicator />}
+        <List>
+          <HomePageAppBar action={this.toggleFilterDialog} />
+          {republics.map(rep => (
+            <ListItem button onClick={() => goToDetail(rep.id)}>
+              <RepublicCard republic={rep} />
+            </ListItem>
+          ))}
+          <FilterDialog
+            isOpen={this.state.filterIsOpen}
+            onClose={this.toggleFilterDialog}
+          />
+        </List>
+      </Fragment>
     );
   }
 }
@@ -68,6 +109,7 @@ const mapStateToProps = createStructuredSelector({
   clients: makeSelectFirestoreClients(),
   user: makeSelectUserData(),
   republics: makeSelectRepublics(),
+  isLoading: makeSelectLoading(),
 });
 
 function mapDispatchToProps(dispatch) {

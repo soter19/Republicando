@@ -12,7 +12,15 @@
 
 import { fromJS } from 'immutable';
 
-import { SET_USER_TYPE, LOGIN_START, LOGIN_SUCCESS, LOGIN_ERROR, SET_FILTER, SET_REPUBLICS } from './constants';
+import {
+  SET_USER_TYPE,
+  LOGIN_START,
+  LOGIN_SUCCESS,
+  LOGIN_ERROR,
+  SET_FILTER,
+  SET_REPUBLICS,
+  SET_LOADING,
+} from './constants';
 
 // The initial state of the App
 const initialState = fromJS({
@@ -38,7 +46,9 @@ function appReducer(state = initialState, action) {
     case SET_FILTER:
       return state.set('currentFilters', fromJS(payload.filters));
     case SET_REPUBLICS:
-      return state.set('republics', fromJS(payload.republics));
+      return state.set('republics', fromJS(payload.republics)).set('loading', false);
+    case SET_LOADING:
+      return state.set('loading', payload.loading);
     default:
       return state;
   }

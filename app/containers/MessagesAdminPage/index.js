@@ -40,7 +40,7 @@ const List = styled(MUIList)`
 `;
 
 const FloatButton = styled(Button)`
-		position: absolute;
+		position: fixed;
 		bottom: 15px;
 		right: 15px;
 `;
@@ -87,7 +87,7 @@ export class MessagesAdminPage extends React.PureComponent {
     return (
 			<PageWrapper>
 				{ notifications && (<List
-					subheader={<ListSubheader component="div">Notificações</ListSubheader>}
+					subheader={<ListSubheader component="div" color={"primary"} style={{ backgroundColor: 'white' }}>Notificações</ListSubheader>}
 				>
 					{ loading && <LoadingIndicator /> }
 					<Divider/>

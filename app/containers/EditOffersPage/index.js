@@ -14,7 +14,7 @@ import Button from "@material-ui/core/Button/Button";
 import ListSubheader from "@material-ui/core/ListSubheader/ListSubheader";
 import Typography from "@material-ui/core/Typography/Typography";
 import CardContent from "@material-ui/core/CardContent/CardContent";
-import { createOffer, getOfferById } from '../../api';
+import { createOffer, getOfferById, updateOffer } from '../../api';
 import Snackbar from '@material-ui/core/Snackbar/Snackbar';
 import { createStructuredSelector } from "reselect";
 import { makeSelectUserData, makeSelectUserType } from '../App/selectors';
@@ -39,6 +39,7 @@ export class EditOffersPage extends React.PureComponent {
 	constructor(props){
 		super(props);
 		this.state = {
+			id: null,
 			name: '',
 			description: '',
 			rentValue: '',
@@ -49,8 +50,9 @@ export class EditOffersPage extends React.PureComponent {
 	componentDidMount(){
 		const { id } = this.props.match.params;
 		if(id){
-      getOfferById(id).then(({ name, rentValue, description }) => {
+      getOfferById(id).then(({id, name, rentValue, description }) => {
       	this.setState({
+					id,
 					name,
 					rentValue,
 					description,
@@ -69,10 +71,15 @@ export class EditOffersPage extends React.PureComponent {
 			candidates: [],
 			republicId,
 		};
-		createOffer(offer).then(() => {
-			debugger
-			this.setState({ onFeedback: true })
-		})
+		if(!this.state.id) {
+      createOffer(offer).then(() => {
+        this.setState({ onFeedback: true })
+      })
+		} else {
+      updateOffer(offer).then(() => {
+        this.setState({ onFeedback: true })
+      })
+		}
 	};
 
 	handleChange = ({ target }) => this.setState({ [target.id]: target.value });
@@ -116,7 +123,7 @@ export class EditOffersPage extends React.PureComponent {
 					Criar vaga
 				</ButtonCreate>
 				<Snackbar
-					open={onFeeback}
+					open={onFeedback}
 					onClose={() => this.setState({ onFeedback: false })}
 					autoHideDuration={2000}
 				>

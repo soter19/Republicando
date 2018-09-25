@@ -19,7 +19,7 @@ import ListItemText from '@material-ui/core/ListItemText/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction/ListItemSecondaryAction';
 import { makeSelectFilters } from '../../containers/App/selectors';
 import { setFilter } from './actions';
-import { getRepublicsByTag } from '../../containers/App/actions';
+import { getRepublicsByTag, setLoading } from '../../containers/App/actions';
 
 function Transition(props) {
   return <Slide direction="up" {...props} />;
@@ -130,9 +130,10 @@ const mapDispatchToProps = dispatch => ({
   dispatch,
   goToDetail: republicId => dispatch(push(`/republic-detail/${republicId}`)),
   setFilters: filters => {
+    dispatch(setLoading(true));
     dispatch(setFilter(filters));
     getRepublicsByTag(dispatch)(filters);
-  }
+  },
 });
 
 const withConnect = connect(

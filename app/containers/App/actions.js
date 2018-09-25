@@ -15,7 +15,7 @@
  *    }
  */
 
-import { LOGIN_START, LOGIN_SUCCESS, LOGIN_ERROR, SET_USER_TYPE, SET_REPUBLICS } from './constants';
+import { LOGIN_START, LOGIN_SUCCESS, LOGIN_ERROR, SET_USER_TYPE, SET_REPUBLICS, SET_LOADING } from './constants';
 import { replace } from 'react-router-redux';
 import { doSignInWithEmailAndPassword } from '../../api/auth';
 import { getRepublicsApi, getUserTypeFromId, searchRepublicsByTag } from '../../api';
@@ -47,6 +47,13 @@ export const setRepublics = (republics) => ({
   type: SET_REPUBLICS,
   payload: {
     republics,
+  }
+});
+
+export const setLoading = (loading) => ({
+  type: SET_LOADING,
+  payload: {
+    loading,
   }
 });
 

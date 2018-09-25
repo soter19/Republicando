@@ -21,6 +21,10 @@ export const makeSelectFilters = () =>
   createSelector(selectGlobal, data => data && data.get('currentFilters').toJS());
 
 export const makeSelectRepublics = () =>
-  createSelector(selectGlobal, data => data && data.get('republics').toJS())
+  createSelector(selectGlobal, data => data && data.get('republics').toJS());
+
+export const makeSelectLoading = () =>
+  createSelector(selectGlobal, data => data && data.get('loading'));
+
 
 export { selectGlobal, makeSelectFirestoreClients };
