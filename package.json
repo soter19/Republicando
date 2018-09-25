@@ -46,7 +46,7 @@
     "test:watch": "cross-env NODE_ENV=test jest --watchAll",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "prettify": "prettier --write",
-    "deploy": "npm run build && cp ./build/index.html ./build/200.html && surge ./build republicando.surge.sh"
+    "deploy": "npm run build && cp ./build/index.html ./build/200.html && surge ./build https://republicando.surge.sh"
   },
   "lint-staged": {
     "*.js": [
