@@ -37,10 +37,6 @@ const List = styled(MUIList)`
   }
 `;
 
-const Title = styled(Typography)`
-  padding: 10px;
-`;
-
 
 const OfferCard = styled(Card)`
   min-width: 100%;
@@ -77,8 +73,7 @@ export class RepublicOffersPage extends React.PureComponent {
 		const { offers } = this.state;
 		this.setState({ offers: offers.filter((o) => o.id !== offerId) });
     const { id } = this.props.match.params;
-    deleteOffer(offerId).then((a) => {
-    	debugger
+    deleteOffer(offerId).then(() => {
       getOffers(id).then(offers => this.setState({ offers }));
 		})
 	};
