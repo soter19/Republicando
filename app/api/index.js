@@ -71,6 +71,12 @@ export const getOfferById = async (id) => {
   return firestore.collection('offers').doc(id).get().then((doc) => ({ id , ...doc.data() }));
 };
 
+export const createOffer = async (offer) => {
+  firestore.collection('offers').doc().set(offer).then(() => {
+    debugger
+  })
+};
+
 // Admins
 
 const CREATE_ADMIN = 'createAdmin';
@@ -121,14 +127,24 @@ export const getUserTypeFromId = (userId) => {
     }
   )};
 
-// Notifications
+// Messages
 
-const GET_NOTIFICATIONS = 'getNotifications';
+const GET_MESSAGES = 'getMessages';
+const CREATE_MESSAGE = 'createMessage';
 
-export const getNotifications = async (republicId) => {
+export const getMessages = async (republicId) => {
     if (!republicId) return false;
       const notifications = await axios
-        .get(`${BASE_URL}${GET_NOTIFICATIONS}?republicId=${republicId}`)
+        .get(`${BASE_URL}${GET_MESSAGES}?republicId=${republicId}`)
         .catch(console.error);
       return notifications && notifications.data;
+};
+
+export const createMessage = async (message, republicId) => {
+  if(!republicId) return false;
+  const newMessage = await axios
+    .post(`${BASE_URL}${CREATE_MESSAGE}`, { message, republicId })
+    .catch(console.error);
+  debugger
+  return
 };

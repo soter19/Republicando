@@ -19,7 +19,7 @@ import Button from '@material-ui/core/Button/Button';
 import Chip from '@material-ui/core/Chip';
 import Slider from "react-slick";
 import CardActions from '@material-ui/core/CardActions/CardActions';
-import {getRepublic, applyToOffer, getOffers, getMe, getNotifications, getAllTags} from '../../api';
+import {getRepublic, applyToOffer, getOffers, getMe, getMessages, getAllTags} from '../../api';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import {makeSelectUserData, makeSelectUserType} from "../App/selectors";
 import {createStructuredSelector} from "reselect";

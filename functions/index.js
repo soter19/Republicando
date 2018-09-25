@@ -78,6 +78,25 @@ class Admin {
   }
 }
 
+class Message {
+  constructor({ title, description }){
+    this.title = title;
+    this.description = description;
+  }
+
+  isValid() {
+    return this.title && this.description;
+  }
+
+  toObj() {
+    const { title, description } = this;
+    return {
+      title,
+      description,
+    }
+  }
+}
+
 // utils
 
 const parseDocument = snap => ({
@@ -201,6 +220,7 @@ exports.unapplyToOffer = baseEndpoint((res, req) => {
   res.status(200).send({ ok: 'Success!' });
   return;
 });
+
 
 // Republic
 
@@ -345,7 +365,7 @@ exports.getAdmin = baseEndpoint((res, req) => {
 
 // Notifications
 
-exports.getNotifications = baseEndpoint((res, req) => {
+exports.getMessages = baseEndpoint((res, req) => {
     const { republicId } = req.query; // pegando parametro da URL (SO PODE SER GET)
     if(!republicId) {
       res.status(400).send(errorResponse('Invalid Params')); // tratamento de erro
@@ -357,5 +377,26 @@ exports.getNotifications = baseEndpoint((res, req) => {
       .get()
       .then(snap => {
       return res.status(200).send(parseDocument(snap).data.messages);
+  });
+});
+
+exports.createMessage = baseEndpoint((res, req) => {
+  const { message, republicId } = req.body;
+  if(!message || !republicId) {
+    res.status(400).send(errorResponse('Invalid Params')); // tratamento de erro
+    return;
+  }
+  const newMessage = new Message(message);
+  firestore.collection('republics').doc(republicId).get().then((snap) => {
+    const messages = snap.data().messages;
+    console.log(snap.data());
+    firestore
+      .collection('republics')
+      .doc(republicId)
+      .update({ messages: [...messages, newMessage.toObj()] })
+      .then(r => {
+        res.status(200).send({ success: 'ok' });
+        return;
+      });
   });
 });

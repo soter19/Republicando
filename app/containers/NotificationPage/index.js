@@ -12,7 +12,7 @@ import {compose} from 'redux';
 import styled from "styled-components";
 import MUIListItem from "@material-ui/core/ListItem/ListItem";
 import MUIList from "@material-ui/core/List/List";
-import {getNotifications} from "../../api";
+import {getMessages} from "../../api";
 import {makeSelectUserData} from "../App/selectors";
 import {createStructuredSelector} from "reselect";
 import ListSubheader from "@material-ui/core/ListSubheader/ListSubheader";
@@ -47,7 +47,7 @@ export class NotificationPage extends React.PureComponent {
 	componentDidUpdate(prevProps){
 		const { user } = this.props;
 		if(prevProps.user !== user){
-			getNotifications(user.republicId).then(notifications => {
+			getMessages(user.republicId).then(notifications => {
 				this.setState({ notifications, loading: false });
 			});
 		}
@@ -57,7 +57,7 @@ export class NotificationPage extends React.PureComponent {
 		const { notifications, loading } = this.state;
 		const { user } = this.props;
 		if(user && notifications.length === 0) {
-			getNotifications(user.republicId).then(notifications => {
+			getMessages(user.republicId).then(notifications => {
         this.setState({ notifications, loading: false });
 			});
 		}
