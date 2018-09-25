@@ -44,6 +44,10 @@ export const getRepublic = async republicId => {
 };
 
 export const searchRepublicsByTag = async (tags) => {
+	if(tags && tags.length === 0) {
+		const allRepublics = await getRepublicsApi();
+		return allRepublics;
+	}
 	const republic = await axios
 		.post(`${BASE_URL}${SEARCH_REPUBLICS_BY_ID}`, {tags})
 		.catch(console.error);

@@ -50,12 +50,17 @@ class FilterDialog extends PureComponent {
   }
 
   handleFilterSelection = (e) => {
-    const { value, id } = e.target;
-    // TODO IMPROVE THIS SHITTY LOGIC
-    this.setState({
-      tempFilters:
-        [...this.state.tempFilters, id]
-    });
+    const { value, id, checked } = e.target;
+    if(checked) {
+      this.setState({
+        tempFilters:
+          [...this.state.tempFilters, id]
+      });
+    } else {
+      this.setState({
+        tempFilters: this.state.tempFilters.filter(f => f !== id),
+      });
+    }
   };
 
   getFilters = (availableFilters) => {
