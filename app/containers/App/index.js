@@ -16,6 +16,7 @@ import SignUpPage from 'containers/SignUpPage/Loadable';
 import RepublicListing from 'containers/RepublicListing/Loadable';
 import RepublicDetail from 'containers/RepublicDetail/Loadable';
 import FeaturePage from 'containers/FeaturePage/Loadable';
+import MessagesAdminPage from 'containers/MessagesAdminPage/Loadable';
 import NotificationPage from 'containers/NotificationPage/Loadable';
 import EditOffersPage from 'containers/EditOffersPage/Loadable';
 import CandidatesListing from 'containers/CandidatesListing/Loadable';
@@ -46,6 +47,7 @@ export default function App() {
         <Route path="/republic-list" component={RepublicListing} />
         <Route path="/republic-detail/:id" component={RepublicDetail} />
         <Route path="/notifications" component={NotificationPage} />
+				<Route path="/messages/:id" component={MessagesAdminPage} />
 				<Route path="/edit-offer" component={EditOffersPage} />
 				<Route path="/my-offers" component={OfferListing} />
 				<Route path="/candidates" component={CandidatesListing} />

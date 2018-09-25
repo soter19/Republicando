@@ -21,7 +21,7 @@ import Slider from "react-slick";
 import CardActions from '@material-ui/core/CardActions/CardActions';
 import {getRepublic, applyToOffer, getOffers, getMe, getNotifications, getAllTags} from '../../api';
 import LoadingIndicator from '../../components/LoadingIndicator';
-import {makeSelectUserData} from "../App/selectors";
+import {makeSelectUserData, makeSelectUserType} from "../App/selectors";
 import {createStructuredSelector} from "reselect";
 import Divider from "@material-ui/core/Divider/Divider";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar/ListItemAvatar";
@@ -83,6 +83,14 @@ const AvatarUser = styled(Avatar)`
   height: 50px;
 `;
 
+const ButtonDiv = styled.div`
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 20px;
+	margin: 0px 10px;
+	grid-template-rows: 50px;
+	`;
+
 export class RepublicDetail extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -137,6 +145,8 @@ export class RepublicDetail extends React.PureComponent {
 
   render() {
     const { republic, offerFeedback, offers, clientIsFromThisRepublic, chipTags } = this.state;
+    const { userType, goToMessages, goToOffers } = this.props;
+    const isAdmin = userType === 'admins';
     if (!republic) return (<LoadingIndicator/>);
 
     return (
@@ -151,8 +161,6 @@ export class RepublicDetail extends React.PureComponent {
             <Typography component="p" variant='body2'>{republic.data.description}</Typography>
 						<Typography component="p" variant='subheading'><b>Endereço:</b></Typography>
 						<Typography component="p" variant='body2'>{republic.data.address}</Typography>
-            {/*<hr style={{ margin: '10px 20px' }}/>*/}
-            {/*<Typography component="p" variant='body2'><b>Endereço:</b> {republic.data.address}</Typography>*/}
           </CardContent>
 
           <div>
@@ -162,44 +170,8 @@ export class RepublicDetail extends React.PureComponent {
 							<ChipTags label={tags.label}/>
 						))}
           </div>
-					<List>
-						<Divider/>
-						<ListSubheader component="div">Moradores</ListSubheader>
-						<ListItem>
-							<ListItemAvatar>
-								<AvatarUser>
-									<PersonIcon />
-								</AvatarUser>
-							</ListItemAvatar>
-							<ListItemText
-								primary="Nome do morador 1"
-								secondary="Bio do candidato"
-							/>
-						</ListItem>
-						<ListItem>
-							<ListItemAvatar>
-								<AvatarUser>
-									<PersonIcon />
-								</AvatarUser>
-							</ListItemAvatar>
-							<ListItemText
-								primary="Nome do morador 2"
-								secondary="Bio do candidato"
-							/>
-						</ListItem>
-						<ListItem>
-						<ListItemAvatar>
-							<AvatarUser>
-								<PersonIcon />
-							</AvatarUser>
-						</ListItemAvatar>
-						<ListItemText
-							primary="Nome do morador 3"
-							secondary="Bio do candidato"
-						/>
-					</ListItem>
-					</List>
-        {!clientIsFromThisRepublic && (
+
+        {!isAdmin && !clientIsFromThisRepublic ? (
           <div>
 						<Divider/>
 						<ListSubheader component="div">Vagas</ListSubheader>
@@ -227,8 +199,55 @@ export class RepublicDetail extends React.PureComponent {
 							))}
 						</Slider>
           </div>
-        )
-        }
+        ) : (
+					<List>
+						<Divider/>
+						<ListSubheader component="div">Moradores</ListSubheader>
+						<ListItem>
+							<ListItemAvatar>
+								<AvatarUser>
+									<PersonIcon />
+								</AvatarUser>
+							</ListItemAvatar>
+							<ListItemText
+								primary="Nome do morador 1"
+								secondary="Bio do candidato"
+							/>
+						</ListItem>
+						<ListItem>
+							<ListItemAvatar>
+								<AvatarUser>
+									<PersonIcon />
+								</AvatarUser>
+							</ListItemAvatar>
+							<ListItemText
+								primary="Nome do morador 2"
+								secondary="Bio do candidato"
+							/>
+						</ListItem>
+						<ListItem>
+							<ListItemAvatar>
+								<AvatarUser>
+									<PersonIcon />
+								</AvatarUser>
+							</ListItemAvatar>
+							<ListItemText
+								primary="Nome do morador 3"
+								secondary="Bio do candidato"
+							/>
+						</ListItem>
+					</List>
+				)}
+				{ isAdmin && (
+					<ButtonDiv>
+						<Button variant="outlined" color="primary" onClick={() => goToMessages(republic.id)}>
+							Mensagens
+						</Button>
+						<Button variant="outlined" color="primary" onClick={() => goToOffers(republic.id)}>
+							Vagas
+						</Button>
+					</ButtonDiv>
+				)}
 
         <Snackbar
           open={offerFeedback}
@@ -247,13 +266,16 @@ RepublicDetail.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   user: makeSelectUserData(),
+	userType: makeSelectUserType(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
     goToHomePage: () => dispatch(push('/')),
-  };
+		goToMessages: republicId => dispatch(push(`/messages/${republicId}`)),
+		goToOffers: republicId => dispatch(push(`/notifications/${republicId}`)),
+	};
 }
 
 const withConnect = connect(
