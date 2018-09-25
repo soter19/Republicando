@@ -71,7 +71,6 @@ export class EditOffersPage extends React.PureComponent {
 			candidates: [],
 			republicId,
 		};
-		debugger
 		if(!this.state.id) {
       createOffer(offer).then(() => {
 

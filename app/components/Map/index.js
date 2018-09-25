@@ -118,6 +118,10 @@ const MyMapComponent = compose(
             lng: position.coords.longitude
           });
           props.toggleGettingLocation();
+        },
+        (error) => {
+          console.error(error);
+          props.toggleGettingLocation();
         }
       )
     }

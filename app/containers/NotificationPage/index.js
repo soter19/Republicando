@@ -48,7 +48,8 @@ export class NotificationPage extends React.PureComponent {
 		const { user } = this.props;
 		if(prevProps.user !== user){
 			getMessages(user.republicId).then(notifications => {
-				this.setState({ notifications, loading: false });
+				const bla = notifications.reverse();
+				this.setState({ notifications: bla, loading: false });
 			});
 		}
 	}
