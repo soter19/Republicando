@@ -111,18 +111,27 @@ const MyMapComponent = compose(
   const getGeoLocation = () => {
     if (navigator.geolocation) {
       props.toggleGettingLocation();
+      const options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+      };
       navigator.geolocation.getCurrentPosition(
         position => {
           props.setCenter({
             lat: position.coords.latitude,
             lng: position.coords.longitude
           });
+          props.setSearch('');
+          props.setZoom(15);
           props.toggleGettingLocation();
         },
         (error) => {
           console.error(error);
+          alert('Não foi possível encontrar sua localização atual, tente novamente');
           props.toggleGettingLocation();
-        }
+        },
+        options
       )
     }
   };
@@ -215,9 +224,12 @@ const MyMapComponent = compose(
           </SearchBox>
         )}
       </PlacesAutocomplete>
-      <LocationIconButton onClick={getGeoLocation} variant="fab">
-        { props.isGettingLocation ? (<CircularProgress />) : (<MyLocationIcon />)}
-      </LocationIconButton>
+      { navigator.geolocation && (
+          <LocationIconButton onClick={getGeoLocation} variant="fab">
+            {props.isGettingLocation ? (<CircularProgress/>) : (<MyLocationIcon/>)}
+          </LocationIconButton>
+        )
+      }
     </GoogleMap>
   )
 });
